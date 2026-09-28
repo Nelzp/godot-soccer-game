@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://b7tvjc3w8f4rp"]
+
+[ext_resource type="Texture2D" uid="uid://dds2dkhwnjbbb" path="res://icon.svg" id="1_cifom"]
+[ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="2_5fdea"]
+[ext_resource type="PackedScene" uid="uid://4acqj7530toc" path="res://cena_inimigo1.tscn" id="3_v5pcj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3r67k"]
+size = Vector2(1174.5, 61)
+
+[node name="Fase" type="Node2D" unique_id=934340607]
+position = Vector2(0, 6)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=519029942]
+position = Vector2(583, 608)
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=855965258]
+position = Vector2(0.9999695, 2)
+scale = Vector2(9.09375, 0.5078125)
+texture = ExtResource("1_cifom")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=946560048]
+position = Vector2(-2, -2)
+shape = SubResource("RectangleShape2D_3r67k")
+
+[node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
+position = Vector2(656, 503)
+
+[node name="Inimigo1" parent="." unique_id=706790748 instance=ExtResource("3_v5pcj")]
+position = Vector2(421, 517)

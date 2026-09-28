@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://ba3i6ir4tmqf1"]
+
+[ext_resource type="Texture2D" uid="uid://dt4mhefdub8s4" path="res://Inimigo2.png" id="1_wb0th"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gt3kb"]
+size = Vector2(178, 245)
+
+[sub_resource type="Animation" id="Animation_wb0th"]
+resource_name = "atacando"
+
+[sub_resource type="Animation" id="Animation_sld13"]
+resource_name = "correndo"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jpbw4"]
+_data = {
+&"atacando": SubResource("Animation_wb0th"),
+&"correndo": SubResource("Animation_sld13")
+}
+
+[node name="Inimigo2" type="Node2D" unique_id=879218546]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1525321210]
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=1017881434]
+texture = ExtResource("1_wb0th")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=646099643]
+position = Vector2(79, -179.5)
+shape = SubResource("RectangleShape2D_gt3kb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=1610695618]
+libraries/ = SubResource("AnimationLibrary_jpbw4")

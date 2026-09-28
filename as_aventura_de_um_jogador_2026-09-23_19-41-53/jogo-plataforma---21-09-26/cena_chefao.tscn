@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://sclf25d6u7ft"]
+
+[ext_resource type="Texture2D" uid="uid://c52xght3esrmw" path="res://chefão-Photoroom.png" id="1_gxdst"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wb0th"]
+size = Vector2(264, 273.75)
+
+[sub_resource type="Animation" id="Animation_duija"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(300, 464, 222, 277)]
+}
+
+[sub_resource type="Animation" id="Animation_gxdst"]
+resource_name = "andando"
+
+[sub_resource type="Animation" id="Animation_uwolq"]
+resource_name = "atacando"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.40000004, 0.6, 0.8000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(6, 464, 253, 277), Rect2(300, 464, 222, 277), Rect2(548, 416, 278, 330), Rect2(841, 457, 262, 277), Rect2(6, 464, 253, 277)]
+}
+
+[sub_resource type="Animation" id="Animation_1ykln"]
+resource_name = "parado"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_duija"]
+_data = {
+&"RESET": SubResource("Animation_duija"),
+&"andando": SubResource("Animation_gxdst"),
+&"atacando": SubResource("Animation_uwolq"),
+&"parado": SubResource("Animation_1ykln")
+}
+
+[node name="Chefao" type="Node2D" unique_id=171596232]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2052264740]
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=878548664]
+position = Vector2(497, 357.00003)
+scale = Vector2(0.90255004, 0.7489452)
+texture = ExtResource("1_gxdst")
+region_enabled = true
+region_rect = Rect2(300, 464, 222, 277)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1981743566]
+position = Vector2(504, 346)
+shape = SubResource("RectangleShape2D_wb0th")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=1213590902]
+libraries/ = SubResource("AnimationLibrary_duija")
+autoplay = &"atacando"
