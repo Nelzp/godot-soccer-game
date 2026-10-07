@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bl2t4ih3dbml5"
-path="res://.godot/imported/chefao.png-9eb156a279fe5cc85ebe795d333bb7b8.ctex"
+uid="uid://bb4gxvqqtvxm3"
+path="res://.godot/imported/Chefao.png-1afe8cf62276e19df97b5ead8d904e53.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://chefao.png"
-dest_files=["res://.godot/imported/chefao.png-9eb156a279fe5cc85ebe795d333bb7b8.ctex"]
+source_file="res://Chefao.png"
+dest_files=["res://.godot/imported/Chefao.png-1afe8cf62276e19df97b5ead8d904e53.ctex"]
 
 [params]
 

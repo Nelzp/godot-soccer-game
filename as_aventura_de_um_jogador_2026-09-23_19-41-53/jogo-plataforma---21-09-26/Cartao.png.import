@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bixhr3hbv74x6"
-path="res://.godot/imported/Inimigo2b.png-85ca4c0ee5b7921b60c74ad423e189c9.ctex"
+uid="uid://bm16r42vkeg2p"
+path="res://.godot/imported/Cartao.png-c4b28b6433913fd4a6ce7fb47cc5a89f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Inimigo2b.png"
-dest_files=["res://.godot/imported/Inimigo2b.png-85ca4c0ee5b7921b60c74ad423e189c9.ctex"]
+source_file="res://Cartao.png"
+dest_files=["res://.godot/imported/Cartao.png-c4b28b6433913fd4a6ce7fb47cc5a89f.ctex"]
 
 [params]
 

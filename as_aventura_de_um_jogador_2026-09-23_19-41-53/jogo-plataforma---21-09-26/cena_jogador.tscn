@@ -35,7 +35,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(671, 582, 161, 159), Rect2(872, 576, 156, 163), Rect2(1054, 590, 174, 145), Rect2(1248, 587, 154, 147)]
+"values": [Rect2(660.5161, 578.1433, 181.98773, 175.54572), Rect2(852.16693, 572.2283, 180.37714, 165.88263), Rect2(1054, 590, 184.68945, 153.08362), Rect2(1238.6895, 579.5571, 169.10364, 175.54565)]
 }
 
 [sub_resource type="Animation" id="Animation_otaft"]
@@ -52,7 +52,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(1235, 322, 133, 196), Rect2(867, 323, 156, 191), Rect2(1048, 325, 161, 193), Rect2(670, 327, 155, 188)]
+"values": [Rect2(1235, 322, 133, 196), Rect2(867, 323, 167.15454, 203.53009), Rect2(1048, 325, 169.7528, 203.14056), Rect2(670, 327, 155, 188)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -101,7 +101,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(67, 49, 84, 214), Rect2(185, 50, 84, 214), Rect2(302, 50, 84, 213), Rect2(421, 47, 87, 217)]
+"values": [Rect2(67, 49, 96.52406, 214), Rect2(185, 50, 100.26709, 218.84833), Rect2(302, 43.37681, 105.665924, 223.86102), Rect2(421, 38.545277, 104.233215, 231.91356)]
 }
 
 [sub_resource type="Animation" id="Animation_5gxcy"]

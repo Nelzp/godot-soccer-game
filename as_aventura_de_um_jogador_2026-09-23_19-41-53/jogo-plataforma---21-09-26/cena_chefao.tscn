@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://sclf25d6u7ft"]
 
-[ext_resource type="Texture2D" uid="uid://c52xght3esrmw" path="res://chefão-Photoroom.png" id="1_gxdst"]
+[ext_resource type="Texture2D" uid="uid://bb4gxvqqtvxm3" path="res://Chefao.png" id="1_gxdst"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wb0th"]
-size = Vector2(264, 273.75)
+size = Vector2(100, 110)
 
 [sub_resource type="Animation" id="Animation_duija"]
 length = 0.001
@@ -22,9 +22,22 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_gxdst"]
 resource_name = "andando"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.40000004, 0.6, 0.8000001, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(23.415466, 347.75998, 144.7893, 171.84146), Rect2(325.65833, 364.0746, 135.8613, 151.56421), Rect2(616.26526, 344.43503, 128.70422, 179.08011), Rect2(757.3705, 362.30304, 121.31641, 159.67792), Rect2(889.77124, 359.2114, 127.782715, 164.91312), Rect2(1148.0706, 354.18018, 140.76843, 171.1065)]
+}
 
 [sub_resource type="Animation" id="Animation_uwolq"]
 resource_name = "atacando"
+length = 1.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -32,14 +45,27 @@ tracks/0/path = NodePath("Sprite2D:region_rect")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.20000002, 0.40000004, 0.6, 0.8000001),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.20000002, 0.40000004, 0.7, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(6, 464, 253, 277), Rect2(300, 464, 222, 277), Rect2(548, 416, 278, 330), Rect2(841, 457, 262, 277), Rect2(6, 464, 253, 277)]
+"values": [Rect2(279.9637, 614.1354, 124.44855, 142.96973), Rect2(398.06683, 618.147, 140.55365, 143.35046), Rect2(662.5844, 594.7213, 172.76385, 168.37158), Rect2(949.5481, 621.0752, 140.55359, 144.94592), Rect2(953.48645, 632.78796, 129.80212, 130.17358), Rect2(150.96887, 620.3871, 129.80212, 130.17358)]
 }
 
 [sub_resource type="Animation" id="Animation_1ykln"]
 resource_name = "parado"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8000001, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(23.415466, 103.502594, 131.51744, 175.77438), Rect2(279.2611, 114.36382, 120.04108, 160.62598), Rect2(630.8099, 110.07666, 120.04108, 160.62598), Rect2(1295.3229, 120.79462, 113.80481, 148.5899), Rect2(1406.7896, 118.65103, 113.41516, 148.78476), Rect2(512.9125, 114.36386, 109.323, 160.62598)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_duija"]
 _data = {
@@ -50,20 +76,22 @@ _data = {
 }
 
 [node name="Chefao" type="Node2D" unique_id=171596232]
+position = Vector2(558, 280)
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2052264740]
+position = Vector2(-2, 3)
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=878548664]
-position = Vector2(497, 357.00003)
+position = Vector2(-5, -7)
 scale = Vector2(0.90255004, 0.7489452)
 texture = ExtResource("1_gxdst")
 region_enabled = true
 region_rect = Rect2(300, 464, 222, 277)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1981743566]
-position = Vector2(504, 346)
+position = Vector2(-2, -6)
 shape = SubResource("RectangleShape2D_wb0th")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=1213590902]
 libraries/ = SubResource("AnimationLibrary_duija")
-autoplay = &"atacando"
+autoplay = &"parado"

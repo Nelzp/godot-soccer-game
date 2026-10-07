@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3kp7q2y8lnr"
-path="res://.godot/imported/goleiro.jpg-500d65a0c1f4f99583c613c7423d5507.ctex"
+uid="uid://btclaakg66yc2"
+path="res://.godot/imported/Juiz.png-41f4821f4aab6044729b8f7b42368850.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://goleiro.jpg"
-dest_files=["res://.godot/imported/goleiro.jpg-500d65a0c1f4f99583c613c7423d5507.ctex"]
+source_file="res://Juiz.png"
+dest_files=["res://.godot/imported/Juiz.png-41f4821f4aab6044729b8f7b42368850.ctex"]
 
 [params]
 

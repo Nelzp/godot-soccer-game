@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dld80glc3vc21"]
 
-[ext_resource type="Texture2D" uid="uid://ca0mbttpobcrt" path="res://inimigo1b.png" id="1_ks231"]
 [ext_resource type="Script" uid="uid://ll5gm8i2wjll" path="res://script_cartao.gd" id="1_olowh"]
+[ext_resource type="Texture2D" uid="uid://bm16r42vkeg2p" path="res://Cartao.png" id="2_olowh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1bnfh"]
 size = Vector2(27, 33)
@@ -23,9 +23,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_olowh"]
 resource_name = "movendo"
-length = 0.6
+length = 10.0
 loop_mode = 1
-step = 0.2
+step = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -33,10 +33,10 @@ tracks/0/path = NodePath("Sprite2D:region_rect")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(74, 665, 46, 56), Rect2(722, 666, 57, 54), Rect2(828, 667, 50, 52)]
+"values": [Rect2(24.697784, 82.89986, 37.399994, 37.40001), Rect2(163.49977, 83.23289, 57.200027, 40.700012), Rect2(491.79987, 81.839874, 58.30005, 37.40001), Rect2(493.49988, 169.84988, 71.5, 42.900024), Rect2(308.09982, 169.0789, 68.20001, 41.800003), Rect2(496.1999, 164.33789, 64.900024, 49.500015)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vpwsh"]
@@ -54,7 +54,7 @@ script = ExtResource("1_olowh")
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=1406051309]
 position = Vector2(9, -6)
 scale = Vector2(0.6956523, 0.6956521)
-texture = ExtResource("1_ks231")
+texture = ExtResource("2_olowh")
 region_enabled = true
 region_rect = Rect2(152, 665, 46, 56)
 

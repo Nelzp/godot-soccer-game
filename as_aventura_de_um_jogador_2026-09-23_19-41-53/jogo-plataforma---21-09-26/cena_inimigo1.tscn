@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://4acqj7530toc"]
 
 [ext_resource type="Script" uid="uid://br05vflqqunow" path="res://script_inimigo1.gd" id="1_l6xlw"]
-[ext_resource type="Texture2D" uid="uid://ca0mbttpobcrt" path="res://inimigo1b.png" id="2_l6xlw"]
+[ext_resource type="Texture2D" uid="uid://btclaakg66yc2" path="res://Juiz.png" id="2_l6xlw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25wn8"]
-size = Vector2(52, 114)
+size = Vector2(51, 118)
 
 [sub_resource type="Animation" id="Animation_xyouc"]
 length = 0.8
@@ -19,6 +19,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [Rect2(222, 72, 125, 230), Rect2(375, 47, 114, 364), Rect2(636, 46, 142, 365), Rect2(903, 46, 127, 365)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.3, 0.301)]
 }
 
 [sub_resource type="Animation" id="Animation_gt3kb"]
@@ -36,7 +48,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(60, 406, 113, 231), Rect2(191, 398, 129, 232), Rect2(330, 393, 143, 243), Rect2(689, 396, 154, 230), Rect2(1114, 398, 112, 231), Rect2(69, 72, 110, 230)]
+"values": [Rect2(23.00879, 1055.7098, 194.58264, 392.3037), Rect2(281.8775, 1034.6571, 269.27728, 421.17737), Rect2(602.9889, 1043.9084, 289.99097, 421.17737), Rect2(906.78894, 1054.2653, 359.0365, 407.3683), Rect2(1279.6345, 1061.1698, 327.96594, 386.65466), Rect2(1676.6459, 1054.2653, 241.65918, 400.46375)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -52,23 +64,46 @@ tracks/1/keys = {
 "method": &"atirar_cartao"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.277, 0.278), Vector2(0.277, 0.278), Vector2(0.277, 0.278), Vector2(0.277, 0.278), Vector2(0.277, 0.278), Vector2(0.277, 0.278)]
+}
 
 [sub_resource type="Animation" id="Animation_l6xlw"]
 resource_name = "parado"
-length = 3.0000000000000004
-loop_mode = 1
-step = 0.2
+length = 10.0
+step = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("Sprite2D:region_rect")
-tracks/0/interp = 1
+tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 1.8000002, 2.6, 3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 3, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Rect2(69, 72, 110, 230), Rect2(222, 72, 125, 230), Rect2(385, 74, 125, 228), Rect2(543, 72, 124, 230), Rect2(69, 72, 110, 230)]
+"values": [Rect2(732.2796, 145.48178, 125.114075, 266.20013), Rect2(922.1438, 144.5581, 135.04626, 276.5231), Rect2(1064.5181, 144.26575, 125, 275.6317), Rect2(1329.5596, 147.43292, 110, 279.0668)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.397, 0.398), Vector2(0.397, 0.398), Vector2(0.397, 0.398), Vector2(0.397, 0.398)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xyouc"]
@@ -86,14 +121,14 @@ position = Vector2(0, -2)
 script = ExtResource("1_l6xlw")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=1624929606]
-position = Vector2(-2.3159728, -4.6795115)
-scale = Vector2(0.45207173, 0.42314473)
+position = Vector2(-0.500016, -2.9999995)
+scale = Vector2(0.3, 0.301)
 texture = ExtResource("2_l6xlw")
 region_enabled = true
 region_rect = Rect2(222, 72, 125, 230)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1474043473]
-position = Vector2(-2, -4)
+position = Vector2(-1.5, -6)
 shape = SubResource("RectangleShape2D_25wn8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=195058058]
@@ -106,4 +141,4 @@ position = Vector2(53, -27)
 [node name="RayCast2D" type="RayCast2D" parent="CharacterBody2D" unique_id=1093094197]
 position = Vector2(-157, -16)
 scale = Vector2(1, 5.0000014)
-target_position = Vector2(315, 0.3999977)
+target_position = Vector2(390, -0.40000153)
