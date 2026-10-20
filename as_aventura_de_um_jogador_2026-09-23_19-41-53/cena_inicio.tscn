@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bea7gind4ls22"]
+
+[ext_resource type="Texture2D" uid="uid://bweofcdxauo4t" path="res://Tela_inicial.png" id="1_7k3t1"]
+[ext_resource type="Script" uid="uid://x745lbexp3qj" path="res://script_inicio.gd" id="1_hnhcb"]
+
+[node name="cena_inicio" type="Node2D" unique_id=2097012331]
+script = ExtResource("1_hnhcb")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=339824998]
+position = Vector2(575, 325)
+scale = Vector2(0.85975105, 0.78375)
+texture = ExtResource("1_7k3t1")
+
+[node name="Button" type="Button" parent="." unique_id=1131137861]
+offset_left = 395.0
+offset_top = 390.0
+offset_right = 757.0
+offset_bottom = 433.0
+
+[node name="Button2" type="Button" parent="." unique_id=1282656054]
+offset_left = 396.0
+offset_top = 495.0
+offset_right = 757.0
+offset_bottom = 540.0
+
+[connection signal="pressed" from="Button" to="." method="iniciar_jogo"]
+[connection signal="pressed" from="Button2" to="." method="sair_jogo"]

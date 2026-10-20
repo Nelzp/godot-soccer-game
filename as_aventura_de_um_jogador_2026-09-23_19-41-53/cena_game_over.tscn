@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dewhmb7o3v5ih"]
+
+[ext_resource type="Script" uid="uid://qw5c65ecu5v5" path="res://script_game_over.gd" id="1_p4wjp"]
+[ext_resource type="Texture2D" uid="uid://cvnjgrgtir486" path="res://game_over.png" id="1_s1hed"]
+
+[node name="cena_game_over" type="Node2D" unique_id=1736087752]
+script = ExtResource("1_p4wjp")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=43936396]
+position = Vector2(575.846, 322.10742)
+scale = Vector2(0.78336185, 0.5931997)
+texture = ExtResource("1_s1hed")
+
+[node name="ButtonTentar" type="Button" parent="." unique_id=1788468134]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="ButtonSair" type="Button" parent="." unique_id=1127349888]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[connection signal="pressed" from="ButtonTentar" to="." method="tentar_novamente"]
+[connection signal="pressed" from="ButtonSair" to="." method="sair"]
