@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://c8jigneb40ohq"]
+
+[ext_resource type="Script" uid="uid://2bxs2o2pkx4d" path="res://personagem.gd" id="1_6u7vk"]
+[ext_resource type="Texture2D" uid="uid://evb5isbfp05o" path="res://inimigo_1.png" id="2_6u7vk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c7snl"]
+size = Vector2(127.01602, 161.4115)
+
+[sub_resource type="Animation" id="Animation_6u7vk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(268, 46, 138, 183)]
+}
+
+[sub_resource type="Animation" id="Animation_voqui"]
+resource_name = "carrinho"
+length = 1.2
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(37, 599, 155, 189), Rect2(251, 601, 155, 189), Rect2(455, 604, 171, 189), Rect2(648, 604, 192, 188), Rect2(14, 829, 199, 172), Rect2(442, 829, 184, 169), Rect2(673, 819, 150, 185)]
+}
+
+[sub_resource type="Animation" id="Animation_m8jco"]
+resource_name = "correndo"
+length = 0.8
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(49, 34, 138, 194), Rect2(268, 46, 138, 183), Rect2(465, 29, 131, 196), Rect2(680, 22, 130, 200), Rect2(49, 300, 143, 193)]
+}
+
+[sub_resource type="Animation" id="Animation_l3wq4"]
+resource_name = "parado"
+length = 2.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(33, 300, 171, 205), Rect2(242, 302, 171, 205), Rect2(449, 300, 171, 205), Rect2(656, 299, 171, 205), Rect2(29, 300, 171, 205)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_voqui"]
+_data = {
+&"RESET": SubResource("Animation_6u7vk"),
+&"carrinho": SubResource("Animation_voqui"),
+&"correndo": SubResource("Animation_m8jco"),
+&"parado": SubResource("Animation_l3wq4")
+}
+
+[node name="Inimigo" type="Node2D" unique_id=1290962987]
+position = Vector2(3, -1)
+
+[node name="Personagem" type="CharacterBody2D" parent="." unique_id=2011669742]
+position = Vector2(-1, 21)
+script = ExtResource("1_6u7vk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1673325324]
+position = Vector2(589, 336.5)
+scale = Vector2(0.5511117, 0.551386)
+shape = SubResource("RectangleShape2D_c7snl")
+
+[node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=69373502]
+position = Vector2(587.0134, 336.86426)
+scale = Vector2(0.44946915, 0.44969282)
+texture = ExtResource("2_6u7vk")
+region_enabled = true
+region_rect = Rect2(268, 46, 138, 183)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Personagem" unique_id=1758741055]
+libraries/ = SubResource("AnimationLibrary_voqui")
+
+[node name="RayCast2D" type="RayCast2D" parent="Personagem" unique_id=1270789702]
+position = Vector2(484, 337)
+target_position = Vector2(212, -1)

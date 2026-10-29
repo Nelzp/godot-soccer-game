@@ -1,0 +1,11 @@
+CanvasLayer
+TextureRect
+CollisionPolygon2D
+CollisionShape2D
+ColorRect
+Label
+Button
+Sprite2D
+AnimationPlayer
+ParallaxBackground
+Parallax2D
