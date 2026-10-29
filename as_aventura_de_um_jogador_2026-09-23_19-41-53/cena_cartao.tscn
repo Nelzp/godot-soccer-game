@@ -49,6 +49,7 @@ _data = {
 position = Vector2(75, 306)
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2062246911]
+collision_layer = 2
 script = ExtResource("1_olowh")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=1406051309]
@@ -61,7 +62,6 @@ region_rect = Rect2(152, 665, 46, 56)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1042100621]
 position = Vector2(8.5, -6.5)
 shape = SubResource("RectangleShape2D_1bnfh")
-disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D" unique_id=449191004]
 libraries/ = SubResource("AnimationLibrary_vpwsh")

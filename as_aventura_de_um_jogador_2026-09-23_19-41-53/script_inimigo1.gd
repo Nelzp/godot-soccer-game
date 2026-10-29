@@ -9,7 +9,6 @@ func _process(delta: float) -> void:
 	else:
 		$AnimationPlayer.play("parado")
 	
-	
 	#get_tree().root.print_tree()
 	var personagem = get_tree().root.get_node("Fase/Jogador/Personagem")	
 	var personagem_pos_x = personagem.global_position.x
@@ -23,10 +22,6 @@ func _process(delta: float) -> void:
 		$Marker2D.position.x = -abs($Marker2D.position.x)
 		direcao_inimigo = -1
 		
-		
-
-
-
 func atirar_cartao():
 	var cena_cartao = preload("res://cena_cartao.tscn")
 	var obj_cartao  = cena_cartao.instantiate()

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b34t2q2drby3k" path="res://jogador-Photoroom.png" id="2_xgtec"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_64uw6"]
-size = Vector2(43, 110.25)
+size = Vector2(43, 105)
 
 [sub_resource type="Animation" id="Animation_skl0v"]
 length = 0.001
@@ -134,7 +134,8 @@ _data = {
 position = Vector2(563, 329)
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1443315958]
-position = Vector2(0, -1)
+position = Vector2(-2, 4)
+collision_mask = 3
 script = ExtResource("1_xgtec")
 
 [node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=1837001489]
@@ -145,14 +146,14 @@ region_enabled = true
 region_rect = Rect2(335, 71, 54, 115)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=352200697]
-position = Vector2(8, -2.875)
+position = Vector2(8, -5.5)
 shape = SubResource("RectangleShape2D_64uw6")
 
 [node name="Camera2D" type="Camera2D" parent="Personagem" unique_id=273569552]
-limit_left = -405
-limit_top = 243
-limit_right = 3000
-limit_bottom = 1284
+limit_left = 8
+limit_top = 657
+limit_right = 2740
+limit_bottom = 1450
 
 [node name="Marker2D" type="Marker2D" parent="Personagem" unique_id=312183149]
 position = Vector2(62, 34)

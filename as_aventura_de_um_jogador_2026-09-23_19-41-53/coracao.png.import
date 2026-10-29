@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4ohkkp1rlqqp"
-path="res://.godot/imported/coracao01.png-4ddb29ba7549972fe7e494dfb81d3fbf.ctex"
+uid="uid://bve6iry1hvv8t"
+path="res://.godot/imported/coracao.png-483b0474c32780654d35ea481dfb7344.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://coracao01.png"
-dest_files=["res://.godot/imported/coracao01.png-4ddb29ba7549972fe7e494dfb81d3fbf.ctex"]
+source_file="res://coracao.png"
+dest_files=["res://.godot/imported/coracao.png-483b0474c32780654d35ea481dfb7344.ctex"]
 
 [params]
 
