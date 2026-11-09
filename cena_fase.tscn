@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://b7tvjc3w8f4rp"]
+
+[ext_resource type="Script" uid="uid://7yyk5alpyhia" path="res://cena_fase.gd" id="1_4lqq5"]
+[ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="2_5fdea"]
+[ext_resource type="Texture2D" uid="uid://04l4xshdrjsd" path="res://cenario_principal.png.png" id="2_6bdly"]
+[ext_resource type="PackedScene" uid="uid://4acqj7530toc" path="res://cena_juiz.tscn" id="3_v5pcj"]
+[ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="5_j1lpk"]
+[ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://HUD.tscn" id="7_6bdly"]
+
+[node name="Fase" type="Node2D" unique_id=934340607]
+position = Vector2(0, 6)
+script = ExtResource("1_4lqq5")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=519029942]
+position = Vector2(561, -434)
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=855965258]
+position = Vector2(685.79755, 1533)
+scale = Vector2(1.5497469, 1.4521577)
+texture = ExtResource("2_6bdly")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1892337739]
+position = Vector2(-17, 125)
+polygon = PackedVector2Array(-541, 1652, 1942, 1654, 1942, 1793, -541, 1793)
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1583703587]
+polygon = PackedVector2Array(-558, 1779, -555, 1144, -623, 1441)
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=952382428]
+polygon = PackedVector2Array(1924, 1784, 1925, 1146, 1995, 1399)
+
+[node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
+position = Vector2(49, 1285)
+
+[node name="Juiz" parent="." unique_id=706790748 instance=ExtResource("3_v5pcj")]
+position = Vector2(562, 1309)
+
+[node name="Inimigo" parent="." unique_id=1290962987 instance=ExtResource("5_j1lpk")]
+position = Vector2(674, 943)
+
+[node name="HUD" parent="." unique_id=1725281888 instance=ExtResource("7_6bdly")]
+position = Vector2(-4, 562)
