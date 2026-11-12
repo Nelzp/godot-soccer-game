@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://04l4xshdrjsd"
-path="res://.godot/imported/cenario_principal.png.png-fc73fe1933e2bd7a5c86d54b44adf5c0.ctex"
+uid="uid://30hgbigq17kb"
+path="res://.godot/imported/inimigo_goleiro.png-7c227fec960526ca6163c603d6841623.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://cenario_principal.png.png"
-dest_files=["res://.godot/imported/cenario_principal.png.png-fc73fe1933e2bd7a5c86d54b44adf5c0.ctex"]
+source_file="res://inimigo_goleiro.png"
+dest_files=["res://.godot/imported/inimigo_goleiro.png-7c227fec960526ca6163c603d6841623.ctex"]
 
 [params]
 

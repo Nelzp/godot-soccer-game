@@ -110,14 +110,14 @@ _data = {
 &"piscar_coracao_5": SubResource("Animation_w75gc")
 }
 
-[node name="HUD" type="Node2D" unique_id=1725281888]
-position = Vector2(40, 5)
+[node name="Hud" type="Node2D" unique_id=1725281888]
+position = Vector2(37, 31)
 script = ExtResource("1_vow1y")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=427884788]
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer" unique_id=1627964360]
-position = Vector2(54.000004, 30)
+position = Vector2(51.000004, 56)
 scale = Vector2(0.05238672, 0.03547459)
 texture = ExtResource("2_ne771")
 
@@ -131,10 +131,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -599.0
-offset_top = -320.0
-offset_right = -342.0
-offset_bottom = -228.0
+offset_left = -600.0
+offset_top = -294.0
+offset_right = -343.0
+offset_bottom = -202.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_vow1y")
@@ -146,14 +146,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -568.0
-offset_top = -320.0
-offset_right = -311.0
-offset_bottom = -228.0
+offset_left = -570.0
+offset_top = -294.0
+offset_right = -313.0
+offset_bottom = -202.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_vow1y")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="coracao3" type="TextureRect" parent="CanvasLayer" unique_id=1432875367]
 anchors_preset = 8
@@ -161,14 +162,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -539.0
-offset_top = -320.0
-offset_right = -282.0
-offset_bottom = -228.0
+offset_left = -542.0
+offset_top = -295.0
+offset_right = -285.0
+offset_bottom = -203.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_vow1y")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="coracao4" type="TextureRect" parent="CanvasLayer" unique_id=871743260]
 anchors_preset = 8
@@ -176,14 +178,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -510.0
-offset_top = -321.0
-offset_right = -253.0
-offset_bottom = -229.0
+offset_left = -513.0
+offset_top = -295.0
+offset_right = -256.0
+offset_bottom = -203.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_vow1y")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="coracao5" type="TextureRect" parent="CanvasLayer" unique_id=1271849143]
 anchors_preset = 8
@@ -191,14 +194,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -482.0
-offset_top = -321.0
-offset_right = -225.0
-offset_bottom = -229.0
+offset_left = -485.0
+offset_top = -295.0
+offset_right = -228.0
+offset_bottom = -203.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_vow1y")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer" unique_id=1997247341]
 libraries/ = SubResource("AnimationLibrary_xxqia")

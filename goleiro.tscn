@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://cw6s2w3ald0q8"]
+
+[ext_resource type="Script" uid="uid://cq6l5gijid1o3" path="res://script_goleiro.gd" id="1_4rrqr"]
+[ext_resource type="Texture2D" uid="uid://30hgbigq17kb" path="res://inimigo_goleiro.png" id="1_34w5e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4rrqr"]
+size = Vector2(179, 145)
+
+[sub_resource type="Animation" id="Animation_34w5e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(170, 295, 104, 126)]
+}
+
+[sub_resource type="Animation" id="Animation_wryrm"]
+resource_name = "ataque"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(41, 494, 147, 143), Rect2(203, 497, 88, 140), Rect2(325, 491, 94, 146), Rect2(452, 494, 179, 143), Rect2(652, 494, 187, 143), Rect2(863, 494, 107, 143)]
+}
+
+[sub_resource type="Animation" id="Animation_qrgsc"]
+resource_name = "ataque_especial"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(41, 837, 105, 152), Rect2(217, 838, 131, 151), Rect2(377, 835, 168, 154), Rect2(549, 832, 140, 157), Rect2(729, 875, 108, 55), Rect2(866, 837, 143, 152)]
+}
+
+[sub_resource type="Animation" id="Animation_4rrqr"]
+resource_name = "correndo"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(170, 295, 104, 126), Rect2(284, 296, 122, 125), Rect2(417, 297, 133, 125), Rect2(559, 297, 130, 126), Rect2(702, 297, 128, 125), Rect2(836, 297, 138, 125)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wryrm"]
+_data = {
+&"RESET": SubResource("Animation_34w5e"),
+&"ataque": SubResource("Animation_wryrm"),
+&"ataque_especial": SubResource("Animation_qrgsc"),
+&"correndo": SubResource("Animation_4rrqr")
+}
+
+[node name="Goleiro" type="Node2D" unique_id=733435162]
+
+[node name="Personagem" type="CharacterBody2D" parent="." unique_id=1149399348]
+script = ExtResource("1_4rrqr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1447267006]
+light_mask = 2
+position = Vector2(577.5, 228.5)
+shape = SubResource("RectangleShape2D_4rrqr")
+
+[node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=1258420812]
+position = Vector2(583, 239.5)
+scale = Vector2(1.2115381, 1.0873016)
+texture = ExtResource("1_34w5e")
+region_enabled = true
+region_rect = Rect2(170, 295, 104, 126)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Personagem" unique_id=1378202915]
+libraries/ = SubResource("AnimationLibrary_wryrm")
+
+[node name="RayCast2D" type="RayCast2D" parent="Personagem" unique_id=1814883842]
+position = Vector2(387, 248)
+scale = Vector2(2, 5)
+target_position = Vector2(218, -0.20000458)

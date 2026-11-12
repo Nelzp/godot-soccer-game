@@ -1,3 +1,4 @@
+
 extends CharacterBody2D
 
 var velocidade = 500
@@ -7,11 +8,16 @@ var direcao = 1
 
 var animando = false
 var carrinho_atingiu_inimigo = false
+var morto: bool = false
 
-@onready var hud = get_tree().current_scene.find_child("HUD", true, false)
+@onready var hud = get_tree().current_scene.find_child("Hud", true, false)
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+
+	# Impedir ações quando o jogador morrer
+	if morto:
+		return
 
 	velocity.x = 0
 	velocity.y += gravidade
@@ -103,10 +109,34 @@ func spawnar_bolar():
 
 func receber_dano() -> void:
 
+	if morto:
+		return
+
 	print("O jogador recebeu dano!")
 
 	if hud != null:
 		print("HUD encontrado!")
+		hud.receber_dano()
+	else:
+		print("ERRO: HUD não encontrado!")
+
+
+func morrer() -> void:
+
+	if morto:
+		return
+
+	morto = true
+
+	velocity = Vector2.ZERO
+
+	# Impedir movimentação e novas ações
+	set_process(false)
+	set_physics_process(false)
+
+	print("JOGADOR MORREU!")
+
+	if hud != null:
 		hud.receber_dano()
 	else:
 		print("ERRO: HUD não encontrado!")

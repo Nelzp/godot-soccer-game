@@ -1,42 +1,46 @@
 [gd_scene format=3 uid="uid://b7tvjc3w8f4rp"]
 
-[ext_resource type="Script" uid="uid://7yyk5alpyhia" path="res://cena_fase.gd" id="1_4lqq5"]
+[ext_resource type="Texture2D" uid="uid://04l4xshdrjsd" path="res://cenario_principal.png" id="1_cifom"]
+[ext_resource type="PackedScene" uid="uid://bf1en1f5dx4v5" path="res://cena_nuvem.tscn" id="2_4lqq5"]
 [ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="2_5fdea"]
-[ext_resource type="Texture2D" uid="uid://04l4xshdrjsd" path="res://cenario_principal.png.png" id="2_6bdly"]
 [ext_resource type="PackedScene" uid="uid://4acqj7530toc" path="res://cena_juiz.tscn" id="3_v5pcj"]
-[ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="5_j1lpk"]
-[ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://HUD.tscn" id="7_6bdly"]
+[ext_resource type="PackedScene" uid="uid://cw6s2w3ald0q8" path="res://goleiro.tscn" id="6_08fst"]
+[ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
 
-[node name="Fase" type="Node2D" unique_id=934340607]
-position = Vector2(0, 6)
-script = ExtResource("1_4lqq5")
+[node name="Fase" type="Node2D" unique_id=357268306]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=519029942]
-position = Vector2(561, -434)
+[node name="Nuvem" parent="." unique_id=822178870 instance=ExtResource("2_4lqq5")]
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=855965258]
-position = Vector2(685.79755, 1533)
-scale = Vector2(1.5497469, 1.4521577)
-texture = ExtResource("2_6bdly")
+[node name="Hud" parent="." unique_id=1725281888 instance=ExtResource("7_6bdly")]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1892337739]
-position = Vector2(-17, 125)
-polygon = PackedVector2Array(-541, 1652, 1942, 1654, 1942, 1793, -541, 1793)
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=770600117]
 
-[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1583703587]
-polygon = PackedVector2Array(-558, 1779, -555, 1144, -623, 1441)
+[node name="Sprite 2D" type="Sprite2D" parent="StaticBody2D" unique_id=590566169]
+visibility_layer = 3
+position = Vector2(1303, 354.00003)
+scale = Vector2(1.6106248, 0.88930583)
 
-[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=952382428]
-polygon = PackedVector2Array(1924, 1784, 1925, 1146, 1995, 1399)
+[node name="CenarioPrincipal" type="Sprite2D" parent="StaticBody2D" unique_id=811715545]
+position = Vector2(1199.9999, 323.99997)
+scale = Vector2(1.49875, 1.2157599)
+texture = ExtResource("1_cifom")
+
+[node name="chao" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=3693157]
+position = Vector2(-0.24365234, 0)
+scale = Vector2(1.0000782, 1)
+polygon = PackedVector2Array(-1, 529, 2398, 530, 2398, 647, 4, 649)
+
+[node name="parede1" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1518735852]
+polygon = PackedVector2Array(-1, 645, 0, 0, -36, 345)
+
+[node name="parede2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=446061933]
+polygon = PackedVector2Array(2396, 640, 2404, 2, 2434, 342)
 
 [node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
-position = Vector2(49, 1285)
+position = Vector2(130, 477)
 
 [node name="Juiz" parent="." unique_id=706790748 instance=ExtResource("3_v5pcj")]
-position = Vector2(562, 1309)
+position = Vector2(715, 497)
 
-[node name="Inimigo" parent="." unique_id=1290962987 instance=ExtResource("5_j1lpk")]
-position = Vector2(674, 943)
-
-[node name="HUD" parent="." unique_id=1725281888 instance=ExtResource("7_6bdly")]
-position = Vector2(-4, 562)
+[node name="Goleiro" parent="." unique_id=733435162 instance=ExtResource("6_08fst")]
+position = Vector2(1030, 217)

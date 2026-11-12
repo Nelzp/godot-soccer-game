@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blfbik2x7bgun"
-path="res://.godot/imported/nuvens.jpg-da0b99471292c78e512f7bec3363c1fc.ctex"
+uid="uid://dycvmreeggfhk"
+path="res://.godot/imported/nuvem.png-aad8c4829b9a252699e08ae8c84c7771.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://nuvens.jpg"
-dest_files=["res://.godot/imported/nuvens.jpg-da0b99471292c78e512f7bec3363c1fc.ctex"]
+source_file="res://nuvem.png"
+dest_files=["res://.godot/imported/nuvem.png-aad8c4829b9a252699e08ae8c84c7771.ctex"]
 
 [params]
 

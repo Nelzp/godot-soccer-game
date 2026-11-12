@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b34t2q2drby3k" path="res://jogador-Photoroom.png" id="2_xgtec"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_64uw6"]
-size = Vector2(37.5, 105)
+size = Vector2(39.5, 105)
 
 [sub_resource type="Animation" id="Animation_skl0v"]
 length = 0.001
@@ -133,7 +133,7 @@ _data = {
 [node name="Jogador" type="Node2D" unique_id=297150345]
 position = Vector2(563, 329)
 
-[node name="Personagem" type="CharacterBody2D" parent="." unique_id=1443315958]
+[node name="Personagem" type="CharacterBody2D" parent="." unique_id=1443315958 groups=["jogador"]]
 position = Vector2(-2, 4)
 collision_mask = 3
 script = ExtResource("1_xgtec")
@@ -146,14 +146,14 @@ region_enabled = true
 region_rect = Rect2(335, 71, 54, 115)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=352200697]
-position = Vector2(5.25, -5.5)
+position = Vector2(6.25, -5.5)
 shape = SubResource("RectangleShape2D_64uw6")
 
 [node name="Camera2D" type="Camera2D" parent="Personagem" unique_id=273569552]
-limit_left = 8
-limit_top = 760
-limit_right = 2466
-limit_bottom = 1450
+limit_left = 0
+limit_top = 3
+limit_right = 2400
+limit_bottom = 650
 
 [node name="Marker2D" type="Marker2D" parent="Personagem" unique_id=312183149]
 position = Vector2(52, 29)

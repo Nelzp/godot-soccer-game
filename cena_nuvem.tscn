@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bf1en1f5dx4v5"]
+
+[ext_resource type="Texture2D" uid="uid://dycvmreeggfhk" path="res://nuvem.png" id="1_7d703"]
+[ext_resource type="Script" uid="uid://yaob3c1lnm35" path="res://script_nuvem.gd" id="1_xi0yg"]
+
+[node name="Node2D" type="Node2D" unique_id=822178870]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1197339225]
+script = ExtResource("1_xi0yg")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=901299048]
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1806420144]
+position = Vector2(1199.7662, 115.00001)
+scale = Vector2(1.4356862, 0.6822528)
+texture = ExtResource("1_7d703")
