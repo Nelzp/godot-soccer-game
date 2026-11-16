@@ -37,22 +37,6 @@ tracks/0/keys = {
 "values": [Rect2(41, 494, 147, 143), Rect2(203, 497, 88, 140), Rect2(325, 491, 94, 146), Rect2(452, 494, 179, 143), Rect2(652, 494, 187, 143), Rect2(863, 494, 107, 143)]
 }
 
-[sub_resource type="Animation" id="Animation_qrgsc"]
-resource_name = "ataque_especial"
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [Rect2(41, 837, 105, 152), Rect2(217, 838, 131, 151), Rect2(377, 835, 168, 154), Rect2(549, 832, 140, 157), Rect2(729, 875, 108, 55), Rect2(866, 837, 143, 152)]
-}
-
 [sub_resource type="Animation" id="Animation_4rrqr"]
 resource_name = "correndo"
 loop_mode = 1
@@ -74,7 +58,6 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_34w5e"),
 &"ataque": SubResource("Animation_wryrm"),
-&"ataque_especial": SubResource("Animation_qrgsc"),
 &"correndo": SubResource("Animation_4rrqr")
 }
 

@@ -44,7 +44,7 @@ func morrer() -> void:
 
 	var tween = create_tween()
 
-	for i in range(4):
+	for i in range(2):
 		tween.tween_property($Sprite2D, "modulate:a", 0.0, 0.12)
 		tween.tween_property($Sprite2D, "modulate:a", 1.0, 0.12)
 

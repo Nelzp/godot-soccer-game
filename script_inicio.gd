@@ -18,3 +18,7 @@ func iniciar_jogo() -> void:
 
 func sair_jogo() -> void:
 	get_tree().quit()
+
+
+func _on_botao_configuracao_pressed() -> void:
+	pass # Replace with function body.

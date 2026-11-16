@@ -41,11 +41,16 @@ func _physics_process(delta: float) -> void:
 
 	# Comportamento conforme o estado
 	match estado:
+
 		Estado.PATRULHANDO:
 			patrulhar()
 
 		Estado.ATACANDO:
 			velocity.x = 0.0
+
+			# Manter o goleiro olhando para o jogador durante o ataque
+			if jogador_alvo != null and is_instance_valid(jogador_alvo):
+				atualizar_direcao_ataque(jogador_alvo)
 
 	# Movimentar o goleiro
 	move_and_slide()
@@ -106,10 +111,9 @@ func iniciar_ataque(jogador: CharacterBody2D) -> void:
 
 	velocity.x = 0.0
 
-	# Atualizar a direção conforme a posição do jogador
+	# Virar para o lado correto antes de atacar
 	atualizar_direcao_ataque(jogador)
 
-	# Executar animação de ataque
 	animation_player.play("ataque")
 
 	print("GOLEIRO: ATAQUE INICIADO!")
@@ -133,7 +137,6 @@ func _on_animation_finished(nome_animacao: StringName) -> void:
 	# Impedir ataques repetidos enquanto o jogador estiver próximo
 	aguardando_afastamento = true
 
-	# Voltar à patrulha
 	estado = Estado.PATRULHANDO
 
 	print("GOLEIRO: Ataque finalizado!")
@@ -154,23 +157,12 @@ func detectar_jogador() -> CharacterBody2D:
 
 func atualizar_direcao() -> void:
 
-	# Orientação da animação de corrida
+	# Sprite original olhando para a direita
 	sprite.flip_h = direcao < 0
 
 
 func atualizar_direcao_ataque(jogador: CharacterBody2D) -> void:
 
-	# Jogador à direita
-	if jogador.global_position.x > global_position.x:
-		sprite.flip_h = true
-
-	# Jogador à esquerda
-	else:
-		sprite.flip_h = false
-		
-	if jogador.global_position.x > global_position.x:
-		sprite.flip_h = false
-
-	# Jogador à esquerda
-	else:
-		sprite.flip_h = true
+	# Jogador à esquerda: inverter o sprite
+	# Jogador à direita: manter o sprite original
+	sprite.flip_h = jogador.global_position.x < global_position.x
