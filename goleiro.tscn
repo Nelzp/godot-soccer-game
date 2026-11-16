@@ -36,6 +36,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [Rect2(41, 494, 147, 143), Rect2(203, 497, 88, 140), Rect2(325, 491, 94, 146), Rect2(452, 494, 179, 143), Rect2(652, 494, 187, 143), Rect2(863, 494, 107, 143)]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"aplicar_golpe"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_4rrqr"]
 resource_name = "correndo"
@@ -64,15 +78,15 @@ _data = {
 [node name="Goleiro" type="Node2D" unique_id=733435162]
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1149399348]
+position = Vector2(577.5, 228.5)
 script = ExtResource("1_4rrqr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1447267006]
 light_mask = 2
-position = Vector2(577.5, 228.5)
 shape = SubResource("RectangleShape2D_4rrqr")
 
 [node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=1258420812]
-position = Vector2(583, 239.5)
+position = Vector2(5.5, 11)
 scale = Vector2(1.2115381, 1.0873016)
 texture = ExtResource("1_34w5e")
 region_enabled = true
@@ -82,6 +96,6 @@ region_rect = Rect2(170, 295, 104, 126)
 libraries/ = SubResource("AnimationLibrary_wryrm")
 
 [node name="RayCast2D" type="RayCast2D" parent="Personagem" unique_id=1814883842]
-position = Vector2(387, 248)
+position = Vector2(-190.5, 19.5)
 scale = Vector2(2, 5)
 target_position = Vector2(218, -0.20000458)

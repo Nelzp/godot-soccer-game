@@ -18,12 +18,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Rect2(152, 665, 46, 56)]
+"values": [Rect2(24.697784, 82.89986, 37.399994, 37.40001)]
 }
 
 [sub_resource type="Animation" id="Animation_olowh"]
 resource_name = "movendo"
-length = 10.0
+length = 1.2
 loop_mode = 1
 step = 0.4
 tracks/0/type = "value"
@@ -57,7 +57,7 @@ position = Vector2(9, -6)
 scale = Vector2(0.6956523, 0.6956521)
 texture = ExtResource("2_olowh")
 region_enabled = true
-region_rect = Rect2(152, 665, 46, 56)
+region_rect = Rect2(24.697784, 82.89986, 37.399994, 37.40001)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1042100621]
 position = Vector2(9.5, -6.5)

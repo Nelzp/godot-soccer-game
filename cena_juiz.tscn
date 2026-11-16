@@ -139,6 +139,4 @@ autoplay = &"parado"
 position = Vector2(68, -21)
 
 [node name="RayCast2D" type="RayCast2D" parent="Personagem" unique_id=1093094197]
-position = Vector2(-295, 0)
-scale = Vector2(1, 5.0000014)
-target_position = Vector2(596, -0.20000076)
+target_position = Vector2(300, 0)

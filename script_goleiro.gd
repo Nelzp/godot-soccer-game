@@ -1,5 +1,7 @@
 
-extends CharacterBody2D
+extends "res://inimigo_base.gd"
+## Goleiro: patrulha e, ao encostar no jogador, dá um soco.
+## Vida, dano e morte vêm de inimigo_base.gd.
 
 enum Estado {
 	PATRULHANDO,
@@ -8,7 +10,11 @@ enum Estado {
 
 @export var velocidade: float = 200.0
 @export var gravidade: float = 980.0
-@export var distancia_para_liberar: float = 100.0
+## Distância horizontal (px, de centro a centro) que o jogador precisa abrir
+## depois de um ataque para o Goleiro poder atacar de novo.
+@export var distancia_para_liberar: float = 200.0
+## Até quantos pixels além da borda do corpo o soco alcança.
+@export var alcance_golpe: float = 60.0
 
 var direcao: int = 1
 var estado: Estado = Estado.PATRULHANDO
@@ -16,9 +22,11 @@ var estado: Estado = Estado.PATRULHANDO
 var jogador_alvo: CharacterBody2D = null
 var aguardando_afastamento: bool = false
 var estava_na_parede: bool = false
+var golpe_aplicado: bool = false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var forma: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
@@ -26,6 +34,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+
+	if morrendo:
+		return
 
 	# Aplicar gravidade
 	if not is_on_floor():
@@ -69,9 +80,7 @@ func _physics_process(delta: float) -> void:
 	# Liberar novo ataque quando o jogador se afastar
 	if aguardando_afastamento and jogador_alvo != null:
 
-		var distancia = global_position.distance_to(
-			jogador_alvo.global_position
-		)
+		var distancia = absf(jogador_alvo.global_position.x - global_position.x)
 
 		if distancia > distancia_para_liberar:
 			aguardando_afastamento = false
@@ -85,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		if jogador != null:
 
 			# Não atacar se o jogador estiver em cima do goleiro
-			if jogador.global_position.y < global_position.y:
+			if jogador_esta_em_cima(jogador):
 				return
 
 			iniciar_ataque(jogador)
@@ -108,6 +117,7 @@ func iniciar_ataque(jogador: CharacterBody2D) -> void:
 
 	jogador_alvo = jogador
 	estado = Estado.ATACANDO
+	golpe_aplicado = false
 
 	velocity.x = 0.0
 
@@ -119,20 +129,30 @@ func iniciar_ataque(jogador: CharacterBody2D) -> void:
 	print("GOLEIRO: ATAQUE INICIADO!")
 
 
+## Chamado pela animação "ataque" no quadro do soco (0,6 s).
+## Só causa dano se o jogador ainda estiver ao alcance, e no máximo uma vez por ataque.
+func aplicar_golpe() -> void:
+
+	if morrendo or estado != Estado.ATACANDO or golpe_aplicado:
+		return
+
+	golpe_aplicado = true
+
+	if not is_instance_valid(jogador_alvo):
+		return
+
+	if jogador_no_alcance(jogador_alvo) and jogador_alvo.has_method("receber_dano"):
+		jogador_alvo.receber_dano()
+		print("GOLEIRO: Jogador atingido!")
+
+
 func _on_animation_finished(nome_animacao: StringName) -> void:
 
-	if nome_animacao != "ataque":
+	if morrendo or nome_animacao != "ataque":
 		return
 
 	if estado != Estado.ATACANDO:
 		return
-
-	# Aplicar dano quando o ataque terminar
-	if jogador_alvo != null and is_instance_valid(jogador_alvo):
-
-		if jogador_alvo.has_method("receber_dano"):
-			jogador_alvo.receber_dano()
-			print("GOLEIRO: Jogador atingido!")
 
 	# Impedir ataques repetidos enquanto o jogador estiver próximo
 	aguardando_afastamento = true
@@ -149,10 +169,59 @@ func detectar_jogador() -> CharacterBody2D:
 		var colisao = get_slide_collision(i)
 		var objeto = colisao.get_collider()
 
-		if objeto is CharacterBody2D and objeto.name == "Personagem":
+		if objeto is CharacterBody2D and objeto.is_in_group("jogador"):
 			return objeto
 
 	return null
+
+
+## O jogador está "em cima" quando o centro dele fica acima do topo do Goleiro.
+func jogador_esta_em_cima(jogador: Node2D) -> bool:
+	return jogador.global_position.y < global_position.y - meia_altura()
+
+
+## Confere, no momento do soco, se o jogador ainda está ao alcance.
+func jogador_no_alcance(jogador: Node2D) -> bool:
+
+	if jogador == null or not is_instance_valid(jogador):
+		return false
+
+	if jogador_esta_em_cima(jogador):
+		return false
+
+	var dx := jogador.global_position.x - global_position.x
+	var dy := jogador.global_position.y - global_position.y
+
+	# Precisa estar do lado para onde o Goleiro está virado
+	var lado := -1.0 if sprite.flip_h else 1.0
+
+	if dx * lado < 0.0:
+		return false
+
+	if absf(dx) > meia_largura() + alcance_golpe:
+		return false
+
+	return absf(dy) <= meia_altura() + 40.0
+
+
+func meia_largura() -> float:
+
+	var retangulo := forma.shape as RectangleShape2D
+
+	if retangulo == null:
+		return 90.0
+
+	return retangulo.size.x * 0.5 * absf(forma.scale.x)
+
+
+func meia_altura() -> float:
+
+	var retangulo := forma.shape as RectangleShape2D
+
+	if retangulo == null:
+		return 72.0
+
+	return retangulo.size.y * 0.5 * absf(forma.scale.y)
 
 
 func atualizar_direcao() -> void:
