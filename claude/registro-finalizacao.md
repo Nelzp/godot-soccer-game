@@ -17,7 +17,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P3 | Configurações com `Configurações Neon de Futebol Pixel.png`: vídeo, FPS e volumes persistentes, pelo menu inicial e pela pausa. Sem idiomas, legendas ou remapeamento | concluída |
 | P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | concluída |
 | P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | concluída |
-| P6 | Integração, testes e correções gerais | pendente |
+| P6 | Integração, testes e correções gerais | concluída |
 | P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | aguardando arquivos |
 
 Regras combinadas: não descartar alterações preexistentes, não fazer push, preservar as
@@ -227,3 +227,50 @@ Alterados: `project.godot` (só a seção `[autoload]`), `script_inicio.gd`, `ce
 - Bateria completa rodada de novo: zagueiro 19, chefão 46, portão 5, configurações 48 — 0 falhas.
 - Capturas renderizadas conferidas (barreira de salto, Juiz, jogador em cima dos caixotes,
   bonecos, caixotes B).
+
+## P6 — Integração, testes e correções gerais
+
+### Testes no repositório
+
+- Pasta `testes/` com `.gdignore` (a Godot não importa nem exporta nada dali), os roteiros
+  headless de todas as etapas, um executor (`testes/rodar_testes.ps1`, que acha a Godot pelo
+  parâmetro `-Godot`, pela variável `GODOT`, na Steam ou no `PATH`) e um `README.md`.
+- Novos roteiros da P6:
+  - `teste_fluxo.gd` (15 verificações): menu → fase, game over → tentar de novo (vidas e
+    chefão reiniciados), pausa → reiniciar e sair (sem ficar pausado), game over → sair,
+    vitória que espera enquanto o jogo está pausado.
+  - `teste_partida.gd` (4 verificações): um "robô" joga a fase só com teclas simuladas —
+    anda, pula os obstáculos, chuta, entra na arena e derrota o chefão com bolas de verdade.
+    Resultado: os 4 inimigos derrotados e tela de vitória em ~22 s de jogo (22 bolas,
+    7 pulos), com o jogador invencível (o dano é coberto nos outros testes).
+- Detalhe descoberto ao escrever o robô: na Godot 4.7 um aperto de tecla simulado durante a
+  física só conta como "acabou de apertar" no quadro seguinte; o robô segura cada toque por
+  dois quadros.
+- Bateria completa pelo executor: 7 roteiros, 156 verificações, 0 falhas.
+- Execução com janela (menu, fase, vitória, configurações) sem erros nem avisos.
+
+### Correções
+
+- **Menu inicial:** os botões invisíveis só tinham o estilo "normal"; ao passar o mouse
+  aparecia a caixa cinza padrão da Godot e "INICIAR JOGO" parecia desativado. Agora o realce
+  é um clareado leve com cantos arredondados (como na tela de vitória), com estados de
+  clique e foco e cursor de mãozinha.
+
+### Observações (não alteradas)
+
+- Scripts sem uso em nenhuma cena: `animation_player.gd`, `cena_fase.gd` (procura nós
+  `Personagem` e `TileMap` que não existem), `parallax_background.gd` e `script_hud.gd`.
+  Ficaram como estavam; podem ser apagados quando o time quiser.
+- O nome do projeto em `project.godot` é "As aventura de um jogador" (título da janela).
+  Corrigir para "As aventuras..." muda também a pasta de dados do jogo (`user://`), o que
+  faria o jogo "esquecer" as configurações já salvas; fica a critério do time.
+- A tela inicial tem uma borda escura em cima e à direita que faz parte da própria imagem
+  `Tela_inicial.png` (imagens oficiais não são editadas).
+- Os `.import` e o `project.godot` continuam aparecendo como modificados só por fim de linha
+  (LF/CRLF) e ficam fora dos commits.
+
+## P7 — Áudio e música
+
+Aguardando os arquivos definitivos. Já está pronto para receber: buses `Musica` e `Efeitos`
+(em `default_bus_layout.tres`), volumes na tela de configurações e persistência. Nenhum som
+provisório foi criado.
