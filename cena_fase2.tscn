@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://7yyk5alpyhia" path="res://cena_fase.gd" id="1_fase"]
 [ext_resource type="Texture2D" path="res://Luta com  Boss.png" id="2_estadio"]
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="3_hud"]
+[ext_resource type="Script" uid="uid://ca06ikx2ddbhl" path="res://arena_chefao.gd" id="4_arena"]
 [ext_resource type="Texture2D" uid="uid://du36hxbsvum10" path="res://obstáculos/Sprites 2D de Obstáculos para Futebol-Photoroom.png" id="5_obstaculos"]
 [ext_resource type="FontFile" uid="uid://bxondku3rxspc" path="res://assets/font/PixelifySans-Bold.ttf" id="6_fonte"]
+[ext_resource type="PackedScene" uid="uid://sclf25d6u7ft" path="res://cena_chefao.tscn" id="7_chefao"]
 [ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="8_jogador"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
@@ -53,6 +55,7 @@ position = Vector2(1435, -100)
 shape = SubResource("RectangleShape2D_parede")
 
 [node name="Arena" type="Node2D" parent="."]
+script = ExtResource("4_arena")
 
 [node name="Gatilho" type="Area2D" parent="Arena"]
 position = Vector2(790, 234)
@@ -114,6 +117,9 @@ theme_override_font_sizes/font_size = 26
 text = "SAÍDA LIBERADA!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Chefao" parent="Arena" instance=ExtResource("7_chefao")]
+position = Vector2(1000, 468)
 
 [node name="Jogador" parent="." instance=ExtResource("8_jogador")]
 position = Vector2(300, 414)
