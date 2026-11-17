@@ -1,0 +1,119 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://7yyk5alpyhia" path="res://cena_fase.gd" id="1_fase"]
+[ext_resource type="Texture2D" path="res://Luta com  Boss.png" id="2_estadio"]
+[ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="3_hud"]
+[ext_resource type="Texture2D" uid="uid://du36hxbsvum10" path="res://obstáculos/Sprites 2D de Obstáculos para Futebol-Photoroom.png" id="5_obstaculos"]
+[ext_resource type="FontFile" uid="uid://bxondku3rxspc" path="res://assets/font/PixelifySans-Bold.ttf" id="6_fonte"]
+[ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="8_jogador"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
+size = Vector2(1800, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_parede"]
+size = Vector2(60, 1400)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gatilho"]
+size = Vector2(820, 468)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bloqueio"]
+size = Vector2(40, 1000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_entrada"]
+size = Vector2(100, 140)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_brilho"]
+blend_mode = 1
+
+[node name="Fase2" type="Node2D"]
+script = ExtResource("1_fase")
+limite_topo = 0
+limite_direito = 1528
+limite_baixo = 648
+
+[node name="Hud" parent="." instance=ExtResource("3_hud")]
+
+[node name="Fundo" type="Sprite2D" parent="."]
+scale = Vector2(0.79315, 0.79315)
+texture = ExtResource("2_estadio")
+centered = false
+
+[node name="Limites" type="StaticBody2D" parent="."]
+
+[node name="Chao" type="CollisionShape2D" parent="Limites"]
+position = Vector2(764, 568)
+shape = SubResource("RectangleShape2D_chao")
+
+[node name="ParedeEsquerda" type="CollisionShape2D" parent="Limites"]
+position = Vector2(184, -100)
+shape = SubResource("RectangleShape2D_parede")
+
+[node name="ParedeDireita" type="CollisionShape2D" parent="Limites"]
+position = Vector2(1435, -100)
+shape = SubResource("RectangleShape2D_parede")
+
+[node name="Arena" type="Node2D" parent="."]
+
+[node name="Gatilho" type="Area2D" parent="Arena"]
+position = Vector2(790, 234)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Gatilho"]
+shape = SubResource("RectangleShape2D_gatilho")
+
+[node name="Saida" type="Node2D" parent="Arena"]
+
+[node name="Brilho" type="ColorRect" parent="Arena/Saida"]
+material = SubResource("CanvasItemMaterial_brilho")
+offset_left = 1226.0
+offset_top = 318.0
+offset_right = 1403.0
+offset_bottom = 352.0
+mouse_filter = 2
+color = Color(1, 0.82, 0.32, 0.55)
+
+[node name="Barreiras" type="Node2D" parent="Arena/Saida"]
+
+[node name="Barreira1" type="Sprite2D" parent="Arena/Saida/Barreiras"]
+position = Vector2(1271, 430.6)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("5_obstaculos")
+region_enabled = true
+region_rect = Rect2(111, 321, 111, 88)
+
+[node name="Barreira2" type="Sprite2D" parent="Arena/Saida/Barreiras"]
+position = Vector2(1361, 430.6)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("5_obstaculos")
+region_enabled = true
+region_rect = Rect2(111, 321, 111, 88)
+
+[node name="Bloqueio" type="StaticBody2D" parent="Arena/Saida"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Saida/Bloqueio"]
+position = Vector2(1240, -32)
+shape = SubResource("RectangleShape2D_bloqueio")
+
+[node name="Entrada" type="Area2D" parent="Arena/Saida"]
+position = Vector2(1352, 400)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Saida/Entrada"]
+shape = SubResource("RectangleShape2D_entrada")
+
+[node name="Aviso" type="Label" parent="Arena/Saida"]
+offset_left = 1125.0
+offset_top = 262.0
+offset_right = 1505.0
+offset_bottom = 300.0
+theme_override_colors/font_color = Color(0.55, 1, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.03, 0.1, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("6_fonte")
+theme_override_font_sizes/font_size = 26
+text = "SAÍDA LIBERADA!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Jogador" parent="." instance=ExtResource("8_jogador")]
+position = Vector2(300, 414)
