@@ -32,7 +32,7 @@ func _rodar() -> void:
 	var fase := current_scene
 	var jogador := get_first_node_in_group("jogador") as CharacterBody2D
 	var hud := fase.find_child("Hud", true, false)
-	var zagueiro = fase.get_node_or_null("Zagueiro/Personagem")
+	var zagueiro = fase.get_node_or_null("Inimigos/Zagueiro/Personagem")
 	checar(zagueiro != null, "zagueiro na fase")
 	if zagueiro == null:
 		quit(1)
@@ -44,7 +44,7 @@ func _rodar() -> void:
 
 	print("-- básico")
 	checar(zagueiro.is_in_group("inimigos"), "zagueiro no grupo inimigos")
-	checar(zagueiro.vida == 2, "zagueiro com 2 de vida")
+	checar(zagueiro.vida == 4 and zagueiro.vida_maxima == 4, "zagueiro com 4 de vida")
 	await esperar(30)
 	checar(zagueiro.is_on_floor(), "zagueiro apoiado no chão")
 
@@ -121,10 +121,13 @@ func _rodar() -> void:
 	print("-- dano")
 	await esperar(60)
 	zagueiro.receber_dano(1)
-	checar(zagueiro.vida == 1 and not zagueiro.morrendo, "bola tira 1 e ele continua vivo")
+	checar(zagueiro.vida == 3 and not zagueiro.morrendo, "bola tira 1 e ele continua vivo")
 	checar(zagueiro.estado == zagueiro.Estado.ATORDOADO, "fica atordoado ao levar a bolada")
+	for _i in range(2):
+		zagueiro.receber_dano(1)
+	checar(zagueiro.vida == 1 and not zagueiro.morrendo, "aguenta 3 boladas")
 	zagueiro.receber_dano(1)
-	checar(zagueiro.morrendo and not zagueiro.is_in_group("inimigos"), "segunda bolada derruba")
+	checar(zagueiro.morrendo and not zagueiro.is_in_group("inimigos"), "a quarta bolada derruba")
 
 	# Outro zagueiro: um carrinho do jogador (2) derruba de uma vez
 	var outro = load("res://cena_inimigo2.tscn").instantiate()
@@ -133,7 +136,9 @@ func _rodar() -> void:
 	await esperar(5)
 	var corpo = outro.get_node("Personagem")
 	corpo.receber_dano(jogador.dano_carrinho)
-	checar(corpo.morrendo, "carrinho do jogador derruba o zagueiro de uma vez")
+	checar(corpo.vida == 2 and not corpo.morrendo, "um carrinho tira 2")
+	corpo.receber_dano(jogador.dano_carrinho)
+	checar(corpo.morrendo, "dois carrinhos derrubam o zagueiro")
 
 	DirAccess.remove_absolute(ProjectSettings.globalize_path("user://teste_zagueiro.cfg"))
 	print("\n%d verificações, %d falhas" % [verificacoes, falhas])

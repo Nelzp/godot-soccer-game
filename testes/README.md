@@ -36,13 +36,21 @@ jogador continua igual.
 
 | Arquivo | Cobre |
 |---|---|
-| `teste_chefao.gd` | Chefão: invulnerabilidade, portão, cartões, soco, bola, jogador em cima, troca de fase, rajada, morte e vitória |
-| `teste_portao.gd` | Portão da arena com teclas: Goleiro não entra, jogador entra andando e não volta |
+| `teste_estrutura.gd` | As duas fases: cenário sem distorção, câmera, vida dos inimigos (Juiz 3, Goleiro 5, Zagueiro 4), variações de uniforme com as animações, portões, chefão só na Fase 2, dano da bola e do carrinho |
+| `teste_portao.gd` | Portões da Fase 1: travados até vencer a quadra, aviso com a contagem, não dá para pular por cima, abertura, portão final → Fase 2 com transição |
+| `teste_chefao.gd` | Chefão na Fase 2: invulnerabilidade, cartões, soco, bola, jogador em cima, troca de fase, rajada, saída bloqueada na luta, morte sem vitória automática, saída liberada, túnel → vitória → menu |
+| `teste_zagueiro.gd` | Zagueiro: patrulha, aviso, carrinho, recarga, pulo por cima, 4 de vida |
+| `teste_obstaculos.gd` | Inimigos sem sobreposição e no chão, obstáculos sólidos, plataformas do cenário (só o jogador pisa), visão do Juiz e patrulhas |
+| `teste_fluxo.gd` | Menu, Fase 1, game over que recomeça na fase certa (1 ou 2), pausa (reiniciar/sair) nas duas fases, saída liberada respeitando a pausa |
 | `teste_configuracoes.gd` | Tela de configurações: padrões, prévia de áudio, salvar/voltar, teclado, arquivo, pausa |
-| `teste_zagueiro.gd` | Zagueiro: patrulha, aviso, carrinho, recarga, pulo por cima, vida |
-| `teste_obstaculos.gd` | Obstáculos sólidos e plataformas do cenário, bola, visão do Juiz e patrulhas |
-| `teste_fluxo.gd` | Menu, fase, game over, tentar de novo, pausa (reiniciar/sair) e vitória com pausa |
-| `teste_partida.gd` | Um "robô" joga a fase inteira só com teclas, derrota todos e chega à vitória |
+| `teste_partida.gd` | Um "robô" joga o jogo inteiro só com teclas (quatro quadras, portões, chefão, saída) e mede o tempo da Fase 1 |
+
+### Sobre o tempo medido em `teste_partida.gd`
+
+O robô é invencível e agressivo: chuta enquanto se aproxima e dá carrinho quando encosta,
+sem nunca desviar. O tempo dele é um **limite inferior** — um jogador humano, que precisa
+desviar de cartões, carrinhos e socos para não morrer, leva mais. O teste falha se a Fase 1
+levar menos de 60 s nesse ritmo.
 
 Cada teste termina com `N verificações, M falhas` e sai com o número de falhas como código
 de saída.

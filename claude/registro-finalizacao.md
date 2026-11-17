@@ -18,6 +18,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | concluída |
 | P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | concluída |
 | P6 | Integração, testes e correções gerais | concluída |
+| A | Atualização "duas fases": Fase 1 ampliada (≥ 60 s), mais inimigos com mais vida e uniformes variados, mais obstáculos, portões entre quadras, Fase 2 com o chefão e saída bloqueada | concluída (ver seção própria) |
 | P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | aguardando arquivos |
 
 Regras combinadas: não descartar alterações preexistentes, não fazer push, preservar as
@@ -268,6 +269,160 @@ Alterados: `project.godot` (só a seção `[autoload]`), `script_inicio.gd`, `ce
   `Tela_inicial.png` (imagens oficiais não são editadas).
 - Os `.import` e o `project.godot` continuam aparecendo como modificados só por fim de linha
   (LF/CRLF) e ficam fora dos commits.
+
+## Atualização — duas fases (17/11/2026)
+
+Fluxo novo: **menu → Fase 1 (4 quadras) → portão final → Fase 2 (arena do chefão) → saída
+liberada → tela de vitória.** Nenhum áudio foi adicionado (fica para a P7).
+
+### Fase 1 ampliada
+
+- **Cenário sem distorção:** antes a imagem era esticada 23% na horizontal
+  (1,499 × 1,216). Agora `cenario_fase1.gd` (`@tool`, aparece no editor) monta a fase com
+  trechos de `cenario_principal.png` em escala 1,216 nos dois eixos. Os cortes ficam em
+  colunas quase idênticas da imagem (x = 415, 1017, 1235 e 1246, achadas por comparação de
+  pixels) ou em eixos de espelho, então os trechos emendam sem costura. Os trechos com
+  pedaços soltos de marcação (semicírculos da área) foram evitados.
+- **Quatro quadras** (início, duas de meio e final), 9.625 px no total. Cada quadra tem um
+  círculo central; entre duas quadras, o gol e o prédio do fundo aparecem espelhados e viram
+  uma divisória natural (prédio com duas janelas e dois gols de costas).
+- Chão, paredes e câmera saem da largura do cenário (script da fase, `cena_fase.gd`, que antes
+  não era usado). Nuvens em escala uniforme, repetidas com cópia espelhada.
+- As plataformas de mão única (caixotes e barreiras desenhados) agora ficam na **camada de
+  colisão 4**: só o jogador pisa nelas; bola, cartões, inimigos e a visão do Juiz passam
+  direto (antes a bola chutada do alto "batia" na quina delas).
+
+### Inimigos
+
+| Inimigo | Vida | Quantidade na Fase 1 |
+|---|---|---|
+| Juiz | 3 | 10 |
+| Goleiro | 5 | 6 |
+| Zagueiro rival | 4 | 7 |
+
+- Valores definidos nas cenas (`cena_juiz.tscn`, `goleiro.tscn`, `cena_inimigo2.tscn`) e
+  configuráveis por instância no Inspetor (`vida_maxima`). Bola tira 1; carrinho tira 2.
+- Distribuição por quadra: 4 / 7 / 6 / 6, com combinações (Zagueiro + Juiz, Goleiro + Zagueiro,
+  Juiz + Goleiro guardando o portão final) e dificuldade crescente. Nenhum nasce sobreposto a
+  outro ou dentro de obstáculo (conferido por teste).
+- Balanceamento: Juiz e Goleiro passaram a piscar em vermelho a cada golpe (com mais vida, o
+  jogador precisa saber que o golpe contou); o Juiz enxerga até 520 px (com 300 px dava para
+  acertá-lo de longe sem risco); o Goleiro foi recentralizado na cena e ganhou raio de
+  patrulha (antes andava a fase inteira).
+
+### Variações visuais
+
+`variacao_uniforme.gdshader` troca faixas de cor (camisa, detalhes, tecidos escuros) sem
+mexer na pele nem no contorno; vale para todas as animações e mantém o piscar de dano. As
+paletas ficam em `variacoes_inimigos.gd` e são escolhidas no Inspetor de cada inimigo
+(propriedade `variacao`). Nenhum sprite novo foi criado.
+
+| Inimigo | Variações |
+|---|---|
+| Juiz | Preto (original), Azul-marinho com detalhes brancos, Vinho, Verde com detalhes brancos, Amarelo com detalhes pretos — o cartão na mão continua amarelo |
+| Goleiro | Vermelho e amarelo (original), Verde e branco, Azul e amarelo, Roxo e rosa, Laranja e preto — as luvas acompanham |
+| Zagueiro | Roxo e preto (original), Vermelho e preto, Verde e branco (com calção e listras brancos), Azul e preto, Branco e preto, Amarelo e preto |
+
+Limitação: acessórios novos (bonés, faixas, penteados) exigiriam sprites novos; as variações
+são de cor (inclui os detalhes amarelos do Juiz e as luvas do Goleiro).
+
+### Obstáculos
+
+- 11 obstáculos sólidos da folha de sprites na linha do chão, em 4 tipos (barreira de salto,
+  bonecos de treino, caixa de salto, barreira listrada), em sequências diferentes em cada
+  quadra e em pontos sem objeto parecido desenhado atrás.
+- Plataformas de mão única geradas em cima dos caixotes e barreiras desenhados em todos os
+  trechos (23 corpos).
+
+### Portões
+
+- Arte de `portoes.png` com tom frio (combina com o estádio azul), base na linha do chão,
+  cerca de duas vezes a altura do jogador e interior escuro de túnel, embutida nas divisórias
+  entre as quadras e no prédio do fim da fase (`cena_portao_fase.tscn` + `portao_fase.gd`).
+- Cada portão fica **fechado até os adversários da sua quadra caírem**: bloqueia a passagem
+  (não dá para pular por cima), mostra "DERROTE N ADVERSÁRIOS" com contagem regressiva e, ao
+  abrir, "PASSAGEM LIBERADA!". Isso garante o tempo mínimo da fase com conteúdo jogável (sem
+  isso, dava para atravessar a fase pulando por cima de todos em ~20 s).
+- O portão final leva à Fase 2 com transição suave (autoload `Transicao`: escurece, troca a
+  cena e clareia, 0,5 s cada lado).
+
+### Fase 2
+
+- `cena_fase2.tscn` com `Luta com  Boss.png` (a única imagem nova encontrada; nome com dois
+  espaços) em escala 0,79315 nos dois eixos, ocupando a altura da tela (1528 × 648).
+- Chão na altura da boca do túnel "SAÍDA" (y = 590 na imagem, logo abaixo da linha do
+  meio-campo): jogador e chefão apoiados no mesmo gramado, e o jogador cabe no túnel. Paredes
+  na arquibancada da esquerda e no fundo do túnel; câmera presa ao estádio.
+- Saída bloqueada por duas barreiras listradas diante do túnel (a arte do túnel fica intacta).
+- O chefão (mesma cena, IA, 12 de vida, duas fases, soco, cartões, barra, morte) existe só
+  aqui e acorda quando o jogador entra na arena. Na morte: cartões no ar somem, animação de
+  morte, barra some, barreiras afundam e somem, a placa "SAÍDA" passa a brilhar e aparece
+  "SAÍDA LIBERADA!". **Nada carrega sozinho**: só entrar no túnel leva à tela de vitória (com
+  transição). A arena antiga da Fase 1 (`cena_arena_chefao.tscn`) foi removida.
+
+### Correções
+
+- Chute colado no inimigo não causava dano (a bola nascia dentro do corpo dele); agora a bola
+  confere isso ao sair do pé.
+- "TENTAR NOVAMENTE" do game over recomeça na fase em que o jogador perdeu (antes sempre
+  voltava à Fase 1).
+
+### Testes (Godot 4.7.2, headless)
+
+Bateria completa (`testes/rodar_testes.ps1`): 8 roteiros, **187 verificações, 0 falhas**.
+
+| Roteiro | Verificações |
+|---|---|
+| `teste_estrutura.gd` (novo) | 24 |
+| `teste_portao.gd` (reescrito) | 15 |
+| `teste_chefao.gd` (reescrito para a Fase 2) | 37 |
+| `teste_zagueiro.gd` | 21 |
+| `teste_obstaculos.gd` (reescrito) | 18 |
+| `teste_fluxo.gd` (reescrito) | 17 |
+| `teste_configuracoes.gd` | 48 |
+| `teste_partida.gd` (robô das duas fases) | 7 |
+
+Os 13 testes obrigatórios pedidos estão cobertos: Fase 1 inicia; vidas novas; variações com
+animações; dano da bola e do carrinho; obstáculos não bloqueiam (o robô atravessa tudo);
+portão → Fase 2; chefão só na Fase 2; as duas fases do chefão; saída bloqueada na luta;
+morte libera a saída; saída → vitória; botão → menu; morrer/reiniciar nas duas fases.
+Capturas renderizadas conferidas: trechos da Fase 1, variações lado a lado, portões fechado e
+aberto, Fase 2 (chegada, luta, saída bloqueada, morte, saída liberada, transição, vitória).
+
+### Duração da Fase 1
+
+- **64,3 s** medidos pelo robô de `teste_partida.gd`, que derrota os 23 adversários e passa
+  pelos 4 portões. O robô é invencível e agressivo (chuta enquanto se aproxima, dá carrinho ao
+  encostar, nunca desvia e tem reação perfeita): o tempo é um **limite inferior**. Um jogador
+  humano experiente, que precisa desviar de cartões, carrinhos e socos para não morrer, leva
+  mais. Não há esperas artificiais (os portões abrem na hora em que a quadra é vencida).
+- O teste falha se esse tempo cair abaixo de 60 s.
+- Validação manual sugerida: cronometrar uma partida do "INICIAR JOGO" até a tela escurecer no
+  portão final, sem pausar e sem morrer. Pelo limite do robô, o resultado deve ficar acima de
+  60 s com folga.
+
+### Commits
+
+| Commit | Conteúdo |
+|---|---|
+| `d0d4367` | Expansão e balanceamento da Fase 1 (com a arena do chefão provisória no fim) |
+| `e5566e2` | Variações de uniforme |
+| `d20b12b` | Criação da Fase 2 (estádio, chão, câmera, saída bloqueada) |
+| `98fcba5` | Portões entre quadras, portão final e transição suave |
+| `612161c` | Chefão na Fase 2 e liberação da saída |
+| (este) | Testes, documentação e registro |
+
+Cada commit intermediário carrega sem erros (o primeiro foi conferido isolado num *worktree*
+temporário). Entre `98fcba5` e `612161c` a Fase 2 ainda não tinha o chefão.
+
+### Pendências e limitações
+
+- P7 (áudio) continua aguardando os arquivos definitivos; os volumes seguem funcionando.
+- Scripts antigos ainda sem uso: `animation_player.gd`, `parallax_background.gd`,
+  `script_hud.gd` (o `cena_fase.gd` voltou a ser usado como script das fases).
+- O nome do projeto continua "As aventura de um jogador" (mudar altera a pasta de dados).
+- Os `.import` e o `project.godot` aparecem modificados só por fim de linha e ficam fora dos
+  commits.
 
 ## P7 — Áudio e música
 
