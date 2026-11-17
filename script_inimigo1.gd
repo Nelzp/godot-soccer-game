@@ -5,11 +5,18 @@ extends "res://inimigo_base.gd"
 ## Distância (px) em que o Juiz enxerga o jogador, para cada lado.
 @export var alcance_visao: float = 300.0
 
+## Cores do uniforme (ver variacoes_inimigos.gd).
+@export_enum("Preto (original)", "Azul-marinho", "Vinho", "Verde", "Amarelo") var variacao: int = 0
+
 const CENA_CARTAO := preload("res://cena_cartao.tscn")
 
 var direcao_inimigo = 1
 
 @onready var raio_visao: RayCast2D = $RayCast2D
+
+
+func _ready() -> void:
+	aplicar_variacao("juiz", variacao)
 
 
 func _physics_process(_delta: float) -> void:

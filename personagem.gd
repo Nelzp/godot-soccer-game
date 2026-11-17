@@ -42,6 +42,10 @@ enum Estado {
 @export var recarga_carrinho: float = 1.6
 @export var empurrao_carrinho: Vector2 = Vector2(380.0, -300.0)
 
+@export_group("Aparência")
+## Cores da camisa, das meias e do calção (ver variacoes_inimigos.gd).
+@export_enum("Roxo e preto (original)", "Vermelho e preto", "Verde e branco", "Azul e preto", "Branco e preto", "Amarelo e preto") var variacao: int = 0
+
 # Direção do movimento: 1 = Direita, -1 = Esquerda
 var direcao: int = 1
 var estado: Estado = Estado.PATRULHANDO
@@ -59,6 +63,7 @@ var _x_inicial: float = 0.0
 
 func _ready() -> void:
 	_x_inicial = global_position.x
+	aplicar_variacao("zagueiro", variacao)
 	atualizar_animacao()
 
 

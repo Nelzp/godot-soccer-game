@@ -81,29 +81,56 @@ position = Vector2(790, 488)
 [node name="Juiz2" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(1560, 488)
 
+[node name="Personagem" parent="Inimigos/Juiz2" index="0"]
+variacao = 1
+
 [node name="Juiz3" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(3050, 488)
+
+[node name="Personagem" parent="Inimigos/Juiz3" index="0"]
+variacao = 2
 
 [node name="Juiz4" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(3760, 488)
 
+[node name="Personagem" parent="Inimigos/Juiz4" index="0"]
+variacao = 4
+
 [node name="Juiz5" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(4400, 488)
+
+[node name="Personagem" parent="Inimigos/Juiz5" index="0"]
+variacao = 3
 
 [node name="Juiz6" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(5160, 488)
 
+[node name="Personagem" parent="Inimigos/Juiz6" index="0"]
+variacao = 4
+
 [node name="Juiz7" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(6150, 488)
+
+[node name="Personagem" parent="Inimigos/Juiz7" index="0"]
+variacao = 3
 
 [node name="Juiz8" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(6760, 488)
 
+[node name="Personagem" parent="Inimigos/Juiz8" index="0"]
+variacao = 2
+
 [node name="Juiz9" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(7662.7, 488)
 
+[node name="Personagem" parent="Inimigos/Juiz9" index="0"]
+variacao = 1
+
 [node name="Juiz10" parent="Inimigos" instance=ExtResource("3_v5pcj")]
 position = Vector2(8862.7, 488)
+
+[node name="Personagem" parent="Inimigos/Juiz10" index="0"]
+variacao = 2
 
 [node name="Zagueiro" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(1040, 483)
@@ -116,36 +143,42 @@ position = Vector2(2700, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro2" index="0"]
 raio_patrulha = 160.0
+variacao = 1
 
 [node name="Zagueiro3" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(4180, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro3" index="0"]
 raio_patrulha = 130.0
+variacao = 2
 
 [node name="Zagueiro4" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(5420, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro4" index="0"]
 raio_patrulha = 110.0
+variacao = 5
 
 [node name="Zagueiro5" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(6380, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro5" index="0"]
 raio_patrulha = 90.0
+variacao = 1
 
 [node name="Zagueiro6" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(7422.7, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro6" index="0"]
 raio_patrulha = 150.0
+variacao = 3
 
 [node name="Zagueiro7" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(8412.7, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro7" index="0"]
 raio_patrulha = 110.0
+variacao = 4
 
 [node name="Goleiro" parent="Inimigos" instance=ExtResource("6_08fst")]
 position = Vector2(1900, 455)
@@ -158,24 +191,28 @@ position = Vector2(3450, 455)
 
 [node name="Personagem" parent="Inimigos/Goleiro2" index="0"]
 raio_patrulha = 110.0
+variacao = 1
 
 [node name="Goleiro3" parent="Inimigos" instance=ExtResource("6_08fst")]
 position = Vector2(4620, 455)
 
 [node name="Personagem" parent="Inimigos/Goleiro3" index="0"]
 raio_patrulha = 70.0
+variacao = 2
 
 [node name="Goleiro4" parent="Inimigos" instance=ExtResource("6_08fst")]
 position = Vector2(5880, 455)
 
 [node name="Personagem" parent="Inimigos/Goleiro4" index="0"]
 raio_patrulha = 80.0
+variacao = 1
 
 [node name="Goleiro5" parent="Inimigos" instance=ExtResource("6_08fst")]
 position = Vector2(8062.7, 455)
 
 [node name="Personagem" parent="Inimigos/Goleiro5" index="0"]
 raio_patrulha = 100.0
+variacao = 3
 
 [node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
 position = Vector2(130, 477)

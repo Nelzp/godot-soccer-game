@@ -14,6 +14,8 @@ extends CharacterBody2D
 ## Emitido uma única vez, quando o inimigo começa a morrer.
 signal derrotado(inimigo: Node)
 
+const VARIACOES := preload("res://variacoes_inimigos.gd")
+
 ## Pontos de vida (a bola tira 1 e o carrinho tira 2). Cada cena define o seu
 ## valor e cada instância pode mudar no Inspetor.
 @export var vida_maxima: int = 1
@@ -69,6 +71,11 @@ func piscar_dano() -> void:
 	for _i in range(2):
 		_tween_dano.tween_property(sprite_dano, "modulate", Color(1, 0.4, 0.4), 0.07)
 		_tween_dano.tween_property(sprite_dano, "modulate", Color(1, 1, 1), 0.07)
+
+
+## Aplica uma variação de uniforme (ver variacoes_inimigos.gd) no Sprite2D.
+func aplicar_variacao(tipo: String, indice: int) -> void:
+	VARIACOES.aplicar(get_node_or_null("Sprite2D") as CanvasItem, tipo, indice)
 
 
 func esta_vivo() -> bool:

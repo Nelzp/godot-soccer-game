@@ -18,6 +18,8 @@ enum Estado {
 ## Até quantos px para cada lado do ponto de partida o goleiro patrulha
 ## (0 = sem limite, vira só em paredes e obstáculos).
 @export var raio_patrulha: float = 200.0
+## Cores do uniforme e das luvas (ver variacoes_inimigos.gd).
+@export_enum("Vermelho e amarelo (original)", "Verde e branco", "Azul e amarelo", "Roxo e rosa", "Laranja e preto") var variacao: int = 0
 
 var direcao: int = 1
 var estado: Estado = Estado.PATRULHANDO
@@ -36,6 +38,7 @@ var golpe_aplicado: bool = false
 func _ready() -> void:
 	_x_inicial = global_position.x
 	animation_player.animation_finished.connect(_on_animation_finished)
+	aplicar_variacao("goleiro", variacao)
 
 
 func _physics_process(delta: float) -> void:
