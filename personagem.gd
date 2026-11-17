@@ -224,11 +224,7 @@ func _reagir_ao_dano(_quantidade: int) -> void:
 
 	_duracao_pausa = 0.45
 	_mudar_estado(Estado.ATORDOADO)
-
-	var tween := create_tween()
-	for _i in range(2):
-		tween.tween_property(sprite, "modulate", Color(1, 0.45, 0.45), 0.08)
-		tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.08)
+	piscar_dano()
 
 
 # ---------------------------------------------------------------------------

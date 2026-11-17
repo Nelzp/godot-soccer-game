@@ -135,7 +135,7 @@ position = Vector2(563, 329)
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1443315958 groups=["jogador"]]
 position = Vector2(-2, 4)
-collision_mask = 3
+collision_mask = 11
 script = ExtResource("1_xgtec")
 
 [node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=1837001489]

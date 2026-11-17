@@ -1,129 +1,181 @@
 [gd_scene format=3 uid="uid://b7tvjc3w8f4rp"]
 
-[ext_resource type="Texture2D" uid="uid://04l4xshdrjsd" path="res://cenario_principal.png" id="1_cifom"]
+[ext_resource type="Script" uid="uid://7yyk5alpyhia" path="res://cena_fase.gd" id="1_fase"]
 [ext_resource type="PackedScene" uid="uid://bf1en1f5dx4v5" path="res://cena_nuvem.tscn" id="2_4lqq5"]
 [ext_resource type="PackedScene" uid="uid://dko04rw3aw0qo" path="res://cena_jogador.tscn" id="2_5fdea"]
 [ext_resource type="PackedScene" uid="uid://4acqj7530toc" path="res://cena_juiz.tscn" id="3_v5pcj"]
+[ext_resource type="Script" path="res://cenario_fase1.gd" id="4_cenario"]
 [ext_resource type="PackedScene" uid="uid://cw6s2w3ald0q8" path="res://goleiro.tscn" id="6_08fst"]
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
-[ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
 [ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="9_zagueiro"]
 [ext_resource type="PackedScene" path="res://cena_obstaculo.tscn" id="10_obstaculo"]
+[ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_topo"]
-size = Vector2(34.5, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_esquerda"]
-size = Vector2(23.2, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_direita"]
-size = Vector2(18.7, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_barreira_topo"]
-size = Vector2(91.4, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_topo"]
-size = Vector2(38.6, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_esquerda"]
-size = Vector2(21.3, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_direita"]
-size = Vector2(20.2, 8)
-
-[node name="Fase" type="Node2D" unique_id=357268306]
+[node name="Fase" type="Node2D" unique_id=357268306 node_paths=PackedStringArray("cenario")]
+script = ExtResource("1_fase")
+cenario = NodePath("Cenario")
 
 [node name="Nuvem" parent="." unique_id=822178870 instance=ExtResource("2_4lqq5")]
 
 [node name="Hud" parent="." unique_id=1725281888 instance=ExtResource("7_6bdly")]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=770600117]
-
-[node name="Sprite 2D" type="Sprite2D" parent="StaticBody2D" unique_id=590566169]
-visibility_layer = 3
-position = Vector2(1303, 354.00003)
-scale = Vector2(1.6106248, 0.88930583)
-
-[node name="CenarioPrincipal" type="Sprite2D" parent="StaticBody2D" unique_id=811715545]
-position = Vector2(1199.9999, 323.99997)
-scale = Vector2(1.49875, 1.2157599)
-texture = ExtResource("1_cifom")
-
-[node name="chao" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=3693157]
-position = Vector2(-0.24365234, 0)
-scale = Vector2(1.0000782, 1)
-polygon = PackedVector2Array(-1, 529, 2398, 530, 2398, 647, 4, 649)
-
-[node name="parede1" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1518735852]
-polygon = PackedVector2Array(-1, 645, 0, 0, -36, 345)
-
-[node name="parede2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=446061933]
-polygon = PackedVector2Array(2396, 640, 2404, 2, 2434, 342)
+[node name="Cenario" type="Node2D" parent="."]
+script = ExtResource("4_cenario")
 
 [node name="Obstaculos" type="Node2D" parent="."]
 
 [node name="BarreiraDeSalto" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
-position = Vector2(330, 529.5)
+position = Vector2(360, 529.5)
 
-[node name="BarreiraDeBonecos" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
-position = Vector2(960, 529.5)
+[node name="Bonecos" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(1300, 529.5)
 tipo = 1
 escala = 0.7
 
-[node name="PlataformasCenario" type="Node2D" parent="Obstaculos"]
+[node name="CaixaDeSalto" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(2420, 529.5)
+tipo = 3
 
-[node name="CaixotesA" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+[node name="BarreiraListrada" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(3125, 529.5)
+tipo = 4
 
-[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
-position = Vector2(685.15, 435.6)
-shape = SubResource("RectangleShape2D_caixotes_a_topo")
-one_way_collision = true
+[node name="Bonecos2" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(3970, 529.5)
+tipo = 1
+escala = 0.7
 
-[node name="DegrauEsquerdo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
-position = Vector2(656.3, 464.5)
-shape = SubResource("RectangleShape2D_caixotes_a_esquerda")
-one_way_collision = true
+[node name="BarreiraListrada2" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(5000, 529.5)
+tipo = 4
 
-[node name="DegrauDireito" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
-position = Vector2(711.75, 464.5)
-shape = SubResource("RectangleShape2D_caixotes_a_direita")
-one_way_collision = true
+[node name="Bonecos3" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(5650, 529.5)
+tipo = 1
+escala = 0.7
 
-[node name="Barreira" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+[node name="CaixaDeSalto2" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(6580, 529.5)
+tipo = 3
 
-[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/Barreira"]
-position = Vector2(853, 473.3)
-shape = SubResource("RectangleShape2D_barreira_topo")
-one_way_collision = true
+[node name="BarreiraDeSalto2" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(7182.7, 529.5)
 
-[node name="CaixotesB" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+[node name="CaixaDeSalto3" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(7772.7, 529.5)
+tipo = 3
 
-[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
-position = Vector2(1472.2, 436.5)
-shape = SubResource("RectangleShape2D_caixotes_b_topo")
-one_way_collision = true
-
-[node name="DegrauEsquerdo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
-position = Vector2(1442.25, 469)
-shape = SubResource("RectangleShape2D_caixotes_b_esquerda")
-one_way_collision = true
-
-[node name="DegrauDireito" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
-position = Vector2(1501.6, 469)
-shape = SubResource("RectangleShape2D_caixotes_b_direita")
-one_way_collision = true
+[node name="Bonecos4" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(8722.7, 529.5)
+tipo = 1
+escala = 0.7
 
 [node name="ArenaChefao" parent="." instance=ExtResource("8_arena")]
-position = Vector2(1750, 529)
+position = Vector2(8972, 529)
+
+[node name="Inimigos" type="Node2D" parent="."]
+
+[node name="Juiz" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(790, 488)
+
+[node name="Juiz2" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(1560, 488)
+
+[node name="Juiz3" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(3050, 488)
+
+[node name="Juiz4" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(3760, 488)
+
+[node name="Juiz5" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(4400, 488)
+
+[node name="Juiz6" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(5160, 488)
+
+[node name="Juiz7" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(6150, 488)
+
+[node name="Juiz8" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(6760, 488)
+
+[node name="Juiz9" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(7662.7, 488)
+
+[node name="Juiz10" parent="Inimigos" instance=ExtResource("3_v5pcj")]
+position = Vector2(8862.7, 488)
+
+[node name="Zagueiro" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(1040, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro" index="0"]
+raio_patrulha = 160.0
+
+[node name="Zagueiro2" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(2700, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro2" index="0"]
+raio_patrulha = 160.0
+
+[node name="Zagueiro3" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(4180, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro3" index="0"]
+raio_patrulha = 130.0
+
+[node name="Zagueiro4" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(5420, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro4" index="0"]
+raio_patrulha = 110.0
+
+[node name="Zagueiro5" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(6380, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro5" index="0"]
+raio_patrulha = 90.0
+
+[node name="Zagueiro6" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(7422.7, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro6" index="0"]
+raio_patrulha = 150.0
+
+[node name="Zagueiro7" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(8412.7, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro7" index="0"]
+raio_patrulha = 110.0
+
+[node name="Goleiro" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(1900, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro" index="0"]
+raio_patrulha = 120.0
+
+[node name="Goleiro2" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(3450, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro2" index="0"]
+raio_patrulha = 110.0
+
+[node name="Goleiro3" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(4620, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro3" index="0"]
+raio_patrulha = 70.0
+
+[node name="Goleiro4" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(5880, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro4" index="0"]
+raio_patrulha = 80.0
+
+[node name="Goleiro5" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(8062.7, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro5" index="0"]
+raio_patrulha = 100.0
 
 [node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
 position = Vector2(130, 477)
-
-[node name="Juiz" parent="." unique_id=706790748 instance=ExtResource("3_v5pcj")]
-position = Vector2(760, 497)
-
-[node name="Goleiro" parent="." unique_id=733435162 instance=ExtResource("6_08fst")]
-position = Vector2(1030, 217)
-
-[node name="Zagueiro" parent="." instance=ExtResource("9_zagueiro")]
-position = Vector2(1200, 480)

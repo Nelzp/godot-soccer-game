@@ -78,8 +78,8 @@ _data = {
 [node name="Goleiro" type="Node2D" unique_id=733435162]
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1149399348]
-position = Vector2(577.5, 228.5)
 script = ExtResource("1_4rrqr")
+vida_maxima = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1447267006]
 light_mask = 2

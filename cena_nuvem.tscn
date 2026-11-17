@@ -11,6 +11,12 @@ script = ExtResource("1_xi0yg")
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=901299048]
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1806420144]
-position = Vector2(1199.7662, 115.00001)
-scale = Vector2(1.4356862, 0.6822528)
+position = Vector2(570.36, 115.00001)
+scale = Vector2(0.6822528, 0.6822528)
 texture = ExtResource("1_7d703")
+
+[node name="Espelho" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(1711.08, 115.00001)
+scale = Vector2(0.6822528, 0.6822528)
+texture = ExtResource("1_7d703")
+flip_h = true

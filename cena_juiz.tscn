@@ -119,6 +119,8 @@ position = Vector2(649, 308)
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1015634075]
 position = Vector2(0, -7)
 script = ExtResource("1_l6xlw")
+vida_maxima = 3
+alcance_visao = 520.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=1624929606]
 position = Vector2(-0.500016, -9.999994)

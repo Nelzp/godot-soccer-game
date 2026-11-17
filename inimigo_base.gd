@@ -14,13 +14,15 @@ extends CharacterBody2D
 ## Emitido uma única vez, quando o inimigo começa a morrer.
 signal derrotado(inimigo: Node)
 
-## Pontos de vida. Inimigos comuns caem com um golpe.
+## Pontos de vida (a bola tira 1 e o carrinho tira 2). Cada cena define o seu
+## valor e cada instância pode mudar no Inspetor.
 @export var vida_maxima: int = 1
 
 var vida: int = 1
 var morrendo: bool = false
 
 var _jogador_em_cache: Node2D = null
+var _tween_dano: Tween
 
 
 func _notification(what: int) -> void:
@@ -45,9 +47,28 @@ func receber_dano(quantidade: int = 1) -> void:
 		_reagir_ao_dano(quantidade)
 
 
-## Reação a um golpe que não matou. Cada inimigo pode sobrescrever.
+## Reação a um golpe que não matou: por padrão, pisca em vermelho.
+## Cada inimigo pode sobrescrever.
 func _reagir_ao_dano(_quantidade: int) -> void:
-	pass
+	piscar_dano()
+
+
+## Pisca o sprite em vermelho duas vezes (mostra que o golpe contou).
+func piscar_dano() -> void:
+
+	var sprite_dano := get_node_or_null("Sprite2D") as CanvasItem
+
+	if sprite_dano == null:
+		return
+
+	if _tween_dano != null:
+		_tween_dano.kill()
+
+	_tween_dano = create_tween()
+
+	for _i in range(2):
+		_tween_dano.tween_property(sprite_dano, "modulate", Color(1, 0.4, 0.4), 0.07)
+		_tween_dano.tween_property(sprite_dano, "modulate", Color(1, 1, 1), 0.07)
 
 
 func esta_vivo() -> bool:
@@ -78,6 +99,9 @@ func morrer() -> void:
 
 	derrotado.emit(self)
 
+	if _tween_dano != null:
+		_tween_dano.kill()
+
 	var animacao := get_node_or_null("AnimationPlayer") as AnimationPlayer
 	if animacao != null:
 		animacao.stop()
@@ -94,6 +118,8 @@ func _animar_morte() -> void:
 	var tween := create_tween()
 
 	if sprite_morte != null:
+		# Sem resto do vermelho de um golpe anterior
+		sprite_morte.modulate = Color(1, 1, 1)
 		for _i in range(2):
 			tween.tween_property(sprite_morte, "modulate:a", 0.0, 0.12)
 			tween.tween_property(sprite_morte, "modulate:a", 1.0, 0.12)

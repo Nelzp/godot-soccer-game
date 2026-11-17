@@ -15,9 +15,13 @@ enum Estado {
 @export var distancia_para_liberar: float = 200.0
 ## Até quantos pixels além da borda do corpo o soco alcança.
 @export var alcance_golpe: float = 60.0
+## Até quantos px para cada lado do ponto de partida o goleiro patrulha
+## (0 = sem limite, vira só em paredes e obstáculos).
+@export var raio_patrulha: float = 200.0
 
 var direcao: int = 1
 var estado: Estado = Estado.PATRULHANDO
+var _x_inicial: float = 0.0
 
 var jogador_alvo: CharacterBody2D = null
 var aguardando_afastamento: bool = false
@@ -30,6 +34,7 @@ var golpe_aplicado: bool = false
 
 
 func _ready() -> void:
+	_x_inicial = global_position.x
 	animation_player.animation_finished.connect(_on_animation_finished)
 
 
@@ -76,6 +81,15 @@ func _physics_process(delta: float) -> void:
 			atualizar_direcao()
 
 		estava_na_parede = parede_agora
+
+		# Limites de patrulha em volta do ponto de partida
+		if raio_patrulha > 0.0:
+			if global_position.x <= _x_inicial - raio_patrulha and direcao < 0:
+				direcao = 1
+				atualizar_direcao()
+			elif global_position.x >= _x_inicial + raio_patrulha and direcao > 0:
+				direcao = -1
+				atualizar_direcao()
 
 	# Liberar novo ataque quando o jogador se afastar
 	if aguardando_afastamento and jogador_alvo != null:

@@ -14,8 +14,10 @@ var velocidade = 650
 @export var tempo_de_vida: float = 2.5
 
 var removendo: bool = false
+var _conferiu_saida: bool = false
 
 @onready var animacao: AnimationPlayer = $AnimationPlayer
+@onready var forma: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
@@ -36,6 +38,13 @@ func _physics_process(_delta: float) -> void:
 
 	if removendo:
 		return
+
+	# Chute colado no inimigo: a bola já nasce dentro dele e o movimento não
+	# registraria a batida. Confere uma vez, logo na saída.
+	if not _conferiu_saida:
+		_conferiu_saida = true
+		if _acertar_inimigo_sobreposto():
+			return
 
 	velocity.x = velocidade * direcao
 	velocity.y = 0
@@ -61,6 +70,28 @@ func _physics_process(_delta: float) -> void:
 		if absf(colisao.get_normal().x) >= 0.5:
 			remover()
 			return
+
+
+func _acertar_inimigo_sobreposto() -> bool:
+
+	var consulta := PhysicsShapeQueryParameters2D.new()
+	consulta.shape = forma.shape
+	consulta.transform = forma.global_transform
+	consulta.collision_mask = collision_mask
+
+	var ignorar: Array[RID] = [get_rid()]
+	for corpo in get_collision_exceptions():
+		ignorar.append(corpo.get_rid())
+	consulta.exclude = ignorar
+
+	for resultado in get_world_2d().direct_space_state.intersect_shape(consulta, 8):
+		var objeto = resultado.get("collider")
+		if objeto is Node and objeto.is_in_group("inimigos") and objeto.has_method("receber_dano"):
+			objeto.receber_dano(dano)
+			remover()
+			return true
+
+	return false
 
 
 func remover() -> void:
