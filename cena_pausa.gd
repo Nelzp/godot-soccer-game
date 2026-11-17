@@ -51,6 +51,10 @@ func abrir_menu() -> void:
 	for coracao in coracoes:
 		coracao.visible = false
 
+	# Outros elementos da tela (ex.: barra de vida do chefão)
+	for elemento in get_tree().get_nodes_in_group("ocultar_na_pausa"):
+		elemento.visible = false
+
 	print("JOGO PAUSADO")
 
 
@@ -63,6 +67,9 @@ func continuar_jogo() -> void:
 
 	for coracao in coracoes:
 		coracao.visible = true
+
+	for elemento in get_tree().get_nodes_in_group("ocultar_na_pausa"):
+		elemento.visible = true
 
 	print("JOGO CONTINUANDO")
 

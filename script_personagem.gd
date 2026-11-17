@@ -9,9 +9,16 @@ var direcao = 1
 ## Dano do carrinho em inimigos (a bola causa 1; o chefão terá mais vida).
 @export var dano_carrinho: int = 2
 
+## Quanto o empurrão horizontal (golpes do chefão) perde por segundo.
+@export var atrito_empurrao: float = 1800.0
+
 var animando = false
 var carrinho_atingiu_inimigo = false
 var morto: bool = false
+## Ligado na vitória: nada mais causa dano ao jogador.
+var invencivel: bool = false
+## Velocidade horizontal extra de um empurrão, que diminui com o tempo.
+var empurrao_x: float = 0.0
 
 @onready var hud = get_tree().current_scene.find_child("Hud", true, false)
 
@@ -40,6 +47,11 @@ func _physics_process(delta: float) -> void:
 	# Pulo
 	if Input.is_action_just_pressed("pular") and is_on_floor():
 		velocity.y = -forca_pulo
+
+	# Empurrão recebido (soma com o movimento e vai perdendo força)
+	if empurrao_x != 0.0:
+		velocity.x += empurrao_x
+		empurrao_x = move_toward(empurrao_x, 0.0, atrito_empurrao * delta)
 
 	# Verifica se uma animação de ação terminou
 	if animando and not $AnimationPlayer.is_playing():
@@ -134,9 +146,22 @@ func spawnar_bolar():
 	obj_bola.global_position = $Marker2D.global_position
 
 
-func receber_dano() -> void:
+## Empurra o jogador (ex.: soco do chefão). x vira um impulso horizontal que
+## diminui aos poucos; y negativo joga o jogador para cima.
+func empurrar(impulso: Vector2) -> void:
 
 	if morto:
+		return
+
+	empurrao_x = impulso.x
+
+	if impulso.y < 0.0:
+		velocity.y = impulso.y
+
+
+func receber_dano() -> void:
+
+	if morto or invencivel:
 		return
 
 	print("O jogador recebeu dano!")

@@ -1,16 +1,23 @@
 
 extends CharacterBody2D
-## Cartão lançado pelo Juiz.
+## Cartão lançado pelo Juiz (amarelo) e pelo Chefão (vermelho).
 ## - Só causa dano ao jogador (grupo "jogador").
 ## - Atravessa outros inimigos e projéteis sem machucá-los.
 ## - Some ao acertar o jogador, uma parede ou um obstáculo.
 ## - Some sozinho depois de tempo_de_vida segundos.
+## - Se altura_alvo for definida, sobe ou desce até essa altura durante o voo.
 
 var direcao = 1
-var velocidade = 700
 
+## Velocidade horizontal (px/s).
+@export var velocidade: float = 700.0
 ## Tempo máximo (s) até o cartão sumir, mesmo sem acertar nada.
 @export var tempo_de_vida: float = 4.0
+## Velocidade máxima (px/s) para alcançar a altura_alvo.
+@export var velocidade_vertical: float = 420.0
+
+## Altura (y global) que o cartão procura durante o voo. NAN = voa reto.
+var altura_alvo: float = NAN
 
 var removendo: bool = false
 
@@ -20,6 +27,7 @@ var removendo: bool = false
 func _ready() -> void:
 
 	add_to_group("projeteis")
+	add_to_group("projeteis_inimigos")
 
 	# O desenho do cartão voa para a direita
 	sprite.flip_h = direcao < 0
@@ -36,7 +44,10 @@ func _physics_process(delta: float) -> void:
 	sprite.flip_h = direcao < 0
 
 	velocity.x = velocidade * direcao
-	velocity.y = 0
+	velocity.y = 0.0
+
+	if not is_nan(altura_alvo) and delta > 0.0:
+		velocity.y = clampf((altura_alvo - global_position.y) / delta, -velocidade_vertical, velocidade_vertical)
 
 	move_and_slide()
 

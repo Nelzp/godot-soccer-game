@@ -82,7 +82,14 @@ func morrer() -> void:
 	if animacao != null:
 		animacao.stop()
 
-	# Mesma animação de morte que o Juiz já usava: pisca duas vezes e some
+	_animar_morte()
+
+
+## Animação de morte. A padrão é a mesma que o Juiz já usava: pisca duas
+## vezes e some. Inimigos especiais (como o Chefão) podem sobrescrever,
+## desde que chamem queue_free() no final.
+func _animar_morte() -> void:
+
 	var sprite_morte := get_node_or_null("Sprite2D") as CanvasItem
 	var tween := create_tween()
 

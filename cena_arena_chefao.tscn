@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://arena_chefao.gd" id="1_arena"]
+[ext_resource type="Texture2D" uid="uid://co2ijhqhf2lpl" path="res://portoes.png" id="2_portoes"]
+[ext_resource type="PackedScene" uid="uid://sclf25d6u7ft" path="res://cena_chefao.tscn" id="3_chefao"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_portao"]
+size = Vector2(40, 700)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gatilho"]
+size = Vector2(580, 420)
+
+[node name="ArenaChefao" type="Node2D"]
+script = ExtResource("1_arena")
+
+[node name="Portao" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Portao"]
+position = Vector2(0, -104)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("2_portoes")
+region_enabled = true
+region_rect = Rect2(971, 123, 720, 613)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portao"]
+position = Vector2(0, -350)
+shape = SubResource("RectangleShape2D_portao")
+
+[node name="Gatilho" type="Area2D" parent="."]
+position = Vector2(370, -210)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gatilho"]
+shape = SubResource("RectangleShape2D_gatilho")
+
+[node name="Chefao" parent="." instance=ExtResource("3_chefao")]
+position = Vector2(450, 0)

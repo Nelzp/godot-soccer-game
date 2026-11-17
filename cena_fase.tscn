@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://4acqj7530toc" path="res://cena_juiz.tscn" id="3_v5pcj"]
 [ext_resource type="PackedScene" uid="uid://cw6s2w3ald0q8" path="res://goleiro.tscn" id="6_08fst"]
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
+[ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
 
 [node name="Fase" type="Node2D" unique_id=357268306]
 
@@ -35,6 +36,9 @@ polygon = PackedVector2Array(-1, 645, 0, 0, -36, 345)
 
 [node name="parede2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=446061933]
 polygon = PackedVector2Array(2396, 640, 2404, 2, 2434, 342)
+
+[node name="ArenaChefao" parent="." instance=ExtResource("8_arena")]
+position = Vector2(1750, 529)
 
 [node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
 position = Vector2(130, 477)
