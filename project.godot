@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=60
 config/icon="res://icon.svg"
 
+[autoload]
+
+Configuracoes="*res://configuracoes.gd"
+
 [debug]
 
 settings/stdout/print_fps=true

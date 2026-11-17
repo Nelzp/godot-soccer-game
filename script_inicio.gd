@@ -1,19 +1,13 @@
 extends Node2D
 
+const CENA_CONFIGURACOES := preload("res://cena_configuracoes.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+## Tela de configurações aberta por cima do menu (ou null).
+var tela_configuracoes: Node = null
 
 
 func iniciar_jogo() -> void:
 	get_tree().change_scene_to_file("res://cena_fase.tscn")
-	
 
 
 func sair_jogo() -> void:
@@ -21,4 +15,14 @@ func sair_jogo() -> void:
 
 
 func _on_botao_configuracao_pressed() -> void:
-	pass # Replace with function body.
+
+	if is_instance_valid(tela_configuracoes):
+		return
+
+	tela_configuracoes = CENA_CONFIGURACOES.instantiate()
+	add_child(tela_configuracoes)
+	tela_configuracoes.fechada.connect(_on_configuracoes_fechada)
+
+
+func _on_configuracoes_fechada() -> void:
+	tela_configuracoes = null

@@ -4,11 +4,17 @@ extends Node2D
 @onready var botao_continuar: Button = $FundoEscuro/CenterContainer/VBoxContainer/BotaoContinuar
 @onready var botao_reiniciar: Button = $FundoEscuro/CenterContainer/VBoxContainer/BotaoReiniciar
 @onready var botao_sair: Button = $FundoEscuro/CenterContainer/VBoxContainer/BotaoSair
+@onready var botao_configuracoes: Button = $FundoEscuro/CenterContainer/VBoxContainer/BotaoConfiguracoes
 
 @onready var canvas_hud: CanvasLayer = get_parent()
 @onready var sprite_personagem: Sprite2D = canvas_hud.get_node("Sprite2D")
 
+const CENA_CONFIGURACOES := preload("res://cena_configuracoes.tscn")
+
 var coracoes: Array[Node] = []
+
+## Tela de configurações aberta por cima da pausa (ou null).
+var tela_configuracoes: Node = null
 
 
 func _ready() -> void:
@@ -27,9 +33,14 @@ func _ready() -> void:
 	botao_continuar.pressed.connect(continuar_jogo)
 	botao_reiniciar.pressed.connect(reiniciar_jogo)
 	botao_sair.pressed.connect(sair_jogo)
+	botao_configuracoes.pressed.connect(abrir_configuracoes)
 
 
 func _input(event: InputEvent) -> void:
+
+	# Com as configurações abertas, o Esc é delas (fecha só aquela tela)
+	if is_instance_valid(tela_configuracoes):
+		return
 
 	if event.is_action_pressed("ui_cancel") and not event.is_echo():
 
@@ -72,6 +83,22 @@ func continuar_jogo() -> void:
 		elemento.visible = true
 
 	print("JOGO CONTINUANDO")
+
+
+func abrir_configuracoes() -> void:
+
+	if is_instance_valid(tela_configuracoes):
+		return
+
+	tela_configuracoes = CENA_CONFIGURACOES.instantiate()
+	add_child(tela_configuracoes)
+	tela_configuracoes.fechada.connect(_on_configuracoes_fechada)
+
+
+func _on_configuracoes_fechada() -> void:
+
+	tela_configuracoes = null
+	botao_configuracoes.grab_focus()
 
 
 func reiniciar_jogo() -> void:

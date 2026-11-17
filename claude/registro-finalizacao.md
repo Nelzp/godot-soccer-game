@@ -14,7 +14,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 |---|---|---|
 | P1 | Base comum de inimigos, dano da bola/carrinho, ajustes de Juiz/Goleiro/cartão | concluída (`8dfae22`) |
 | P2 | Chefão "Cartão Vermelho" (`cena_chefao.tscn` + `script_chefão.gd`): 12 HP, duas fases, soco, cartões vermelhos, barra de vida, morte → tela de vitória (`Tela de vitoria.jpeg`, botão transparente sobre "RETORNAR AO MENU") | concluída |
-| P3 | Configurações com `Configurações Neon de Futebol Pixel.png`: vídeo, FPS e volumes persistentes, pelo menu inicial e pela pausa. Sem idiomas, legendas ou remapeamento | pendente |
+| P3 | Configurações com `Configurações Neon de Futebol Pixel.png`: vídeo, FPS e volumes persistentes, pelo menu inicial e pela pausa. Sem idiomas, legendas ou remapeamento | concluída |
 | P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | pendente |
 | P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | pendente |
 | P6 | Integração, testes e correções gerais | pendente |
@@ -96,3 +96,58 @@ Alterados: `cena_chefao.tscn`, `script_chefão.gd`, `cena_fase.tscn`, `inimigo_b
 
 Os scripts de teste ficaram fora do projeto (pasta temporária da sessão); a P6 decide se
 entram no repositório.
+
+## P3 — Configurações
+
+### Decisões
+
+- **Arte oficial intacta:** `cena_configuracoes.tscn` mostra a imagem esticada na tela
+  inteira (mesma proporção da tela inicial) e cobre só os valores desenhados nela
+  (caixas de vídeo, barras e porcentagens de áudio) com controles de verdade, nas mesmas
+  posições. O nó `Painel` trabalha em pixels da imagem (1613 × 975) e é escalado para a tela;
+  os textos desfazem essa escala e usam a fonte já no tamanho final (senão ficam borrados).
+- **Vídeo:** resolução da janela (1152 × 648 até 3840 × 2160, só as que cabem no monitor),
+  modo de tela (Janela / Tela Cheia) e limite de FPS (30, 60, 120, 144, Sem Limite).
+  Em tela cheia vale a resolução do monitor e o campo de resolução fica apagado.
+  O V-Sync continua ligado (padrão do projeto), então o limite real é o menor entre o FPS
+  escolhido e a taxa do monitor. A física continua em 60 passos/s, então o jogo não muda.
+- **Áudio:** Volume Geral (bus `Master`), Música (bus `Musica`) e Efeitos Sonoros
+  (bus `Efeitos`). Os buses ficam em `default_bus_layout.tres` (aparecem no editor para a P7)
+  e o autoload também os cria se faltarem. Padrões iguais aos da arte: 100% / 80% / 100%.
+  0% deixa o bus mudo.
+- **Salvar e voltar:** o vídeo só muda ao clicar em SALVAR; o áudio muda na hora para dar
+  para ouvir (prévia). VOLTAR ou Esc descarta o que não foi salvo (o volume volta ao salvo).
+  Um aviso amarelo "Alterações não salvas" aparece enquanto houver mudança pendente e
+  "Configurações salvas!" aparece ao salvar.
+- **Persistência:** autoload `Configuracoes` (`configuracoes.gd`) lê e aplica
+  `user://configuracoes.cfg` ao abrir o jogo; valores inválidos voltam ao padrão e volumes
+  são limitados a 0–100%.
+- **Acesso:** botão CONFIGURAÇÕES do menu inicial (já existia, sem função) e novo botão
+  CONFIGURAÇÕES no menu de pausa. A tela funciona com o jogo pausado; o Esc fecha só ela e a
+  pausa continua aberta. Os quatro botões da pausa passaram a ter a mesma largura (340 px).
+- **Ícone da pausa:** as engrenagens das imagens oficiais têm fundo opaco, então o botão usa
+  `assets/icone_configuracoes.png`, uma engrenagem em pixel art gerada por código no estilo
+  dos outros ícones (52 × 52, contorno escuro).
+- **Teclado:** cima/baixo trocam de linha, esquerda/direita mudam o valor (5% por toque nas
+  barras), Enter na caixa avança a opção; o foco não escapa para o menu de baixo.
+- **Fonte:** Pixelify Sans, como no resto da interface. Observação: nessa fonte o "5" tem
+  desenho parecido com "S" em qualquer peso e tamanho (é o desenho da fonte).
+
+### Arquivos
+
+Novos: `configuracoes.gd` (autoload), `configuracoes_tela.gd`, `cena_configuracoes.tscn`,
+`barra_volume.gd`, `default_bus_layout.tres`, `assets/icone_configuracoes.png`,
+`Configurações Neon de Futebol Pixel.png` (imagem oficial, sem alterações) e os
+`.uid`/`.import` gerados pela Godot.
+Alterados: `project.godot` (só a seção `[autoload]`), `script_inicio.gd`, `cena_pausa.gd`,
+`cena_pausa.tscn`.
+
+### Testes
+
+- Configurações: 48 verificações, 0 falhas — padrões e buses, valores mostrados, prévia de
+  áudio, VOLTAR descarta e não grava, SALVAR aplica e grava, tela cheia apaga a resolução,
+  teclado (direita/baixo/esquerda/Esc), leitura do arquivo e arquivo inválido, abertura pela
+  pausa com o jogo pausado e Esc em camadas. O teste usa um arquivo próprio
+  (`user://teste_configuracoes.cfg`); o do jogador não é tocado.
+- Chefão (46) e portão (5) rodados de novo: 0 falhas.
+- Capturas renderizadas da tela pelo menu e pela pausa conferidas.

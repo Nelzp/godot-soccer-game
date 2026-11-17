@@ -6,12 +6,15 @@
 [ext_resource type="Texture2D" uid="uid://bpfksl441hv41" path="res://assets/icone_continuar.png" id="3_hjgxa"]
 [ext_resource type="Texture2D" uid="uid://dxcr6au64ktnm" path="res://assets/icone_reiniciar.png" id="4_0pjlt"]
 [ext_resource type="Texture2D" uid="uid://eixcu287edjs" path="res://assets/icone_sair.png" id="5_7pont"]
+[ext_resource type="Texture2D" path="res://assets/icone_configuracoes.png" id="6_config"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pjlt"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7pont"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o2b2w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_config"]
 
 [node name="pausa" type="Node2D" unique_id=1740238532]
 script = ExtResource("1_4l2li")
@@ -56,7 +59,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BotaoContinuar" type="Button" parent="FundoEscuro/CenterContainer/VBoxContainer" unique_id=70882637]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(340, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -70,7 +73,7 @@ text = "CONTINUAR"
 icon = ExtResource("3_hjgxa")
 
 [node name="BotaoReiniciar" type="Button" parent="FundoEscuro/CenterContainer/VBoxContainer" unique_id=279308992]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(340, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -83,8 +86,22 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_7pont")
 text = "REINICIAR"
 icon = ExtResource("4_0pjlt")
 
+[node name="BotaoConfiguracoes" type="Button" parent="FundoEscuro/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(340, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.9019608, 0.65882355, 0.18039216, 1)
+theme_override_colors/font_hover_color = Color(1, 0.83137256, 0.3529412, 1)
+theme_override_fonts/font = ExtResource("3_0pjlt")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxEmpty_config")
+text = "CONFIGURAÇÕES"
+icon = ExtResource("6_config")
+
 [node name="BotaoSair" type="Button" parent="FundoEscuro/CenterContainer/VBoxContainer" unique_id=239155457]
-custom_minimum_size = Vector2(300, 60)
+custom_minimum_size = Vector2(340, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
