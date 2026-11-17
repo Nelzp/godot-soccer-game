@@ -60,6 +60,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_l3wq4"]
 resource_name = "parado"
 length = 2.0
+loop_mode = 1
 step = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -82,20 +83,18 @@ _data = {
 &"parado": SubResource("Animation_l3wq4")
 }
 
-[node name="Inimigo" type="Node2D" unique_id=1290962987]
-position = Vector2(3, -1)
+[node name="Zagueiro" type="Node2D" unique_id=1290962987]
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=2011669742]
-position = Vector2(-1, 21)
 script = ExtResource("1_6u7vk")
+vida_maxima = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1673325324]
-position = Vector2(589, 336.5)
 scale = Vector2(0.5511117, 0.551386)
 shape = SubResource("RectangleShape2D_c7snl")
 
 [node name="Sprite2D" type="Sprite2D" parent="Personagem" unique_id=69373502]
-position = Vector2(587.0134, 336.86426)
+position = Vector2(-2, 0.4)
 scale = Vector2(0.44946915, 0.44969282)
 texture = ExtResource("2_6u7vk")
 region_enabled = true
@@ -103,7 +102,3 @@ region_rect = Rect2(268, 46, 138, 183)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Personagem" unique_id=1758741055]
 libraries/ = SubResource("AnimationLibrary_voqui")
-
-[node name="RayCast2D" type="RayCast2D" parent="Personagem" unique_id=1270789702]
-position = Vector2(484, 337)
-target_position = Vector2(212, -1)

@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cw6s2w3ald0q8" path="res://goleiro.tscn" id="6_08fst"]
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
 [ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
+[ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="9_zagueiro"]
 
 [node name="Fase" type="Node2D" unique_id=357268306]
 
@@ -48,3 +49,6 @@ position = Vector2(715, 497)
 
 [node name="Goleiro" parent="." unique_id=733435162 instance=ExtResource("6_08fst")]
 position = Vector2(1030, 217)
+
+[node name="Zagueiro" parent="." instance=ExtResource("9_zagueiro")]
+position = Vector2(1200, 480)

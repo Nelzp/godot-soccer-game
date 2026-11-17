@@ -15,7 +15,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P1 | Base comum de inimigos, dano da bola/carrinho, ajustes de Juiz/Goleiro/cartão | concluída (`8dfae22`) |
 | P2 | Chefão "Cartão Vermelho" (`cena_chefao.tscn` + `script_chefão.gd`): 12 HP, duas fases, soco, cartões vermelhos, barra de vida, morte → tela de vitória (`Tela de vitoria.jpeg`, botão transparente sobre "RETORNAR AO MENU") | concluída |
 | P3 | Configurações com `Configurações Neon de Futebol Pixel.png`: vídeo, FPS e volumes persistentes, pelo menu inicial e pela pausa. Sem idiomas, legendas ou remapeamento | concluída |
-| P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | pendente |
+| P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | concluída |
 | P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | pendente |
 | P6 | Integração, testes e correções gerais | pendente |
 | P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | aguardando arquivos |
@@ -151,3 +151,42 @@ Alterados: `project.godot` (só a seção `[autoload]`), `script_inicio.gd`, `ce
   (`user://teste_configuracoes.cfg`); o do jogador não é tocado.
 - Chefão (46) e portão (5) rodados de novo: 0 falhas.
 - Capturas renderizadas da tela pelo menu e pela pausa conferidas.
+
+### Depois da P3
+
+- Opção de linha de comando `-- --ignorar-configuracoes`: abre com os padrões sem ler o
+  arquivo salvo (os testes com janela usam isso para não abrir em tela cheia; também serve
+  para recuperar o jogo de uma configuração ruim). Commit separado.
+- Um `user://configuracoes.cfg` com 1280 × 720 / Tela Cheia apareceu às 21:46 — gravado
+  pelo jogo, não pelos testes (que usam arquivos próprios). Ele não foi tocado; o teste de
+  configurações confere que ele continua igual.
+
+## P4 — Zagueiro rival
+
+### Decisões
+
+- **Reaproveitamento:** `cena_inimigo2.tscn` + `personagem.gd` + as animações que já
+  existiam (`correndo`, `parado`, `carrinho`). As células da folha `inimigo_1.png` são
+  transparentes (só as linhas da grade são opacas), então os recortes antigos servem.
+- **Cena:** o corpo estava a ~590 px do próprio desenho; os nós foram recentralizados (o
+  corpo fica onde o boneco aparece). A raiz passou a se chamar `Zagueiro`, o RayCast2D sem
+  uso saiu, `parado` ficou em loop e o zagueiro tem 2 de vida (`vida_maxima = 2`).
+- **Comportamento (`personagem.gd`):** patrulha correndo num raio de 260 px em volta do ponto
+  de partida (vira também em paredes e obstáculos). Com o jogador no chão, perto (≤ 250 px) e
+  na mesma altura, vira para ele, para 0,4 s (aviso) e dá o carrinho por 1 s (480 px/s,
+  perdendo força). Se encostar no jogador: 1 vida e empurrão; o carrinho termina ali.
+  Batendo em parede/obstáculo, também termina. Depois fica 0,8 s parado (hora de atacar) e
+  só repete após 1,6 s. Pulando na hora certa, o carrinho passa por baixo.
+- **Dano:** a bola tira 1 (ele pisca em vermelho e fica 0,45 s atordoado); a segunda bolada
+  derruba; o carrinho do jogador (2) derruba de uma vez.
+- **Posição:** instanciado em `cena_fase.tscn` em x = 1200, entre o Juiz (715) e o Goleiro.
+
+### Testes
+
+- Zagueiro: 19 verificações, 0 falhas — grupo e vida, apoiado no chão, patrulha dentro do
+  raio e virando, aviso antes do carrinho, carrinho tira 1 vida e empurra, recuperação
+  parada, recarga, pulo na hora certa evita o carrinho, bola tira 1 e atordoa, segunda bolada
+  derruba, carrinho do jogador derruba de uma vez.
+- Bateria anterior rodada de novo (chefão 46, portão 5, configurações 48): 0 falhas.
+- Capturas renderizadas (patrulha, preparo, carrinho, recuperação) conferidas: o zagueiro
+  tem tamanho parecido com o do jogador.
