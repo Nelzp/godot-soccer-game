@@ -16,7 +16,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P2 | Chefão "Cartão Vermelho" (`cena_chefao.tscn` + `script_chefão.gd`): 12 HP, duas fases, soco, cartões vermelhos, barra de vida, morte → tela de vitória (`Tela de vitoria.jpeg`, botão transparente sobre "RETORNAR AO MENU") | concluída |
 | P3 | Configurações com `Configurações Neon de Futebol Pixel.png`: vídeo, FPS e volumes persistentes, pelo menu inicial e pela pausa. Sem idiomas, legendas ou remapeamento | concluída |
 | P4 | Zagueiro rival reaproveitando `cena_inimigo2.tscn`, `personagem.gd` e as animações existentes | concluída |
-| P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | pendente |
+| P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | concluída |
 | P6 | Integração, testes e correções gerais | pendente |
 | P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | aguardando arquivos |
 
@@ -190,3 +190,40 @@ Alterados: `project.godot` (só a seção `[autoload]`), `script_inicio.gd`, `ce
 - Bateria anterior rodada de novo (chefão 46, portão 5, configurações 48): 0 falhas.
 - Capturas renderizadas (patrulha, preparo, carrinho, recuperação) conferidas: o zagueiro
   tem tamanho parecido com o do jogador.
+
+## P5 — Obstáculos
+
+### Decisões
+
+- **Dois tipos de obstáculo, sem desenho repetido:**
+  - Os objetos já desenhados em `cenario_principal.png` (caixotes, barreira listrada) ficam
+    20–40 px "atrás" da linha em que o jogador anda. Eles viraram **plataformas de mão
+    única**: o jogador passa na frente deles normalmente e pode pular de baixo para ficar em
+    cima (a colisão fica exatamente no topo desenhado). Nada novo é desenhado por cima deles.
+  - Os **sprites da folha de obstáculos** entram como obstáculos sólidos **na linha do chão**,
+    em pontos sem objeto parecido desenhado atrás: uma barreira de salto (x = 330, 49 px de
+    altura) e uma barreira de bonecos de treino (x = 960, 95 px, pulável).
+- **Plataformas usadas (medidas na imagem):** caixotes A (x 645–721, topo y 431,6, com
+  degraus em 460,5), barreira listrada (x 807–899, topo 469,3) e caixotes B (x 1432–1512,
+  topo 432,5, degraus em 465). Os objetos do fundo da quadra (perto do alambrado), os bancos,
+  os cones pequenos e os caixotes dentro da arena do chefão continuam só decoração.
+- **Cena reutilizável:** `cena_obstaculo.tscn` + `obstaculo.gd` (`@tool`): escolhe o tipo
+  (barreira de salto, barreira de bonecos, cone, caixa de salto, barreira listrada), a
+  escala e o espelhamento no inspetor; recorte e colisão se ajustam sozinhos e a origem fica
+  no meio da base (basta pôr y na linha do chão, 529,5). Grupo `obstaculos`.
+- **Efeitos no jogo:** bola e cartões somem ao bater nos obstáculos sólidos; a visão do Juiz
+  é bloqueada por eles; inimigos que patrulham dão meia-volta neles (o Zagueiro fica entre os
+  bonecos e o portão). As plataformas não atrapalham quem anda no chão.
+- **Juiz:** saiu de x = 715 (estava dentro dos caixotes A) para x = 760, entre os caixotes e a
+  barreira listrada.
+
+### Testes
+
+- Obstáculos: 19 verificações, 0 falhas — quantidades e grupos, alturas e apoio no chão,
+  jogador bloqueado andando e passando ao pular, bola some no obstáculo, jogador passa na
+  frente dos caixotes, sobe por baixo e fica em cima (caixotes A, barreira, caixotes B e
+  degrau), Juiz não enxerga através dos bonecos, Zagueiro vira nos bonecos, Goleiro anda por
+  baixo das plataformas.
+- Bateria completa rodada de novo: zagueiro 19, chefão 46, portão 5, configurações 48 — 0 falhas.
+- Capturas renderizadas conferidas (barreira de salto, Juiz, jogador em cima dos caixotes,
+  bonecos, caixotes B).

@@ -8,6 +8,28 @@
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
 [ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
 [ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="9_zagueiro"]
+[ext_resource type="PackedScene" path="res://cena_obstaculo.tscn" id="10_obstaculo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_topo"]
+size = Vector2(34.5, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_esquerda"]
+size = Vector2(23.2, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_a_direita"]
+size = Vector2(18.7, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_barreira_topo"]
+size = Vector2(91.4, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_topo"]
+size = Vector2(38.6, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_esquerda"]
+size = Vector2(21.3, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_caixotes_b_direita"]
+size = Vector2(20.2, 8)
 
 [node name="Fase" type="Node2D" unique_id=357268306]
 
@@ -38,6 +60,59 @@ polygon = PackedVector2Array(-1, 645, 0, 0, -36, 345)
 [node name="parede2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=446061933]
 polygon = PackedVector2Array(2396, 640, 2404, 2, 2434, 342)
 
+[node name="Obstaculos" type="Node2D" parent="."]
+
+[node name="BarreiraDeSalto" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(330, 529.5)
+
+[node name="BarreiraDeBonecos" parent="Obstaculos" instance=ExtResource("10_obstaculo")]
+position = Vector2(960, 529.5)
+tipo = 1
+escala = 0.7
+
+[node name="PlataformasCenario" type="Node2D" parent="Obstaculos"]
+
+[node name="CaixotesA" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+
+[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
+position = Vector2(685.15, 435.6)
+shape = SubResource("RectangleShape2D_caixotes_a_topo")
+one_way_collision = true
+
+[node name="DegrauEsquerdo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
+position = Vector2(656.3, 464.5)
+shape = SubResource("RectangleShape2D_caixotes_a_esquerda")
+one_way_collision = true
+
+[node name="DegrauDireito" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesA"]
+position = Vector2(711.75, 464.5)
+shape = SubResource("RectangleShape2D_caixotes_a_direita")
+one_way_collision = true
+
+[node name="Barreira" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+
+[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/Barreira"]
+position = Vector2(853, 473.3)
+shape = SubResource("RectangleShape2D_barreira_topo")
+one_way_collision = true
+
+[node name="CaixotesB" type="StaticBody2D" parent="Obstaculos/PlataformasCenario" groups=["plataformas"]]
+
+[node name="Topo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
+position = Vector2(1472.2, 436.5)
+shape = SubResource("RectangleShape2D_caixotes_b_topo")
+one_way_collision = true
+
+[node name="DegrauEsquerdo" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
+position = Vector2(1442.25, 469)
+shape = SubResource("RectangleShape2D_caixotes_b_esquerda")
+one_way_collision = true
+
+[node name="DegrauDireito" type="CollisionShape2D" parent="Obstaculos/PlataformasCenario/CaixotesB"]
+position = Vector2(1501.6, 469)
+shape = SubResource("RectangleShape2D_caixotes_b_direita")
+one_way_collision = true
+
 [node name="ArenaChefao" parent="." instance=ExtResource("8_arena")]
 position = Vector2(1750, 529)
 
@@ -45,7 +120,7 @@ position = Vector2(1750, 529)
 position = Vector2(130, 477)
 
 [node name="Juiz" parent="." unique_id=706790748 instance=ExtResource("3_v5pcj")]
-position = Vector2(715, 497)
+position = Vector2(760, 497)
 
 [node name="Goleiro" parent="." unique_id=733435162 instance=ExtResource("6_08fst")]
 position = Vector2(1030, 217)
