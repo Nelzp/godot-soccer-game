@@ -56,7 +56,12 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	_garantir_buses()
-	carregar()
+
+	# "godot ... -- --ignorar-configuracoes" abre com os padrões, sem ler o
+	# arquivo salvo (útil em testes e se uma configuração deixar a tela ruim)
+	if not OS.get_cmdline_user_args().has("--ignorar-configuracoes"):
+		carregar()
+
 	aplicar_tudo()
 
 
