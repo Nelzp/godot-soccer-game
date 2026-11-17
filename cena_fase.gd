@@ -14,6 +14,10 @@ extends Node2D
 
 func _ready() -> void:
 
+	# O game over usa isto para recomeçar nesta mesma fase
+	if not scene_file_path.is_empty():
+		Transicao.fase_atual = scene_file_path
+
 	var direito := limite_direito
 
 	if cenario != null and "largura" in cenario and cenario.largura > 0.0:

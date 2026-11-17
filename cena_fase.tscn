@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b3f2mne7ap2s8" path="res://cena_hud.tscn" id="7_6bdly"]
 [ext_resource type="PackedScene" uid="uid://c8jigneb40ohq" path="res://cena_inimigo2.tscn" id="9_zagueiro"]
 [ext_resource type="PackedScene" path="res://cena_obstaculo.tscn" id="10_obstaculo"]
-[ext_resource type="PackedScene" path="res://cena_arena_chefao.tscn" id="8_arena"]
+[ext_resource type="PackedScene" path="res://cena_portao_fase.tscn" id="8_portao"]
 
 [node name="Fase" type="Node2D" unique_id=357268306 node_paths=PackedStringArray("cenario")]
 script = ExtResource("1_fase")
@@ -70,8 +70,25 @@ position = Vector2(8722.7, 529.5)
 tipo = 1
 escala = 0.7
 
-[node name="ArenaChefao" parent="." instance=ExtResource("8_arena")]
-position = Vector2(8972, 529)
+[node name="Portoes" type="Node2D" parent="."]
+
+[node name="PortaoQuadra1" parent="Portoes" instance=ExtResource("8_portao")]
+position = Vector2(2196.9, 529.5)
+inicio_quadra = 0.0
+
+[node name="PortaoQuadra2" parent="Portoes" instance=ExtResource("8_portao")]
+position = Vector2(4849.7, 529.5)
+inicio_quadra = 2197.0
+
+[node name="PortaoQuadra3" parent="Portoes" instance=ExtResource("8_portao")]
+position = Vector2(6972.4, 529.5)
+inicio_quadra = 4850.0
+
+[node name="PortaoFase2" parent="Portoes" instance=ExtResource("8_portao")]
+position = Vector2(9487.7, 529.5)
+inicio_quadra = 6973.0
+proxima_cena = "res://cena_fase2.tscn"
+deslocamento_aviso = -170.0
 
 [node name="Inimigos" type="Node2D" parent="."]
 
@@ -213,6 +230,13 @@ position = Vector2(8062.7, 455)
 [node name="Personagem" parent="Inimigos/Goleiro5" index="0"]
 raio_patrulha = 100.0
 variacao = 3
+
+[node name="Goleiro6" parent="Inimigos" instance=ExtResource("6_08fst")]
+position = Vector2(9182.7, 455)
+
+[node name="Personagem" parent="Inimigos/Goleiro6" index="0"]
+raio_patrulha = 70.0
+variacao = 4
 
 [node name="Jogador" parent="." unique_id=297150345 instance=ExtResource("2_5fdea")]
 position = Vector2(130, 477)

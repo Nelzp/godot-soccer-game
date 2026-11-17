@@ -1,18 +1,9 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
+## Recomeça na fase em que o jogador perdeu (Fase 1 ou Fase 2).
 func tentar_novamente() -> void:
-	get_tree().change_scene_to_file("res://cena_fase.tscn")
+	get_tree().change_scene_to_file(Transicao.fase_atual)
 
 
 func sair() -> void:
