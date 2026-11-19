@@ -1,0 +1,285 @@
+[gd_scene format=3 uid="uid://dko04rw3aw0qo"]
+
+[ext_resource type="Script" uid="uid://cy0iixbud3gru" path="res://scripts/personagens/jogador.gd" id="1_xgtec"]
+[ext_resource type="Texture2D" uid="uid://b34t2q2drby3k" path="res://recursos/imagens/personagens/jogador.png" id="2_xgtec"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64uw6"]
+size = Vector2(39.5, 105)
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Rect2(73, 48, 88, 216)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(1, -106)]
+}
+
+[sub_resource type="Animation" id="Animation_parado"]
+resource_name = "parado"
+length = 0.9
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.36, 0.54, 0.72),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(73, 48, 88, 216), Rect2(191, 49, 87, 216), Rect2(309, 49, 86, 215), Rect2(428, 46, 89, 218), Rect2(553, 48, 82, 217)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.36, 0.54, 0.72),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(1, -106), Vector2(1, -106), Vector2(1, -105.5), Vector2(1.5, -107), Vector2(2, -106.5)]
+}
+
+[sub_resource type="Animation" id="Animation_correndo"]
+resource_name = "correndo"
+length = 0.425
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.085, 0.17, 0.255, 0.34),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(702, 53, 131, 207), Rect2(862, 54, 81, 204), Rect2(949, 53, 139, 208), Rect2(1095, 60, 145, 201), Rect2(1259, 57, 143, 201)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.085, 0.17, 0.255, 0.34),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-8, -101.5), Vector2(7, -100), Vector2(-4.5, -102), Vector2(-8, -98.5), Vector2(-4.5, -98.5)]
+}
+
+[sub_resource type="Animation" id="Animation_chutando"]
+resource_name = "chutando"
+length = 0.52
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.11, 0.21, 0.31, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(1233, 320, 137, 200), Rect2(865, 321, 145, 195), Rect2(1046, 323, 165, 197), Rect2(668, 325, 159, 192), Rect2(1233, 320, 137, 200)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.11, 0.21, 0.31, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-10, -98), Vector2(16, -95.5), Vector2(15.5, -95.5), Vector2(5.5, -94), Vector2(-10, -98)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.11),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawnar_bolar"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_carrinho"]
+resource_name = "carrinho"
+length = 0.6
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.07, 0.19, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(670, 580, 164, 163), Rect2(871, 574, 163, 166), Rect2(1042, 588, 189, 160), Rect2(1247, 585, 158, 151)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.07, 0.19, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(26.5, -78.5), Vector2(45, -77), Vector2(27.5, -67), Vector2(19, -73.5)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_levantar_do_carrinho"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_pulando"]
+resource_name = "pulando"
+length = 0.4
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(165, 476, 99, 236), Rect2(290, 417, 94, 255), Rect2(416, 340, 81, 292), Rect2(527, 459, 105, 232)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-11, -116), Vector2(-14, -125.5), Vector2(-10, -144), Vector2(4, -114)]
+}
+
+[sub_resource type="Animation" id="Animation_aterrissando"]
+resource_name = "aterrissando"
+length = 0.09
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Rect2(48, 551, 96, 195)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual/Sprite2D:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-3.5, -95.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ablbj"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"parado": SubResource("Animation_parado"),
+&"correndo": SubResource("Animation_correndo"),
+&"chutando": SubResource("Animation_chutando"),
+&"carrinho": SubResource("Animation_carrinho"),
+&"pulando": SubResource("Animation_pulando"),
+&"aterrissando": SubResource("Animation_aterrissando")
+}
+
+[node name="Jogador" type="Node2D" unique_id=297150345]
+position = Vector2(563, 329)
+
+[node name="Personagem" type="CharacterBody2D" parent="." unique_id=1443315958 groups=["jogador"]]
+position = Vector2(-2, 4)
+collision_mask = 11
+script = ExtResource("1_xgtec")
+
+[node name="Visual" type="Node2D" parent="Personagem"]
+position = Vector2(0, 47)
+
+[node name="Sprite2D" type="Sprite2D" parent="Personagem/Visual" unique_id=1837001489]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_xgtec")
+offset = Vector2(1, -106)
+region_enabled = true
+region_rect = Rect2(73, 48, 88, 216)
+region_filter_clip_enabled = true
+
+[node name="Marker2D" type="Marker2D" parent="Personagem/Visual" unique_id=312183149]
+position = Vector2(42, -21)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=352200697]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_64uw6")
+
+[node name="Camera2D" type="Camera2D" parent="Personagem" unique_id=273569552]
+limit_left = 0
+limit_top = 3
+limit_right = 2400
+limit_bottom = 650
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Personagem" unique_id=1418428681]
+libraries/ = SubResource("AnimationLibrary_ablbj")

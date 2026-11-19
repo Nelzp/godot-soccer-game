@@ -4,9 +4,9 @@ extends SceneTree
 ## transições de animação (pulo pela velocidade, aterrissagem, corrida sem
 ## reiniciar), quadros ancorados e morte. Campo vazio montado pelo teste.
 
-const CENA_JOGADOR := "res://cena_jogador.tscn"
-const CENA_HUD := "res://cena_hud.tscn"
-const CENA_ZAGUEIRO := "res://cena_inimigo2.tscn"
+const CENA_JOGADOR := "res://cenas/personagens/jogador.tscn"
+const CENA_HUD := "res://cenas/menus/hud.tscn"
+const CENA_ZAGUEIRO := "res://cenas/personagens/zagueiro.tscn"
 
 const Y_CHAO := 529.5
 
@@ -270,7 +270,7 @@ func _rodar() -> void:
 	var game_over := false
 	for _i in range(150):
 		await process_frame
-		if current_scene != null and current_scene.scene_file_path == "res://cena_game_over.tscn":
+		if current_scene != null and current_scene.scene_file_path == "res://cenas/menus/game_over.tscn":
 			game_over = true
 			break
 	checar(game_over, "depois da queda, abre o game over")

@@ -2,7 +2,7 @@ extends SceneTree
 ## Estrutura das duas fases: cenário, câmera, inimigos (vida e variações),
 ## portões, chefão só na Fase 2 e dano da bola e do carrinho.
 
-const SHADER_VARIACAO := "res://variacao_uniforme.gdshader"
+const SHADER_VARIACAO := "res://scripts/personagens/variacao_uniforme.gdshader"
 
 var falhas := 0
 var verificacoes := 0
@@ -28,13 +28,13 @@ func esperar(quadros: int) -> void:
 
 func tipo_de(inimigo: Node) -> String:
 	var caminho: String = inimigo.get_script().resource_path
-	if caminho.ends_with("script_inimigo1.gd"):
+	if caminho.ends_with("/juiz.gd"):
 		return "juiz"
-	if caminho.ends_with("script_goleiro.gd"):
+	if caminho.ends_with("/goleiro.gd"):
 		return "goleiro"
-	if caminho.ends_with("personagem.gd"):
+	if caminho.ends_with("/zagueiro.gd"):
 		return "zagueiro"
-	if caminho.ends_with("script_chefão.gd"):
+	if caminho.ends_with("/chefao.gd"):
 		return "chefao"
 	return "?"
 
@@ -42,10 +42,10 @@ func tipo_de(inimigo: Node) -> String:
 func _rodar() -> void:
 
 	print("-- Fase 1")
-	change_scene_to_file("res://cena_fase.tscn")
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
 	await esperar(5)
 	var fase := current_scene
-	checar(fase != null and fase.scene_file_path == "res://cena_fase.tscn", "Fase 1 carregada")
+	checar(fase != null and fase.scene_file_path == "res://cenas/fases/fase_1.tscn", "Fase 1 carregada")
 
 	var cenario = fase.get_node("Cenario")
 	# Antes: 9.625 px em 4 quadras. Pedido: 20% a 25% menor.
@@ -147,7 +147,7 @@ func _rodar() -> void:
 	for portao in portoes:
 		if not portao.esta_aberto:
 			fechados += 1
-		if portao.proxima_cena == "res://cena_fase2.tscn":
+		if portao.proxima_cena == "res://cenas/fases/fase_2.tscn":
 			final_ok = true
 	checar(final_ok, "o portão final leva à Fase 2")
 	checar(fechados == 3, "portões começam fechados (há adversários em todas as quadras)")
@@ -176,10 +176,10 @@ func _rodar() -> void:
 	checar(zagueiro.vida == 1, "carrinho de verdade tira 2 do Zagueiro (3 -> %d)" % zagueiro.vida)
 
 	print("-- Fase 2")
-	change_scene_to_file("res://cena_fase2.tscn")
+	change_scene_to_file("res://cenas/fases/fase_2.tscn")
 	await esperar(5)
 	fase = current_scene
-	checar(fase.scene_file_path == "res://cena_fase2.tscn", "Fase 2 carregada")
+	checar(fase.scene_file_path == "res://cenas/fases/fase_2.tscn", "Fase 2 carregada")
 	var chefoes := 0
 	var outros := 0
 	for inimigo in get_nodes_in_group("inimigos"):

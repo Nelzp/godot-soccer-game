@@ -48,7 +48,7 @@ func pular() -> void:
 
 func _rodar() -> void:
 
-	change_scene_to_file("res://cena_fase.tscn")
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
 	await esperar(3)
 
 	var fase := current_scene

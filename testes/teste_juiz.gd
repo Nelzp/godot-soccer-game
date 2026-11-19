@@ -3,11 +3,11 @@ extends SceneTree
 ## tapam a visão, lançamento só na tela, desvio pulando, alcance do cartão e
 ## morte. Monta um campo vazio só com chão, o jogador, o HUD e um Juiz.
 
-const CENA_JOGADOR := "res://cena_jogador.tscn"
-const CENA_JUIZ := "res://cena_juiz.tscn"
-const CENA_HUD := "res://cena_hud.tscn"
-const CENA_OBSTACULO := "res://cena_obstaculo.tscn"
-const CENA_PORTAO := "res://cena_portao_fase.tscn"
+const CENA_JOGADOR := "res://cenas/personagens/jogador.tscn"
+const CENA_JUIZ := "res://cenas/personagens/juiz.tscn"
+const CENA_HUD := "res://cenas/menus/hud.tscn"
+const CENA_OBSTACULO := "res://cenas/objetos/obstaculo.tscn"
+const CENA_PORTAO := "res://cenas/objetos/portao.tscn"
 
 const Y_CHAO := 529.5
 const X_JUIZ := 3000.0

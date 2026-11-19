@@ -26,7 +26,7 @@ func esperar(quadros: int) -> void:
 
 func _rodar() -> void:
 
-	change_scene_to_file("res://cena_fase2.tscn")
+	change_scene_to_file("res://cenas/fases/fase_2.tscn")
 	await esperar(5)
 
 	var fase := current_scene
@@ -202,13 +202,13 @@ func _rodar() -> void:
 	await esperar(60)
 	Input.action_release("ir_para_direita")
 	await esperar(120)
-	checar(current_scene != null and current_scene.scene_file_path == "res://cena_vitoria.tscn", "entrar na saída leva à tela de vitória")
-	if current_scene != null and current_scene.scene_file_path == "res://cena_vitoria.tscn":
+	checar(current_scene != null and current_scene.scene_file_path == "res://cenas/menus/vitoria.tscn", "entrar na saída leva à tela de vitória")
+	if current_scene != null and current_scene.scene_file_path == "res://cenas/menus/vitoria.tscn":
 		var botao: Button = current_scene.get_node("BotaoRetornar")
 		checar(botao.has_focus(), "botão RETORNAR AO MENU com foco")
 		botao.pressed.emit()
 		await esperar(5)
-		checar(current_scene != null and current_scene.scene_file_path == "res://cena_inicio.tscn", "botão volta ao menu inicial")
+		checar(current_scene != null and current_scene.scene_file_path == "res://cenas/menus/menu_inicial.tscn", "botão volta ao menu inicial")
 
 	print("\n%d verificações, %d falhas" % [verificacoes, falhas])
 	quit(falhas)

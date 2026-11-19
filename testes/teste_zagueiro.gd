@@ -26,7 +26,7 @@ func esperar(quadros: int) -> void:
 func _rodar() -> void:
 
 	root.get_node("Configuracoes").caminho_arquivo = "user://teste_zagueiro.cfg"
-	change_scene_to_file("res://cena_fase.tscn")
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
 	await esperar(5)
 
 	var fase := current_scene
@@ -140,7 +140,7 @@ func _rodar() -> void:
 	checar(zagueiro.vida == 0, "depois de derrubado não recebe mais dano")
 
 	# Outro zagueiro: carrinhos do jogador (2 cada)
-	var outro = load("res://cena_inimigo2.tscn").instantiate()
+	var outro = load("res://cenas/personagens/zagueiro.tscn").instantiate()
 	fase.add_child(outro)
 	outro.global_position = Vector2(600, 480)
 	await esperar(5)

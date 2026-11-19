@@ -36,7 +36,7 @@ func andar(acao: String, quadros: int, pular: bool = false) -> void:
 
 func _rodar() -> void:
 
-	change_scene_to_file("res://cena_fase.tscn")
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
 	await esperar(5)
 	var jogador := get_first_node_in_group("jogador") as CharacterBody2D
 	jogador.invencivel = true
@@ -90,8 +90,8 @@ func _rodar() -> void:
 	var transicao = root.get_node("Transicao")
 	checar(transicao.em_transicao(), "entrar no portão final inicia a transição suave")
 	await esperar(90)
-	checar(current_scene != null and current_scene.scene_file_path == "res://cena_fase2.tscn", "a transição carrega a Fase 2")
-	checar(transicao.fase_atual == "res://cena_fase2.tscn", "Fase 2 registrada como fase atual")
+	checar(current_scene != null and current_scene.scene_file_path == "res://cenas/fases/fase_2.tscn", "a transição carrega a Fase 2")
+	checar(transicao.fase_atual == "res://cenas/fases/fase_2.tscn", "Fase 2 registrada como fase atual")
 	var jogador2 := get_first_node_in_group("jogador") as CharacterBody2D
 	checar(jogador2 != null and jogador2 != jogador and not jogador2.invencivel, "jogador novo na Fase 2, sem estado antigo")
 	await esperar(40)

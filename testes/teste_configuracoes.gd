@@ -70,7 +70,7 @@ func _rodar() -> void:
 	checar(is_equal_approx(volume_bus("Efeitos"), 1.0), "efeitos 100%")
 
 	print("-- tela pelo menu inicial")
-	change_scene_to_file("res://cena_inicio.tscn")
+	change_scene_to_file("res://cenas/menus/menu_inicial.tscn")
 	await esperar(5)
 	var menu := current_scene
 	menu._on_botao_configuracao_pressed()
@@ -154,7 +154,7 @@ func _rodar() -> void:
 	checar(cfg.valores.fps == 60 and cfg.valores.modo == "janela" and is_equal_approx(cfg.valores.volume_geral, 1.0), "arquivo inválido volta aos padrões e limita volumes")
 
 	print("-- pela pausa")
-	change_scene_to_file("res://cena_fase.tscn")
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
 	await esperar(5)
 	var pausa = current_scene.find_child("pausa", true, false)
 	pausa.abrir_menu()

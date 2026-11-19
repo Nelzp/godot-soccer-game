@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://ll5gm8i2wjll" path="res://scripts/objetos/cartao.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bb4gxvqqtvxm3" path="res://recursos/imagens/personagens/chefao.png" id="2_textura"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cartao"]
+size = Vector2(46, 20)
+
+[node name="CartaoVermelho" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_layer = 2
+script = ExtResource("1_script")
+velocidade = 520.0
+tempo_de_vida = 4.5
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_textura")
+region_enabled = true
+region_rect = Rect2(1248, 887, 110, 38)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_cartao")

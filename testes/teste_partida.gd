@@ -18,13 +18,13 @@ extends SceneTree
 ## 50 x 1,2 = 60 s).
 
 const LIMITE_QUADROS := 60 * 240
-const FASE1 := "res://cena_fase.tscn"
-const FASE2 := "res://cena_fase2.tscn"
-const VITORIA := "res://cena_vitoria.tscn"
+const FASE1 := "res://cenas/fases/fase_1.tscn"
+const FASE2 := "res://cenas/fases/fase_2.tscn"
+const VITORIA := "res://cenas/menus/vitoria.tscn"
 
-const JUIZ := "script_inimigo1.gd"
-const GOLEIRO := "script_goleiro.gd"
-const ZAGUEIRO := "personagem.gd"
+const JUIZ := "/juiz.gd"
+const GOLEIRO := "/goleiro.gd"
+const ZAGUEIRO := "/zagueiro.gd"
 
 var falhas := 0
 var verificacoes := 0

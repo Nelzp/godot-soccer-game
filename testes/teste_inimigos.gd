@@ -5,11 +5,11 @@ extends SceneTree
 ## corpo baixo, quadro de levantar), reação ao golpe e morte (cai e some, sem
 ## atacar depois). Campo vazio montado pelo teste.
 
-const CENA_JOGADOR := "res://cena_jogador.tscn"
-const CENA_HUD := "res://cena_hud.tscn"
-const CENA_JUIZ := "res://cena_juiz.tscn"
-const CENA_GOLEIRO := "res://goleiro.tscn"
-const CENA_ZAGUEIRO := "res://cena_inimigo2.tscn"
+const CENA_JOGADOR := "res://cenas/personagens/jogador.tscn"
+const CENA_HUD := "res://cenas/menus/hud.tscn"
+const CENA_JUIZ := "res://cenas/personagens/juiz.tscn"
+const CENA_GOLEIRO := "res://cenas/personagens/goleiro.tscn"
+const CENA_ZAGUEIRO := "res://cenas/personagens/zagueiro.tscn"
 
 const Y_CHAO := 529.5
 

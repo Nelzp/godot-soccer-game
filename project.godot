@@ -10,16 +10,18 @@ config_version=5
 
 [application]
 
-config/name="As aventura de um jogador"
+config/name="As aventuras de um jogador"
 run/main_scene="uid://bea7gind4ls22"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Godot/app_userdata/As aventura de um jogador"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]
 
-Configuracoes="*res://configuracoes.gd"
-Transicao="*res://transicao.gd"
+Configuracoes="*res://scripts/sistemas/configuracoes.gd"
+Transicao="*res://scripts/sistemas/transicao.gd"
 Audio="*res://scripts/sistemas/audio.gd"
 
 [debug]
