@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Configuracoes="*res://configuracoes.gd"
 Transicao="*res://transicao.gd"
+Audio="*res://scripts/sistemas/audio.gd"
 
 [debug]
 

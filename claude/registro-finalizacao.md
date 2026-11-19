@@ -554,3 +554,40 @@ faixa) e o agressivo acima de 28 s. Sem esperas artificiais.
 **Correções:** o cartão nascia dentro do jogador quando o Juiz lançava colado nele (agora
 não lança à queima-roupa); quem caía por cima do Zagueiro deslizando levava o golpe; o
 game over cortava a cena sem mostrar a morte.
+
+### Etapa C — Áudio
+
+Arquivos entregues (movidos para `recursos/sons/`, conteúdo idêntico conferido por hash;
+os `.mpeg` eram MP3 por dentro e a Godot não importa essa extensão):
+
+| Arquivo original | Novo nome | Formato | Duração | Uso |
+|---|---|---|---|---|
+| Musica Menu.mp3.mpeg | musica_menu.mp3 | MP3 48 kHz estéreo | 21,2 s | música do menu (laço) |
+| som primeira fase.mp3.mpeg | musica_fase_1.mp3 | MP3 48 kHz estéreo | 17,5 s | música da Fase 1 (laço) |
+| Musica Segunda Fase.mpeg | musica_fase_2.mp3 | MP3 44,1 kHz estéreo | 21,5 s | música da Fase 2 (laço) |
+| Musica vitoria.mpeg | musica_vitoria.mp3 | MP3 48 kHz estéreo | 16,2 s | música da vitória (laço) |
+| Som chute da bola.mp3.mpeg | som_chute.mp3 | MP3 24 kHz | 0,79 s | chute, no quadro do contato |
+| som pulo.mp3.mpeg | som_pulo.mp3 | MP3 44,1 kHz | 1,24 s | pulo |
+| Som Dano.mp3.mpeg | som_dano.mp3 | MP3 48 kHz | 0,33 s | jogador leva dano |
+| Som Game Over.wav | som_game_over.wav | WAV 22 kHz mono | 5,34 s | queda do jogador e tela de game over |
+
+- Autoload `Audio` (`scripts/sistemas/audio.gd`): músicas no bus Musica (uma de cada vez,
+  troca suave, a mesma faixa não recomeça ao reiniciar a fase, mais baixa na pausa);
+  efeitos no bus Efeitos (máx. 2 vozes por efeito, o mesmo som não dobra no mesmo
+  instante). Cada fase escolhe a música no Inspetor (`musica`).
+- Volumes medidos no jogo e equilibrados por arquivo (a música da Fase 1 estava ~8 dB mais
+  baixa, a da Fase 2 passava de 0 dBFS, o game over tinha pico de −19 dBFS). Conferido com
+  o driver real (Master mudo): as quatro músicas ficam entre −16 e −19 dBFS no bus.
+- Os MP3 têm 50–90 ms de silêncio no começo; os efeitos começam depois dele. O som do chute
+  chega ao bus ~33 ms depois do quadro da bola (já com a latência do driver).
+- Sem arquivo, ficam em silêncio (pendentes): carrinho, bola batendo, cartão do Juiz, soco
+  do Goleiro, carrinho do Zagueiro, ataques/dano/morte do chefão, portões, transição,
+  saída liberada e botões dos menus. "Som Dano" não foi reaproveitado para o chefão nem
+  para os inimigos (seria associar por associar).
+- Teste novo `teste_audio.gd` (25 verificações). Nos testes headless o driver é "Dummy" e o
+  `Audio` só registra o que tocaria (o Dummy não mistura o som e nada terminaria).
+
+### Situação
+
+Etapas A, B e C concluídas e commitadas. Faltam a D (organização das pastas) e a E
+(revisão final e relatório).

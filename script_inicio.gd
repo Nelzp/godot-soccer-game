@@ -6,6 +6,10 @@ const CENA_CONFIGURACOES := preload("res://cena_configuracoes.tscn")
 var tela_configuracoes: Node = null
 
 
+func _ready() -> void:
+	Audio.tocar_musica("menu")
+
+
 func iniciar_jogo() -> void:
 	get_tree().change_scene_to_file("res://cena_fase.tscn")
 

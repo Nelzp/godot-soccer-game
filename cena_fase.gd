@@ -10,6 +10,8 @@ extends Node2D
 @export var limite_topo: int = 3
 @export var limite_direito: int = 2400
 @export var limite_baixo: int = 650
+## Música da fase (nomes em Audio.MUSICAS).
+@export_enum("fase_1", "fase_2", "menu", "vitoria") var musica: String = "fase_1"
 
 
 func _ready() -> void:
@@ -17,6 +19,8 @@ func _ready() -> void:
 	# O game over usa isto para recomeçar nesta mesma fase
 	if not scene_file_path.is_empty():
 		Transicao.fase_atual = scene_file_path
+
+	Audio.tocar_musica(musica)
 
 	var direito := limite_direito
 

@@ -11,6 +11,8 @@ func _ready() -> void:
 	# Nada pode continuar pausado vindo da fase
 	get_tree().paused = false
 
+	Audio.tocar_musica("vitoria")
+
 	botao_retornar.pressed.connect(retornar_ao_menu)
 	botao_retornar.grab_focus()
 

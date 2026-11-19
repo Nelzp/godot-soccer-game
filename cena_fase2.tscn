@@ -32,6 +32,7 @@ script = ExtResource("1_fase")
 limite_topo = 0
 limite_direito = 1528
 limite_baixo = 648
+musica = "fase_2"
 
 [node name="Hud" parent="." instance=ExtResource("3_hud")]
 

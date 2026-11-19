@@ -145,7 +145,7 @@ func _physics_process(delta: float) -> void:
 			if entrada != 0:
 				virar(entrada)
 			if Input.is_action_just_pressed("pular") and is_on_floor():
-				velocity.y = -forca_pulo
+				_pular()
 			if is_on_floor():
 				if Input.is_action_just_pressed("chutar"):
 					_iniciar_chute()
@@ -156,7 +156,7 @@ func _physics_process(delta: float) -> void:
 			# Pé de apoio: anda devagar e não vira até o chute acabar
 			velocity.x = entrada * velocidade * velocidade_no_chute
 			if Input.is_action_just_pressed("pular") and is_on_floor():
-				velocity.y = -forca_pulo
+				_pular()
 
 		Estado.DESLIZANDO:
 			var progresso := clampf(_tempo_no_estado / duracao_deslize, 0.0, 1.0)
@@ -183,6 +183,11 @@ func _physics_process(delta: float) -> void:
 	_atualizar_animacao()
 	_atualizar_camera(delta, entrada != 0 and estado == Estado.LIVRE)
 	_estava_no_chao = is_on_floor()
+
+
+func _pular() -> void:
+	velocity.y = -forca_pulo
+	Audio.tocar_efeito("pulo")
 
 
 # ---------------------------------------------------------------------------
@@ -214,6 +219,9 @@ func spawnar_bolar() -> void:
 	corpo_bola.add_collision_exception_with(self)
 
 	obj_bola.global_position = marcador.global_position
+
+	# O som sai no mesmo quadro em que o pé encontra a bola
+	Audio.tocar_efeito("chute")
 
 
 # ---------------------------------------------------------------------------
@@ -394,6 +402,7 @@ func receber_dano(origem: Vector2 = Vector2.INF) -> void:
 
 	_invulneravel = tempo_invulneravel
 	dano_recebido.emit()
+	Audio.tocar_efeito("dano")
 	_piscar_dano()
 
 	# Recuo pequeno (golpes que empurram mais chamam empurrar() em seguida)
@@ -443,6 +452,10 @@ func morrer() -> void:
 		_tween_dano.kill()
 
 	morreu.emit()
+
+	# A música para e o som de game over acompanha a queda
+	Audio.parar_musica(0.4)
+	Audio.tocar_efeito("game_over")
 
 	# Pulinho, tomba para trás (o pivô do Visual fica nos pés), apaga
 	var base := visual.position
