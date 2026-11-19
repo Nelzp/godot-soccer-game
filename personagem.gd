@@ -42,6 +42,10 @@ enum Estado {
 ## Tempo (s) mínimo entre um carrinho e outro.
 @export var recarga_carrinho: float = 1.6
 @export var empurrao_carrinho: Vector2 = Vector2(380.0, -300.0)
+## Altura (px) do corpo deslizando (em pé: 89). Mais baixo = mais fácil pular.
+@export var altura_deslizando: float = 60.0
+## Tempo (s) do quadro de levantar depois do carrinho.
+@export var tempo_levantando: float = 0.25
 
 @export_group("Aparência")
 ## Cores da camisa, das meias e do calção (ver variacoes_inimigos.gd).
@@ -57,13 +61,20 @@ var estava_na_parede: bool = false
 ## Quanto tempo (s) dura a pausa atual (recuperação ou atordoamento).
 var _duracao_pausa: float = 0.0
 var _x_inicial: float = 0.0
+var _tween_aviso: Tween
+var _altura_em_pe: float = 89.0
+var _y_forma_em_pe: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var forma: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
 	_x_inicial = global_position.x
+	# A forma abaixa no carrinho: cada zagueiro tem a sua
+	forma.shape = forma.shape.duplicate()
+	_altura_em_pe = (forma.shape as RectangleShape2D).size.y
+	_y_forma_em_pe = forma.position.y
 	aplicar_variacao("zagueiro", variacao)
 	atualizar_animacao()
 
@@ -162,14 +173,42 @@ func _procurar_jogador() -> void:
 	# Jogador às costas: o zagueiro vira e se prepara do mesmo jeito
 	direcao = 1 if dx > 0.0 else -1
 	_mudar_estado(Estado.PREPARANDO)
+	_avisar_carrinho()
+
+
+## Aviso do carrinho: inclina para a arrancada e o corpo pulsa em laranja.
+func _avisar_carrinho() -> void:
+
+	var visual := no_visual()
+
+	if visual == null:
+		return
+
+	if _tween_aviso != null:
+		_tween_aviso.kill()
+
+	_tween_aviso = create_tween()
+	_tween_aviso.tween_property(visual, "modulate", Color(1.35, 0.95, 0.6), tempo_preparo * 0.5)
+	_tween_aviso.tween_property(visual, "modulate", Color(1, 1, 1), tempo_preparo * 0.5)
 
 
 func _iniciar_carrinho() -> void:
 
 	acertou_no_carrinho = false
 	_mudar_estado(Estado.DESLIZANDO)
+	_abaixar_forma(true)
 	animation_player.play("carrinho")
 	animation_player.seek(0.0, true)
+
+
+func _abaixar_forma(abaixar: bool) -> void:
+
+	var retangulo := forma.shape as RectangleShape2D
+	var base := _y_forma_em_pe + _altura_em_pe * 0.5
+	var altura := altura_deslizando if abaixar else _altura_em_pe
+
+	retangulo.size.y = altura
+	forma.position.y = base - altura * 0.5
 
 
 func _verificar_acerto_do_carrinho() -> void:
@@ -228,7 +267,6 @@ func _pes_de(corpo: Node2D) -> float:
 ## Altura (y global) do topo do zagueiro.
 func _topo() -> float:
 
-	var forma := $CollisionShape2D as CollisionShape2D
 	var retangulo := forma.shape as RectangleShape2D
 
 	return forma.global_position.y - retangulo.size.y * 0.5 * absf(forma.global_scale.y)
@@ -238,7 +276,10 @@ func _iniciar_recuperacao(duracao: float) -> void:
 
 	recarga = recarga_carrinho
 	_duracao_pausa = duracao
+	_abaixar_forma(false)
 	_mudar_estado(Estado.RECUPERANDO)
+	# Levanta do carrinho (o quadro de levantar aparece no começo da pausa)
+	animation_player.play("levantando")
 
 
 func _mudar_estado(novo: Estado) -> void:
@@ -251,12 +292,28 @@ func _mudar_estado(novo: Estado) -> void:
 # Dano
 # ---------------------------------------------------------------------------
 
-## Golpe que não matou: pisca, recua um pouco e fica atordoado.
+## Golpe que não matou: pisca, recua um pouco e fica atordoado (um golpe no
+## preparo ou no meio do carrinho interrompe o ataque).
 func _reagir_ao_dano(_quantidade: int) -> void:
 
+	if _tween_aviso != null:
+		_tween_aviso.kill()
+		var visual := no_visual()
+		if visual != null:
+			visual.modulate = Color(1, 1, 1)
+
+	_abaixar_forma(false)
 	_duracao_pausa = 0.45
 	_mudar_estado(Estado.ATORDOADO)
 	piscar_dano()
+
+
+func _animar_morte() -> void:
+
+	if _tween_aviso != null:
+		_tween_aviso.kill()
+
+	super._animar_morte()
 
 
 # ---------------------------------------------------------------------------
@@ -266,14 +323,22 @@ func _reagir_ao_dano(_quantidade: int) -> void:
 func atualizar_animacao() -> void:
 
 	# O desenho original olha para a direita
-	sprite.flip_h = direcao < 0
+	virar_visual(direcao)
 
 	match estado:
 
 		Estado.PATRULHANDO:
 			_tocar("correndo")
 
-		Estado.PREPARANDO, Estado.RECUPERANDO, Estado.ATORDOADO:
+		Estado.PREPARANDO:
+			_tocar("preparando")
+
+		Estado.RECUPERANDO:
+			# Primeiro o quadro de levantar, depois parado
+			if tempo_no_estado >= tempo_levantando:
+				_tocar("parado")
+
+		Estado.ATORDOADO:
 			_tocar("parado")
 
 		Estado.DESLIZANDO:

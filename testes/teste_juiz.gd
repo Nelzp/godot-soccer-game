@@ -75,10 +75,9 @@ func esperar_juiz_parado() -> void:
 func posicionar_jogador(x: float, lado: int) -> void:
 	jogador.global_position = Vector2(x, Y_CHAO - 48.5)
 	jogador.velocity = Vector2.ZERO
-	jogador.direcao = lado
+	jogador.virar(lado)
 	jogador._lado_camera = lado
 	jogador.camera.position.x = jogador.antecipacao_camera * lado
-	jogador.get_node("Sprite2D").flip_h = lado < 0
 	await esperar(3)
 
 

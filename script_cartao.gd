@@ -82,7 +82,9 @@ func _physics_process(delta: float) -> void:
 		if objeto.is_in_group("jogador"):
 
 			if objeto.has_method("receber_dano"):
-				objeto.receber_dano()
+				# De onde veio o golpe: o jogador recua para o outro lado
+				var sentido := vetor if vetor != Vector2.ZERO else Vector2(direcao, 0.0)
+				objeto.receber_dano(global_position - sentido * 40.0)
 
 			remover()
 			return

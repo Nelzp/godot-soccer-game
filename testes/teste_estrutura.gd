@@ -74,7 +74,7 @@ func _rodar() -> void:
 			vidas_ok = false
 		if variacoes.has(tipo):
 			variacoes[tipo][inimigo.variacao] = true
-			var material = inimigo.get_node("Sprite2D").material
+			var material = inimigo.sprite_visual().material
 			if inimigo.variacao == 0:
 				material_ok = material_ok and material == null
 			else:
@@ -91,7 +91,7 @@ func _rodar() -> void:
 		if tipo_de(inimigo) == "juiz" and inimigo.variacao > 0:
 			juiz_variado = inimigo
 			break
-	var sprite: Sprite2D = juiz_variado.get_node("Sprite2D")
+	var sprite: Sprite2D = juiz_variado.sprite_visual()
 	var animacao: AnimationPlayer = juiz_variado.get_node("AnimationPlayer")
 	animacao.play("atirando")
 	animacao.seek(0.0, true)

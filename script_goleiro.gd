@@ -1,7 +1,11 @@
 
 extends "res://inimigo_base.gd"
-## Goleiro: patrulha e, ao encostar no jogador, dá um soco.
+## Goleiro: patrulha e, com o jogador perto e à frente (ou encostando), soca.
 ## Vida, dano e morte vêm de inimigo_base.gd.
+##
+## Soco: guarda agachado e guarda (aviso, ~0,36 s, ainda vira para o jogador),
+## soco com um passo à frente, impacto (o golpe conta aqui, se o jogador ainda
+## estiver ao alcance) e volta. Dá para escapar recuando ou pulando por cima.
 
 enum Estado {
 	PATRULHANDO,
@@ -15,11 +19,20 @@ enum Estado {
 @export var distancia_para_liberar: float = 200.0
 ## Até quantos pixels além da borda do corpo o soco alcança.
 @export var alcance_golpe: float = 60.0
+## O soco começa quando o jogador chega a esta distância (px) da borda do corpo.
+@export var distancia_para_atacar: float = 50.0
+## Velocidade (px/s) do passo à frente durante o soco.
+@export var velocidade_investida: float = 150.0
 ## Até quantos px para cada lado do ponto de partida o goleiro patrulha
 ## (0 = sem limite, vira só em paredes e obstáculos).
 @export var raio_patrulha: float = 200.0
 ## Cores do uniforme e das luvas (ver variacoes_inimigos.gd).
 @export_enum("Vermelho e amarelo (original)", "Verde e branco", "Azul e amarelo", "Roxo e rosa", "Laranja e preto") var variacao: int = 0
+
+## Tempo (s) da animação "ataque" em que o soco sai (fim do aviso) e em que o
+## passo à frente acaba.
+const INICIO_SOCO := 0.36
+const FIM_INVESTIDA := 0.5
 
 var direcao: int = 1
 var estado: Estado = Estado.PATRULHANDO
@@ -30,7 +43,6 @@ var aguardando_afastamento: bool = false
 var estava_na_parede: bool = false
 var golpe_aplicado: bool = false
 
-@onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var forma: CollisionShape2D = $CollisionShape2D
 
@@ -39,6 +51,7 @@ func _ready() -> void:
 	_x_inicial = global_position.x
 	animation_player.animation_finished.connect(_on_animation_finished)
 	aplicar_variacao("goleiro", variacao)
+	atualizar_direcao()
 
 
 func _physics_process(delta: float) -> void:
@@ -58,20 +71,24 @@ func _physics_process(delta: float) -> void:
 		aguardando_afastamento = false
 		estado = Estado.PATRULHANDO
 
-	# Comportamento conforme o estado
 	match estado:
 
 		Estado.PATRULHANDO:
 			patrulhar()
 
 		Estado.ATACANDO:
-			velocity.x = 0.0
+			var tempo := animation_player.current_animation_position
+			if tempo < INICIO_SOCO:
+				# Aviso: parado, ainda acompanhando o jogador
+				velocity.x = 0.0
+				if jogador_alvo != null and is_instance_valid(jogador_alvo):
+					atualizar_direcao_ataque(jogador_alvo)
+			elif tempo < FIM_INVESTIDA:
+				# O soco sai com um passo à frente (direção já decidida)
+				velocity.x = lado_visual() * velocidade_investida
+			else:
+				velocity.x = 0.0
 
-			# Manter o goleiro olhando para o jogador durante o ataque
-			if jogador_alvo != null and is_instance_valid(jogador_alvo):
-				atualizar_direcao_ataque(jogador_alvo)
-
-	# Movimentar o goleiro
 	move_and_slide()
 
 	# Inverter direção ao encontrar uma parede
@@ -103,17 +120,12 @@ func _physics_process(delta: float) -> void:
 			aguardando_afastamento = false
 			jogador_alvo = null
 
-	# Detectar jogador pela colisão
+	# Jogador perto e à frente, ou encostando: soca
 	if estado == Estado.PATRULHANDO and not aguardando_afastamento:
 
 		var jogador = detectar_jogador()
 
-		if jogador != null:
-
-			# Não atacar se o jogador estiver em cima do goleiro
-			if jogador_esta_em_cima(jogador):
-				return
-
+		if jogador != null and not jogador_esta_em_cima(jogador):
 			iniciar_ataque(jogador)
 
 
@@ -142,11 +154,10 @@ func iniciar_ataque(jogador: CharacterBody2D) -> void:
 	atualizar_direcao_ataque(jogador)
 
 	animation_player.play("ataque")
+	animation_player.seek(0.0, true)
 
-	print("GOLEIRO: ATAQUE INICIADO!")
 
-
-## Chamado pela animação "ataque" no quadro do soco (0,6 s).
+## Chamado pela animação "ataque" no quadro do impacto.
 ## Só causa dano se o jogador ainda estiver ao alcance, e no máximo uma vez por ataque.
 func aplicar_golpe() -> void:
 
@@ -159,8 +170,7 @@ func aplicar_golpe() -> void:
 		return
 
 	if jogador_no_alcance(jogador_alvo) and jogador_alvo.has_method("receber_dano"):
-		jogador_alvo.receber_dano()
-		print("GOLEIRO: Jogador atingido!")
+		jogador_alvo.receber_dano(global_position)
 
 
 func _on_animation_finished(nome_animacao: StringName) -> void:
@@ -174,11 +184,11 @@ func _on_animation_finished(nome_animacao: StringName) -> void:
 	# Impedir ataques repetidos enquanto o jogador estiver próximo
 	aguardando_afastamento = true
 
+	direcao = lado_visual()
 	estado = Estado.PATRULHANDO
 
-	print("GOLEIRO: Ataque finalizado!")
 
-
+## Jogador encostado (colisão) ou perto, à frente e na mesma altura.
 func detectar_jogador() -> CharacterBody2D:
 
 	for i in range(get_slide_collision_count()):
@@ -189,7 +199,23 @@ func detectar_jogador() -> CharacterBody2D:
 		if objeto is CharacterBody2D and objeto.is_in_group("jogador"):
 			return objeto
 
-	return null
+	var jogador := buscar_jogador() as CharacterBody2D
+
+	if jogador == null:
+		return null
+
+	var dx := jogador.global_position.x - global_position.x
+
+	if dx * lado_visual() <= 0.0:
+		return null
+
+	if absf(dx) > meia_largura() + distancia_para_atacar + 20.0:
+		return null
+
+	if absf(jogador.global_position.y - global_position.y) > meia_altura() + 30.0:
+		return null
+
+	return jogador
 
 
 ## O jogador está "em cima" quando o centro dele fica acima do topo do Goleiro.
@@ -210,9 +236,7 @@ func jogador_no_alcance(jogador: Node2D) -> bool:
 	var dy := jogador.global_position.y - global_position.y
 
 	# Precisa estar do lado para onde o Goleiro está virado
-	var lado := -1.0 if sprite.flip_h else 1.0
-
-	if dx * lado < 0.0:
+	if dx * lado_visual() < 0.0:
 		return false
 
 	if absf(dx) > meia_largura() + alcance_golpe:
@@ -226,7 +250,7 @@ func meia_largura() -> float:
 	var retangulo := forma.shape as RectangleShape2D
 
 	if retangulo == null:
-		return 90.0
+		return 52.0
 
 	return retangulo.size.x * 0.5 * absf(forma.scale.x)
 
@@ -236,19 +260,15 @@ func meia_altura() -> float:
 	var retangulo := forma.shape as RectangleShape2D
 
 	if retangulo == null:
-		return 72.0
+		return 70.0
 
 	return retangulo.size.y * 0.5 * absf(forma.scale.y)
 
 
 func atualizar_direcao() -> void:
-
-	# Sprite original olhando para a direita
-	sprite.flip_h = direcao < 0
+	# Desenho original olhando para a direita
+	virar_visual(direcao)
 
 
 func atualizar_direcao_ataque(jogador: CharacterBody2D) -> void:
-
-	# Jogador à esquerda: inverter o sprite
-	# Jogador à direita: manter o sprite original
-	sprite.flip_h = jogador.global_position.x < global_position.x
+	virar_visual(-1 if jogador.global_position.x < global_position.x else 1)

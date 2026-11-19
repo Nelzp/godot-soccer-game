@@ -168,7 +168,7 @@ func _rodar() -> void:
 	juiz.process_mode = Node.PROCESS_MODE_DISABLED
 
 	# Zagueiro da quadra 1 com os bonecos à esquerda dele
-	var zagueiro = fase.get_node("Inimigos/Zagueiro/Personagem")
+	var zagueiro = fase.get_node("Inimigos/Zagueiro2/Personagem")
 	zagueiro.process_mode = Node.PROCESS_MODE_INHERIT
 	zagueiro.raio_patrulha = 0.0
 	zagueiro.direcao = -1

@@ -38,6 +38,8 @@ enum Estado {
 @export_group("Aparência")
 ## Cores do uniforme (ver variacoes_inimigos.gd).
 @export_enum("Preto (original)", "Azul-marinho", "Vinho", "Verde", "Amarelo") var variacao: int = 0
+## Sem ninguém à vista, de quanto em quanto tempo (s) ele confere o relógio.
+@export var intervalo_relogio: float = 6.0
 
 const CENA_CARTAO := preload("res://cena_cartao.tscn")
 
@@ -45,15 +47,17 @@ var estado: Estado = Estado.PARADO
 ## Tempo (s) até poder lançar de novo.
 var recarga: float = 0.0
 var direcao_inimigo: int = 1
+var _tempo_ocioso: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite2D
 @onready var animacao: AnimationPlayer = $AnimationPlayer
-@onready var mao: Marker2D = $Marker2D
+@onready var mao: Marker2D = $Visual/Marker2D
 
 
 func _ready() -> void:
 	aplicar_variacao("juiz", variacao)
 	animacao.animation_finished.connect(_on_animacao_terminou)
+	# Cada Juiz confere o relógio num momento diferente
+	_tempo_ocioso = fmod(global_position.x * 0.37, intervalo_relogio)
 
 
 func _physics_process(delta: float) -> void:
@@ -67,17 +71,44 @@ func _physics_process(delta: float) -> void:
 
 	if jogador == null:
 		if estado == Estado.PARADO:
-			_tocar("parado")
+			_tocar_ocioso(delta, true)
 		return
 
 	_virar_para(jogador)
 
 	if estado == Estado.PARADO:
-		_tocar("parado")
+		var vendo := ve_jogador()
 		# Só começa com o jogador apoiado: o aviso (cartão erguido) sempre
 		# aparece quando ainda dá para reagir
-		if recarga <= 0.0 and _jogador_apoiado(jogador) and ve_jogador():
+		if recarga <= 0.0 and vendo and _jogador_apoiado(jogador):
 			_iniciar_lancamento()
+		else:
+			_tocar_ocioso(delta, not vendo)
+
+
+## Parado, respirando; de vez em quando, sem ninguém à vista, olha o relógio
+## (com o jogador à vista, para de olhar na hora).
+func _tocar_ocioso(delta: float, pode_relogio: bool) -> void:
+
+	if animacao.current_animation == "relogio" and animacao.is_playing():
+		if pode_relogio:
+			return
+		_tocar("parado", true)
+		return
+
+	if not pode_relogio:
+		_tempo_ocioso = 0.0
+		_tocar("parado")
+		return
+
+	_tempo_ocioso += delta
+
+	if _tempo_ocioso >= intervalo_relogio:
+		_tempo_ocioso = 0.0
+		animacao.play("relogio")
+		return
+
+	_tocar("parado")
 
 
 func _jogador_apoiado(jogador: Node2D) -> bool:
@@ -94,8 +125,7 @@ func _virar_para(jogador: Node2D) -> void:
 		return
 
 	direcao_inimigo = 1 if dx > 0.0 else -1
-	sprite.flip_h = direcao_inimigo < 0
-	mao.position.x = absf(mao.position.x) * direcao_inimigo
+	virar_visual(direcao_inimigo)
 
 
 ## O jogador está ao alcance, à vista (sem nada sólido no caminho) e o Juiz
@@ -125,15 +155,11 @@ func ve_jogador() -> bool:
 	return _linha_livre(origem, alvo)
 
 
-## Ponto do jogador para onde o cartão é mirado (altura do peito).
+## Ponto do jogador para onde o cartão é mirado: a altura do peito dele em pé
+## (pela origem do corpo, que não muda no carrinho; deslizando, o cartão passa
+## por cima).
 func ponto_alvo(jogador: Node2D) -> Vector2:
-
-	var forma := jogador.get_node_or_null("CollisionShape2D") as Node2D
-
-	if forma != null:
-		return forma.global_position + Vector2(0.0, -15.0)
-
-	return jogador.global_position
+	return jogador.global_position + Vector2(0.0, -20.0)
 
 
 ## O Juiz aparece na tela agora (pela câmera atual)?
@@ -238,11 +264,19 @@ func direcao_do_lancamento() -> Vector2:
 
 func _on_animacao_terminou(nome: StringName) -> void:
 
-	if morrendo or nome != &"atirando" or estado != Estado.LANCANDO:
+	if morrendo:
+		return
+
+	if nome == &"relogio":
+		_tocar("parado", true)
+		return
+
+	if nome != &"atirando" or estado != Estado.LANCANDO:
 		return
 
 	estado = Estado.PARADO
 	recarga = intervalo_ataque
+	_tempo_ocioso = 0.0
 	_tocar("parado", true)
 
 

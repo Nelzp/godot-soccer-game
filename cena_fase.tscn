@@ -109,36 +109,43 @@ position = Vector2(6480, 488)
 variacao = 1
 
 [node name="Zagueiro" parent="Inimigos" instance=ExtResource("9_zagueiro")]
-position = Vector2(1560, 483)
+position = Vector2(650, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro" index="0"]
-raio_patrulha = 90.0
+raio_patrulha = 60.0
+variacao = 3
 
 [node name="Zagueiro2" parent="Inimigos" instance=ExtResource("9_zagueiro")]
-position = Vector2(3530, 483)
+position = Vector2(1560, 483)
 
 [node name="Personagem" parent="Inimigos/Zagueiro2" index="0"]
+raio_patrulha = 90.0
+
+[node name="Zagueiro3" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+position = Vector2(3530, 483)
+
+[node name="Personagem" parent="Inimigos/Zagueiro3" index="0"]
 raio_patrulha = 60.0
 variacao = 1
 
-[node name="Zagueiro3" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+[node name="Zagueiro4" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(4320, 483)
 
-[node name="Personagem" parent="Inimigos/Zagueiro3" index="0"]
+[node name="Personagem" parent="Inimigos/Zagueiro4" index="0"]
 raio_patrulha = 70.0
 variacao = 2
 
-[node name="Zagueiro4" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+[node name="Zagueiro5" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(5330, 483)
 
-[node name="Personagem" parent="Inimigos/Zagueiro4" index="0"]
+[node name="Personagem" parent="Inimigos/Zagueiro5" index="0"]
 raio_patrulha = 60.0
 variacao = 5
 
-[node name="Zagueiro5" parent="Inimigos" instance=ExtResource("9_zagueiro")]
+[node name="Zagueiro6" parent="Inimigos" instance=ExtResource("9_zagueiro")]
 position = Vector2(6900, 483)
 
-[node name="Personagem" parent="Inimigos/Zagueiro5" index="0"]
+[node name="Personagem" parent="Inimigos/Zagueiro6" index="0"]
 raio_patrulha = 60.0
 variacao = 4
 

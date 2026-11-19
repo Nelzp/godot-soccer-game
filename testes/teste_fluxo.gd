@@ -28,10 +28,20 @@ func cena_atual() -> String:
 	return current_scene.scene_file_path if current_scene else ""
 
 
+## Tira a última vida: o jogador cai (animação) e só depois o game over abre,
+## com a tela escurecendo.
 func perder() -> void:
+	var fase := cena_atual()
 	var hud := current_scene.find_child("Hud", true, false)
+	var jogador := get_first_node_in_group("jogador")
 	hud.vidas = 1
-	get_first_node_in_group("jogador").receber_dano()
+	jogador.receber_dano()
+	await esperar(5)
+	checar(jogador.morto and cena_atual() == fase, "última vida: o jogador cai antes do game over")
+	for _i in range(240):
+		await process_frame
+		if cena_atual() == "res://cena_game_over.tscn":
+			break
 	await esperar(5)
 
 

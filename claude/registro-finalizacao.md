@@ -445,12 +445,13 @@ etapa, sem push.
 divisórias entre quadras continuam as mesmas. Câmera, chão e paredes saem da largura do
 cenário; os portões foram reposicionados (x = 2.197, 4.850 e o final em 7.365).
 
-**Inimigos redistribuídos** (16: 6 Juízes, 5 Goleiros, 5 Zagueiros), em encontros
-separados por trechos só de movimentação e com ordem diferente em cada quadra:
+**Inimigos redistribuídos** (17: 6 Juízes, 5 Goleiros, 6 Zagueiros — o 17º, um Zagueiro
+logo depois da barreira inicial, entrou na etapa B, na calibragem da duração), em
+encontros separados por trechos só de movimentação e com ordem diferente em cada quadra:
 
 | Quadra | Encontros (da esquerda para a direita) |
 |---|---|
-| 1 (início) | Juiz sozinho · bonecos · Zagueiro · Goleiro + Juiz guardando o portão |
+| 1 (início) | barreira · Zagueiro · Juiz · bonecos · Zagueiro · Goleiro + Juiz guardando o portão |
 | 2 (meio) | caixa · Goleiro · barreira · Juiz + Zagueiro · Juiz · bonecos · Zagueiro + Goleiro |
 | 3 (final) | barreira · Zagueiro · caixa · Juiz atrás da caixa · Goleiro + Juiz · bonecos · Zagueiro + Goleiro |
 
@@ -489,3 +490,67 @@ como golpe do carrinho dele; agora só vale o encontro de frente.
 33,6 s. A estimativa para um jogador experiente usa um robô "cuidadoso" (desvia, mantém
 distância do Goleiro) e foi calibrada depois das animações novas (etapa B), porque o tempo
 do chute muda o ritmo de combate.
+
+### Etapa B — Animações de combate
+
+Nenhum quadro novo foi desenhado: tudo usa as folhas existentes, com ordem, tempo,
+alinhamento, deslocamento e sincronização ajustados.
+
+**Alinhamento dos quadros (todos os personagens).** Os quadros das folhas têm tamanhos
+diferentes e eram desenhados centralizados, então os pés subiam e desciam até 30 px e o
+corpo deslizava de um quadro para outro. Agora cada quadro é ancorado (tronco/cabeça no
+centro do corpo e pés na linha do chão) por um deslocamento por quadro, medido por script
+nas folhas. O desenho fica num nó `Visual` com a origem nos pés, que vira pela escala
+(`flip_h` não espelha o deslocamento). Conferido em folhas de contato renderizadas e por
+teste (variação dos pés ≤ 5,5 px no jogador).
+
+**Jogador** (`script_personagem.gd`, `cena_jogador.tscn`):
+
+- Proporção: o desenho era esticado 24% na vertical (escala 0,42 × 0,52). Agora a escala
+  é 0,5 nos dois eixos: mesma altura (106 px), largura do desenho original.
+- Estados claros: livre, chutando, deslizando, levantando e morto.
+- Chute: apoio (preparação) → contato com a faísca → acompanhamento → perna no alto →
+  volta (0,52 s). A bola sai **no quadro do contato** (0,11 s; antes só saía no fim, aos
+  0,6 s), do pé, para o lado do chute. Durante o chute anda a 35% e não vira.
+- Carrinho: entrada → desliza → desliza baixo → levanta (0,6 s). Desliza ~150 px perdendo
+  velocidade (antes ficava parado no lugar), com o corpo baixo (56 de 105 px: os cartões
+  passam por cima). Acerta só enquanto desliza, no máximo um inimigo; para ao bater em
+  parede ou obstáculo; levanta parado.
+- Pulo: o quadro acompanha a velocidade vertical (subida, topo, descida); ao cair, agacha
+  um instante. Corrida mais rápida (0,43 s por ciclo, antes 1 s: os pés "patinavam").
+- Dano: 1 s de invulnerabilidade com pisca (começa num vermelho rápido) e recuo pequeno
+  para longe de quem bateu; não interrompe chute nem carrinho.
+- Morte: na última vida o jogador para, dá um pulinho, tomba para trás e apaga; o game
+  over abre com transição (antes a cena trocava na hora).
+
+**Inimigos:**
+
+| Inimigo | Mudanças |
+|---|---|
+| Juiz | Lançamento ancorado nos pés (o corpo inclina, os pés ficam plantados); mão do cartão no quadro de soltar; respira parado e, sozinho, confere o relógio de vez em quando (quadros "checando o relógio" da folha) |
+| Goleiro | Soco: guarda agachado → guarda (aviso, 0,36 s, ainda vira para o jogador) → soco com rastro e passo à frente → impacto (o golpe conta aqui) → volta. Começa quando o jogador chega perto e à frente (antes só ao encostar). Caixa de colisão do tamanho do corpo: 104 × 140 (era 179 × 145, mais larga que o desenho) e escala uniforme 1,1 (era 1,21 × 1,09) |
+| Zagueiro | Aviso do carrinho: pose de arrancada e o corpo pulsa em laranja; carrinho com arrancada, queda no deslize e quatro quadros deslizando; corpo baixo (60 de 89 px) enquanto desliza; quadro de levantar no fim. A corrida tinha um quadro "parado" no meio do ciclo (dava um tranco); corrigido |
+| Todos | Golpe que não mata: pisca em vermelho e dá um tranco curto para trás. Morte: clarão, recuo com pulinho para longe do jogador, tomba e apaga (antes só piscava e sumia). Morto não ataca (a animação para no quadro em que estava) |
+
+**Limitações dos sprites:** não há quadros de dano nem de morte para nenhum personagem, nem
+de preparação do chute (perna para trás); esses momentos usam movimento, cor e rotação do
+desenho existente. O Goleiro tem quadros de "ataque de garras" que não foram usados (não
+fazem parte do pedido).
+
+**Duração da Fase 1 (calibrada aqui).** `teste_partida.gd` tem dois robôs que jogam só
+com teclas simuladas:
+
+| Robô | Como joga | Fase 1 |
+|---|---|---|
+| Cuidadoso (estimativa do jogador experiente) | pula cartões e carrinhos, não encosta no Goleiro, só dá carrinho no Zagueiro parado; conta os golpes | 37,2 s (levou 1 golpe) |
+| Agressivo (limite inferior) | invencível, nunca desvia | 32,5 s |
+
+Os dois reagem instantaneamente e conhecem a fase. Um jogador experiente reage a cada
+ameaça uns 0,2 s depois e erra alguns pulos; nas ~40 ameaças da fase isso soma de 20% a 40%
+ao tempo do robô cuidadoso: **estimativa de 45 a 52 s** para um jogador experiente, dentro
+da faixa pedida (45 a 60 s). O teste exige o robô cuidadoso entre 35 e 50 s (equivalente à
+faixa) e o agressivo acima de 28 s. Sem esperas artificiais.
+
+**Correções:** o cartão nascia dentro do jogador quando o Juiz lançava colado nele (agora
+não lança à queima-roupa); quem caía por cima do Zagueiro deslizando levava o golpe; o
+game over cortava a cena sem mostrar a morte.
