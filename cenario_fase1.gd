@@ -7,7 +7,7 @@ extends Node2D
 ##   esticada 23% na horizontal).
 ## - Os cortes usam colunas quase idênticas da imagem (415, 1017, 1235 e 1246) ou
 ##   eixos de espelho, então os trechos emendam sem costura visível.
-## - A fase tem quatro quadras (início, duas de meio e final). Entre duas quadras, o fundo
+## - A fase tem três quadras (início, meio e final). Entre duas quadras, o fundo
 ##   (gol + prédio) aparece espelhado e vira uma divisória natural.
 ## - Também monta o chão, as paredes das pontas e as plataformas de mão única em
 ##   cima dos caixotes e barreiras desenhados (grupo "plataformas").
@@ -50,9 +50,7 @@ const PLATAFORMAS: Array[Vector3] = [
 	Vector3i(0, 415, 0), Vector3i(415, 1017, 0), Vector3i(1017, 1235, 0), Vector3i(1017, 1235, 1), Vector3i(1246, 1600, 0),
 	# Quadra 2 — meio
 	Vector3i(1246, 1600, 1), Vector3i(1017, 1235, 0), Vector3i(1017, 1235, 1), Vector3i(415, 1017, 1), Vector3i(1017, 1235, 0), Vector3i(1017, 1235, 1), Vector3i(1246, 1600, 0),
-	# Quadra 3 — meio
-	Vector3i(1246, 1600, 1), Vector3i(1017, 1235, 1), Vector3i(415, 1017, 0), Vector3i(1017, 1235, 0), Vector3i(1246, 1600, 0),
-	# Quadra 4 — final
+	# Quadra 3 — final
 	Vector3i(1246, 1600, 1), Vector3i(1017, 1235, 1), Vector3i(1017, 1235, 0), Vector3i(415, 1017, 0), Vector3i(1017, 1235, 0), Vector3i(1017, 1235, 1), Vector3i(1246, 1600, 0),
 ]:
 	set(valor):

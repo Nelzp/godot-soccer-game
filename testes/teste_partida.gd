@@ -260,7 +260,9 @@ func _rodar() -> void:
 
 	checar(quadro_fim_fase1 > 0, "Fase 1 concluída pelo portão final (%.1f s)" % tempo_fase1)
 	checar(derrotados_fase1 == inimigos_fase1, "todos os %d adversários da Fase 1 derrotados (%d)" % [inimigos_fase1, derrotados_fase1])
-	checar(tempo_fase1 >= 60.0, "Fase 1 leva pelo menos 60 s mesmo no ritmo do robô (%.1f s)" % tempo_fase1)
+	# Limite inferior: ninguém passa mais rápido que o robô invencível (com 3 quadras,
+	# todos os adversários com 3 de vida e o Juiz mais forte)
+	checar(tempo_fase1 >= 30.0, "nem o robô invencível passa a Fase 1 em menos de 30 s (%.1f s)" % tempo_fase1)
 	checar(quadro_inicio_fase2 > 0, "portão final levou à Fase 2")
 	checar(chefao_derrotado, "chefão derrotado na Fase 2")
 	checar(quadro_fim_fase2 > 0, "jogador entrou na saída liberada (%.1f s de Fase 2)" % tempo_fase2)

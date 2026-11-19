@@ -10,7 +10,8 @@ extends "res://inimigo_base.gd"
 ##   o empurra. Dá para escapar pulando por cima.
 ## - Depois do carrinho fica parado um instante (hora de atacar) e só repete
 ##   depois da recarga.
-## - Tem 2 de vida: a bola tira 1 (ele cambaleia) e o carrinho do jogador tira 2.
+## - Vida em `vida_maxima` (3 na cena): a bola tira 1 (ele cambaleia) e o
+##   carrinho do jogador tira 2.
 
 enum Estado {
 	PATRULHANDO,
@@ -195,6 +196,11 @@ func _verificar_acerto_do_carrinho() -> void:
 	if alvo == null:
 		return
 
+	# Quem pulou e caiu por cima do zagueiro não leva o carrinho: só vale o
+	# encontro de frente (pés abaixo do topo dele)
+	if _pes_de(alvo) < _topo() + 14.0:
+		return
+
 	acertou_no_carrinho = true
 
 	if alvo.has_method("receber_dano"):
@@ -205,6 +211,27 @@ func _verificar_acerto_do_carrinho() -> void:
 
 	# O carrinho para no jogador
 	_iniciar_recuperacao(tempo_recuperacao)
+
+
+## Altura (y global) dos pés de um corpo, pela forma de colisão dele.
+func _pes_de(corpo: Node2D) -> float:
+
+	var forma := corpo.get_node_or_null("CollisionShape2D") as CollisionShape2D
+
+	if forma != null and forma.shape is RectangleShape2D:
+		var retangulo := forma.shape as RectangleShape2D
+		return forma.global_position.y + retangulo.size.y * 0.5 * absf(forma.global_scale.y)
+
+	return corpo.global_position.y
+
+
+## Altura (y global) do topo do zagueiro.
+func _topo() -> float:
+
+	var forma := $CollisionShape2D as CollisionShape2D
+	var retangulo := forma.shape as RectangleShape2D
+
+	return forma.global_position.y - retangulo.size.y * 0.5 * absf(forma.global_scale.y)
 
 
 func _iniciar_recuperacao(duracao: float) -> void:

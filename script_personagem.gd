@@ -12,6 +12,12 @@ var direcao = 1
 ## Quanto o empurrão horizontal (golpes do chefão) perde por segundo.
 @export var atrito_empurrao: float = 1800.0
 
+## Quanto (px) a câmera se adianta para o lado em que o jogador anda, para
+## mostrar mais do que vem pela frente (ex.: o Juiz que lança de longe).
+@export var antecipacao_camera: float = 100.0
+## Rapidez com que a câmera chega à antecipação (maior = mais rápido).
+@export var rapidez_camera: float = 2.2
+
 var animando = false
 var carrinho_atingiu_inimigo = false
 var morto: bool = false
@@ -21,6 +27,15 @@ var invencivel: bool = false
 var empurrao_x: float = 0.0
 
 @onready var hud = get_tree().current_scene.find_child("Hud", true, false)
+@onready var camera: Camera2D = $Camera2D
+
+## Lado para onde a câmera está adiantada (1 = direita, -1 = esquerda).
+var _lado_camera: int = 1
+
+
+func _ready() -> void:
+	_lado_camera = direcao
+	camera.position.x = antecipacao_camera * _lado_camera
 
 
 func _physics_process(delta: float) -> void:
@@ -43,6 +58,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = velocidade
 		direcao = 1
 		$Sprite2D.flip_h = false
+
+	_atualizar_camera(delta, velocity.x != 0)
 
 	# Pulo
 	if Input.is_action_just_pressed("pular") and is_on_floor():
@@ -121,6 +138,17 @@ func verificar_colisao_carrinho() -> void:
 		alvo.receber_dano(dano_carrinho)
 
 		print("Inimigo atingido pelo carrinho!")
+
+
+## A câmera se adianta para o lado em que o jogador anda. Só segue o lado
+## enquanto ele anda: virar parado (para chutar) não balança a câmera.
+func _atualizar_camera(delta: float, andando: bool) -> void:
+
+	if andando:
+		_lado_camera = direcao
+
+	var alvo := antecipacao_camera * _lado_camera
+	camera.position.x = lerpf(camera.position.x, alvo, 1.0 - exp(-rapidez_camera * delta))
 
 
 ## Inimigo vivo = está no grupo "inimigos" (quem morre sai do grupo).

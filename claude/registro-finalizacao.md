@@ -19,7 +19,8 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P5 | Obstáculos aproveitando o cenário e os sprites existentes, sem duplicação visual | concluída |
 | P6 | Integração, testes e correções gerais | concluída |
 | A | Atualização "duas fases": Fase 1 ampliada (≥ 60 s), mais inimigos com mais vida e uniformes variados, mais obstáculos, portões entre quadras, Fase 2 com o chefão e saída bloqueada | concluída (ver seção própria) |
-| P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | aguardando arquivos |
+| P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | ver "Polimento final" |
+| PF | Polimento final: Fase 1 mais curta, inimigos com 3 de vida e redistribuídos, Juiz de longe, animações de combate, áudio, organização das pastas e revisão | em andamento (ver seção própria) |
 
 Regras combinadas: não descartar alterações preexistentes, não fazer push, preservar as
 imagens oficiais (nenhuma é editada; recortes são feitos com `region_rect`), não alterar
@@ -426,6 +427,65 @@ temporário). Entre `98fcba5` e `612161c` a Fase 2 ainda não tinha o chefão.
 
 ## P7 — Áudio e música
 
-Aguardando os arquivos definitivos. Já está pronto para receber: buses `Musica` e `Efeitos`
-(em `default_bus_layout.tres`), volumes na tela de configurações e persistência. Nenhum som
-provisório foi criado.
+Os arquivos definitivos chegaram junto com o pedido de polimento final; a integração está
+na seção "Polimento final", etapa C.
+
+## Polimento final (19/11/2026)
+
+Pedido: Fase 1 mais curta (45 a 60 s para um jogador experiente), inimigos mais
+espalhados e com 3 de vida, Juiz lançando de mais longe, animações de combate melhores,
+áudio com os arquivos entregues, pastas organizadas em português e revisão geral. Ordem:
+A (balanceamento), B (animações), C (áudio), D (organização), E (revisão). Um commit por
+etapa, sem push.
+
+### Etapa A — Balanceamento
+
+**Fase 1 encurtada.** Saiu a quadra de meio mais curta (5 trechos): ficaram três quadras
+(início, meio e final), 7.502 px em vez de 9.625 (−22%). As emendas, a escala uniforme e as
+divisórias entre quadras continuam as mesmas. Câmera, chão e paredes saem da largura do
+cenário; os portões foram reposicionados (x = 2.197, 4.850 e o final em 7.365).
+
+**Inimigos redistribuídos** (16: 6 Juízes, 5 Goleiros, 5 Zagueiros), em encontros
+separados por trechos só de movimentação e com ordem diferente em cada quadra:
+
+| Quadra | Encontros (da esquerda para a direita) |
+|---|---|
+| 1 (início) | Juiz sozinho · bonecos · Zagueiro · Goleiro + Juiz guardando o portão |
+| 2 (meio) | caixa · Goleiro · barreira · Juiz + Zagueiro · Juiz · bonecos · Zagueiro + Goleiro |
+| 3 (final) | barreira · Zagueiro · caixa · Juiz atrás da caixa · Goleiro + Juiz · bonecos · Zagueiro + Goleiro |
+
+- Distâncias variadas (155 a 670 px entre centros), nenhum tipo três vezes seguido, nenhum
+  inimigo sobreposto, preso em obstáculo ou fora da área jogável (conferido por teste).
+- Obstáculos: 8 (barreira de salto, bonecos, caixa de salto e barreira listrada), em pontos
+  sem objeto parecido desenhado atrás. As variações de uniforme continuam (5 por tipo em uso).
+- Posições fixas na cena (sem sorteio): o jogo e os testes são reproduzíveis.
+
+**Vida padronizada em 3** para Juiz, Goleiro e Zagueiro (`vida_maxima` nas cenas, editável
+por instância no Inspetor); o chefão continua com 12. Dano, piscar, morte única e o
+"morto não ataca" continuam de `inimigo_base.gd`.
+
+**Juiz** (`script_inimigo1.gd`, parâmetros no Inspetor, grupo "Cartões"):
+
+| Parâmetro | Antes | Agora |
+|---|---|---|
+| `alcance_visao` | 520 px (300 no script) | 640 px |
+| Ritmo | animação em laço de 1,2 s | aviso 0,45 s + lançamento + `intervalo_ataque` 0,9 s (ciclo de 1,85 s) |
+| Mira | sempre reto | no peito do jogador apoiado (até 25° para cima/baixo); no ar, reto |
+| `velocidade_cartao` | 700 px/s | 650 px/s |
+| `alcance_cartao` | sem limite (4 s de vida) | 1.000 px e o cartão apaga |
+| Visão | raio na altura do corpo | linha da mão até o peito do jogador; parede, portão fechado e obstáculo alto tapam |
+
+- Só começa a lançar com o jogador apoiado e com o Juiz **visível na tela** (o cartão nunca
+  vem de fora da tela). Para o alcance maior caber na tela, a câmera do jogador se adianta
+  100 px para o lado em que ele anda (suave; virar parado para chutar não balança a câmera).
+- Colado nele (menos de 110 px) não lança: o cartão nasceria dentro do jogador, sem chance
+  de desvio. O cartão já erguido também não sai à queima-roupa.
+- Dá para desviar pulando (o cartão passa por baixo) ou escondendo atrás dos bonecos.
+
+**Correção encontrada no caminho:** cair por cima de um Zagueiro que ainda deslizava contava
+como golpe do carrinho dele; agora só vale o encontro de frente.
+
+**Duração (nesta etapa):** o robô agressivo e invencível (limite inferior) faz a Fase 1 em
+33,6 s. A estimativa para um jogador experiente usa um robô "cuidadoso" (desvia, mantém
+distância do Goleiro) e foi calibrada depois das animações novas (etapa B), porque o tempo
+do chute muda o ritmo de combate.

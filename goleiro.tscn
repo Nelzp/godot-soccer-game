@@ -79,7 +79,7 @@ _data = {
 
 [node name="Personagem" type="CharacterBody2D" parent="." unique_id=1149399348]
 script = ExtResource("1_4rrqr")
-vida_maxima = 5
+vida_maxima = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Personagem" unique_id=1447267006]
 light_mask = 2

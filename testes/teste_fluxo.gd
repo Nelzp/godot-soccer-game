@@ -57,7 +57,7 @@ func _rodar() -> void:
 	for portao in get_nodes_in_group("portoes"):
 		if not portao.esta_aberto:
 			fechados += 1
-	checar(fechados == 4, "portões e adversários reiniciados")
+	checar(fechados == 3, "portões e adversários reiniciados")
 
 	print("-- pausa na Fase 1")
 	var pausa = current_scene.find_child("pausa", true, false)
