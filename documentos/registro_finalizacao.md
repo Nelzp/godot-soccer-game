@@ -20,7 +20,7 @@ Engine: Godot 4.7.2 (Steam): `C:\Program Files (x86)\Steam\steamapps\common\Godo
 | P6 | Integração, testes e correções gerais | concluída |
 | A | Atualização "duas fases": Fase 1 ampliada (≥ 60 s), mais inimigos com mais vida e uniformes variados, mais obstáculos, portões entre quadras, Fase 2 com o chefão e saída bloqueada | concluída (ver seção própria) |
 | P7 | Áudio e música — só depois que os arquivos definitivos forem entregues. Nada de sons provisórios | ver "Polimento final" |
-| PF | Polimento final: Fase 1 mais curta, inimigos com 3 de vida e redistribuídos, Juiz de longe, animações de combate, áudio, organização das pastas e revisão | em andamento (ver seção própria) |
+| PF | Polimento final: Fase 1 mais curta, inimigos com 3 de vida e redistribuídos, Juiz de longe, animações de combate, áudio, organização das pastas e revisão | concluída (ver seção própria) |
 
 Regras combinadas: não descartar alterações preexistentes, não fazer push, preservar as
 imagens oficiais (nenhuma é editada; recortes são feitos com `region_rect`), não alterar
@@ -638,6 +638,88 @@ salvas continuarem valendo, a pasta de dados foi fixada no caminho antigo
 (`config/custom_user_dir_name = "Godot/app_userdata/As aventura de um jogador"`);
 conferido que `user://` continua o mesmo e o arquivo salvo é encontrado.
 
-### Situação
+### Etapa E — Revisão final
 
-Etapas A, B, C e D concluídas. Falta a E (revisão final e relatório).
+- Projeto aberto no editor (headless) depois da organização: nenhum erro de dependência e
+  nenhum arquivo reescrito.
+- Capturas renderizadas de todas as telas com as pastas novas (menu, configurações,
+  Fase 1, portão, luta com o chefão, game over, vitória) e das animações (folhas de
+  quadros de cada personagem e cenas de combate dentro da fase).
+- Áudio conferido também com o driver de verdade (Master mudo): as quatro músicas passam
+  pelo bus Musica com volumes parecidos e o chute chega ao bus Efeitos ~33 ms depois do
+  quadro da bola.
+- Correção desta etapa: fechar o jogo com som tocando deixava sons "presos" (aviso no
+  console). Agora o SAIR do menu e o X da janela passam por `Audio.fechar_jogo()`, que
+  para os sons antes de sair.
+
+**Bugs corrigidos no polimento (todas as etapas):**
+
+| Bug | Correção |
+|---|---|
+| Cartão do Juiz nascia dentro do jogador quando ele chegava colado | Juiz não lança a menos de 110 px (nem solta o cartão já erguido) |
+| Juiz mirava no jogador em pleno pulo e o cartão acertava na aterrissagem | Mira só no jogador apoiado; no ar, lança reto (o pulo sempre desvia) |
+| Cair por cima do Zagueiro deslizando contava como golpe | Só vale o encontro de frente |
+| Quadros dos personagens "pulavam" até 30 px | Quadros ancorados (pés e corpo) |
+| Jogador esticado 24% na vertical; Goleiro esticado 11% na horizontal | Escala uniforme |
+| Corrida do Zagueiro com um quadro "parado" no meio | Quadro removido do ciclo |
+| Caixa de colisão do Goleiro (179 px) mais larga que o corpo | 104 × 140 |
+| Bola só saía no fim da animação de chute (0,6 s) | Sai no quadro do contato (0,11 s) |
+| Carrinho do jogador não saía do lugar | Desliza ~150 px com o corpo baixo |
+| Game over cortava a cena na hora | Queda do jogador e transição |
+| Áudios `.mpeg` não eram importados pela Godot | Renomeados para `.mp3` (mesmo conteúdo) |
+| Músicas com volumes muito diferentes; game over quase inaudível | Ajuste por arquivo, medido |
+| Som "preso" ao fechar o jogo | `Audio.fechar_jogo()` |
+
+**Testes (Godot 4.7.2):** 13 roteiros, **309 verificações, 0 falhas**.
+
+| Roteiro | Verificações |
+|---|---|
+| `teste_audio.gd` (novo) | 25 |
+| `teste_chefao.gd` | 37 |
+| `teste_configuracoes.gd` | 48 |
+| `teste_estrutura.gd` | 29 |
+| `teste_fluxo.gd` | 19 |
+| `teste_inimigos.gd` (novo) | 22 |
+| `teste_jogador.gd` (novo) | 28 |
+| `teste_juiz.gd` (novo) | 26 |
+| `teste_obstaculos.gd` | 19 |
+| `teste_partida.gd` (robôs cuidadoso e agressivo) | 10 |
+| `teste_portao.gd` | 15 |
+| `teste_referencias.gd` (novo) | 9 |
+| `teste_zagueiro.gd` | 22 |
+
+Os 20 testes obrigatórios: inicialização e cena inicial (`teste_referencias`), menu e
+configurações (`teste_fluxo`, `teste_configuracoes`, `teste_audio`), Fase 1 e duração
+(`teste_estrutura`, `teste_partida`), vida dos inimigos (`teste_estrutura`,
+`teste_zagueiro`, `teste_juiz`), alcance do Juiz (`teste_juiz`), animações do jogador e dos
+inimigos (`teste_jogador`, `teste_inimigos`, mais as folhas de quadros renderizadas),
+colisões e obstáculos (`teste_obstaculos`), portões e transição para a Fase 2
+(`teste_portao`), chefão, saída e vitória (`teste_chefao`), game over e reinício
+(`teste_fluxo`), áudio e volume (`teste_audio`), persistência (`teste_configuracoes`) e
+referências depois da organização (`teste_referencias`).
+
+### Pendências e limitações
+
+- **Sons sem arquivo** (ficam em silêncio até chegarem): carrinho do jogador, bola batendo,
+  cartão do Juiz, soco do Goleiro, carrinho do Zagueiro, ataques, dano e morte do chefão,
+  abertura dos portões, transição de fase, liberação da saída e botões dos menus. Para
+  ligar um, basta pôr o arquivo em `recursos/sons/` e o nome em `scripts/sistemas/audio.gd`.
+- **Duração**: a faixa de 45 a 60 s é uma estimativa a partir do robô cuidadoso (37,2 s);
+  vale cronometrar uma partida de verdade.
+- **Sprites**: não há quadros de dano, de morte nem de preparação do chute; esses momentos
+  usam movimento, cor e rotação dos quadros existentes.
+- `estadio_fase_1_original.jfif` e as fontes Pixelify Sans Regular e SemiBold não são
+  usados, mas foram mantidos (ver etapa D).
+- Os `.import` de alguns arquivos que não mudaram de lugar continuam aparecendo como
+  modificados só por fim de linha e ficam fora dos commits.
+
+### Commits do polimento
+
+| Commit | Etapa |
+|---|---|
+| `d331984` | A — Fase 1 mais curta, inimigos com 3 de vida, Juiz de longe |
+| `4e095ba` | B — Animações de combate |
+| `2757788` | C — Áudio |
+| `ecce2ab` | D — Remoção dos scripts sem uso |
+| `d2313b4` | D — Organização das pastas e título do jogo |
+| (este) | E — Revisão final e registro |

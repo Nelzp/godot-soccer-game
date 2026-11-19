@@ -86,6 +86,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_sem_som = AudioServer.get_driver_name() == "Dummy"
 
+	# Fechar a janela passa por fechar_jogo(): os sons param antes de sair
+	get_tree().auto_accept_quit = false
+
 	for i in range(2):
 		var tocador := AudioStreamPlayer.new()
 		tocador.name = "Musica%d" % (i + 1)
@@ -99,6 +102,26 @@ func _ready() -> void:
 		tocador.bus = BUS_EFEITOS
 		add_child(tocador)
 		_efeitos.append(tocador)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		fechar_jogo()
+
+
+## Fecha o jogo sem cortar o som no meio: para tudo, espera o áudio soltar os
+## sons e então sai (evita som "preso" na hora de fechar).
+func fechar_jogo() -> void:
+
+	if _tween_musica != null:
+		_tween_musica.kill()
+
+	for tocador in _musicas + _efeitos:
+		tocador.stop()
+
+	musica_atual = ""
+	await get_tree().create_timer(0.15, true, false, true).timeout
+	get_tree().quit()
 
 
 ## Ao fechar o jogo, solta os sons que ainda estavam tocando.

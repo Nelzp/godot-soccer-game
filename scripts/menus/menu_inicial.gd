@@ -15,7 +15,8 @@ func iniciar_jogo() -> void:
 
 
 func sair_jogo() -> void:
-	get_tree().quit()
+	# Para os sons antes de fechar (ver Audio.fechar_jogo)
+	Audio.fechar_jogo()
 
 
 func _on_botao_configuracao_pressed() -> void:
