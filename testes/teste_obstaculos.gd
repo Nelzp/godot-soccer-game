@@ -1,0 +1,199 @@
+extends SceneTree
+## Obstáculos e plataformas da Fase 1, e posicionamento justo dos inimigos.
+
+var falhas := 0
+var verificacoes := 0
+
+
+func _initialize() -> void:
+	_rodar.call_deferred()
+
+
+func checar(condicao: bool, descricao: String) -> void:
+	verificacoes += 1
+	if condicao:
+		print("  ok   - ", descricao)
+	else:
+		falhas += 1
+		print("  FALHA - ", descricao)
+
+
+func esperar(quadros: int) -> void:
+	for _i in range(quadros):
+		await physics_frame
+
+
+func pes(jogador: CharacterBody2D) -> float:
+	var forma := jogador.get_node("CollisionShape2D") as CollisionShape2D
+	return forma.global_position.y + (forma.shape as RectangleShape2D).size.y * 0.5
+
+
+func retangulo(corpo: Node2D) -> Rect2:
+	var forma := corpo.get_node("CollisionShape2D") as CollisionShape2D
+	var tamanho := (forma.shape as RectangleShape2D).size * forma.global_scale.abs()
+	return Rect2(forma.global_position - tamanho * 0.5, tamanho)
+
+
+func andar(acao: String, quadros: int) -> void:
+	Input.action_press(acao)
+	await esperar(quadros)
+	Input.action_release(acao)
+
+
+func pular() -> void:
+	Input.action_press("pular")
+	await esperar(2)
+	Input.action_release("pular")
+
+
+func _rodar() -> void:
+
+	change_scene_to_file("res://cenas/fases/fase_1.tscn")
+	await esperar(3)
+
+	var fase := current_scene
+	var jogador := get_first_node_in_group("jogador") as CharacterBody2D
+	var hud := fase.find_child("Hud", true, false)
+	jogador.invencivel = true
+
+	print("-- posicionamento dos inimigos (ao nascer)")
+	var inimigos := get_nodes_in_group("inimigos")
+	var obstaculos := get_nodes_in_group("obstaculos")
+	var sobrepostos := 0
+	var presos := 0
+	for i in range(inimigos.size()):
+		var a := retangulo(inimigos[i]).grow(-2.0)
+		for j in range(i + 1, inimigos.size()):
+			if a.intersects(retangulo(inimigos[j]).grow(-2.0)):
+				sobrepostos += 1
+				print("     sobrepostos: ", inimigos[i].get_parent().name, " e ", inimigos[j].get_parent().name)
+		for obstaculo in obstaculos:
+			if a.intersects(retangulo(obstaculo)):
+				presos += 1
+				print("     preso: ", inimigos[i].get_parent().name, " em ", obstaculo.name)
+	checar(sobrepostos == 0, "nenhum inimigo nasce sobreposto a outro")
+	checar(presos == 0, "nenhum inimigo nasce dentro de obstáculo")
+	await esperar(40)
+	# O Juiz não se move (sem gravidade): confere pela base do corpo
+	var no_chao := 0
+	for inimigo in inimigos:
+		var base := retangulo(inimigo).end.y
+		if absf(base - 529.5) <= 4.0:
+			no_chao += 1
+		else:
+			print("     fora do chão: ", inimigo.get_parent().name, " base em ", base)
+	checar(no_chao == inimigos.size(), "todos os %d inimigos apoiados no chão" % inimigos.size())
+
+	for inimigo in inimigos:
+		inimigo.process_mode = Node.PROCESS_MODE_DISABLED
+
+	print("-- obstáculos sólidos")
+	checar(obstaculos.size() >= 8, "%d obstáculos sólidos (barreiras, bonecos, caixas)" % obstaculos.size())
+	var tipos := {}
+	var dentro := true
+	var largura: float = fase.largura()
+	for obstaculo in obstaculos:
+		tipos[obstaculo.tipo] = true
+		dentro = dentro and obstaculo.global_position.x > 150.0 and obstaculo.global_position.x < largura - 150.0
+	checar(tipos.size() >= 4, "%d tipos diferentes de obstáculo" % tipos.size())
+	var inimigos_dentro := true
+	for inimigo in inimigos:
+		inimigos_dentro = inimigos_dentro and inimigo.global_position.x > 150.0 and inimigo.global_position.x < largura - 150.0
+	checar(dentro and inimigos_dentro, "inimigos e obstáculos dentro da área jogável (0 a %.0f px)" % largura)
+	checar(get_nodes_in_group("plataformas").size() >= 15, "plataformas do cenário em todos os trechos (%d)" % get_nodes_in_group("plataformas").size())
+
+	var barreira: StaticBody2D = fase.get_node("Obstaculos/BarreiraDeSalto")
+	var borda := retangulo(barreira).position.x
+	jogador.global_position = Vector2(220, 470)
+	await esperar(10)
+	await andar("ir_para_direita", 40)
+	checar(jogador.global_position.x < borda, "andando, o jogador para na barreira de salto (x = %.0f)" % jogador.global_position.x)
+	jogador.global_position.x = borda - 70.0
+	await esperar(5)
+	Input.action_press("ir_para_direita")
+	await pular()
+	await esperar(40)
+	Input.action_release("ir_para_direita")
+	checar(jogador.global_position.x > barreira.global_position.x + 40.0, "pulando, passa por cima (x = %.0f)" % jogador.global_position.x)
+
+	jogador.global_position = Vector2(barreira.global_position.x - 160, 470)
+	jogador.direcao = 1
+	await esperar(10)
+	jogador.spawnar_bolar()
+	await esperar(3)
+	var bolas := get_nodes_in_group("projeteis").size()
+	await esperar(40)
+	checar(bolas > 0 and get_nodes_in_group("projeteis").size() == 0, "bola some ao bater na barreira")
+
+	print("-- plataformas do cenário (caixotes e barreira desenhados)")
+	jogador.global_position = Vector2(450, 470)
+	await esperar(10)
+	await andar("ir_para_direita", 30)
+	checar(jogador.global_position.x > 640.0 and absf(pes(jogador) - 529.5) < 3.0, "passa na frente dos caixotes sem bater (x = %.0f)" % jogador.global_position.x)
+	jogador.global_position = Vector2(555, 470)
+	jogador.velocity = Vector2.ZERO
+	await esperar(10)
+	await pular()
+	await esperar(60)
+	checar(jogador.is_on_floor() and absf(pes(jogador) - 431.6) < 4.0, "sobe por baixo e fica em cima dos caixotes (pés em %.1f)" % pes(jogador))
+
+	# Do alto, a bola não bate nas plataformas desenhadas (camada própria)
+	jogador.direcao = 1
+	jogador.spawnar_bolar()
+	await esperar(2)
+	var bola = null
+	for projetil in get_nodes_in_group("projeteis"):
+		bola = projetil
+	await esperar(25)
+	checar(bola != null and is_instance_valid(bola) and bola.global_position.x > 750.0, "bola chutada do alto atravessa a barreira desenhada")
+
+	jogador.global_position = Vector2(691, 380)
+	jogador.velocity = Vector2.ZERO
+	await esperar(40)
+	checar(jogador.is_on_floor() and absf(pes(jogador) - 469.3) < 4.0, "fica em cima da barreira desenhada (pés em %.1f)" % pes(jogador))
+
+	print("-- visão do Juiz e patrulhas")
+	# Juiz da quadra 1 com os bonecos à direita dele
+	var juiz = fase.get_node("Inimigos/Juiz/Personagem")
+	var bonecos: StaticBody2D = fase.get_node("Obstaculos/Bonecos")
+	juiz.process_mode = Node.PROCESS_MODE_INHERIT
+	juiz.exigir_na_tela = false
+	jogador.global_position = Vector2(retangulo(bonecos).end.x + 60.0, 470)
+	await esperar(10)
+	checar(not juiz.ve_jogador(), "Juiz não enxerga através dos bonecos")
+	jogador.global_position = Vector2(retangulo(bonecos).position.x - 60.0, 470)
+	await esperar(10)
+	checar(juiz.ve_jogador(), "Juiz enxerga com o caminho livre")
+	juiz.exigir_na_tela = true
+	juiz.process_mode = Node.PROCESS_MODE_DISABLED
+
+	# Zagueiro da quadra 1 com os bonecos à esquerda dele
+	var zagueiro = fase.get_node("Inimigos/Zagueiro2/Personagem")
+	zagueiro.process_mode = Node.PROCESS_MODE_INHERIT
+	zagueiro.raio_patrulha = 0.0
+	zagueiro.direcao = -1
+	jogador.global_position = Vector2(150, 470)
+	var menor_z := INF
+	for _i in range(200):
+		await physics_frame
+		menor_z = minf(menor_z, zagueiro.global_position.x)
+	checar(menor_z > retangulo(bonecos).end.x and zagueiro.direcao == 1, "zagueiro dá meia-volta nos bonecos (menor x %.0f)" % menor_z)
+	# Sai do caminho do goleiro
+	zagueiro.get_parent().queue_free()
+	await esperar(2)
+
+	var goleiro = fase.get_node("Inimigos/Goleiro/Personagem")
+	goleiro.process_mode = Node.PROCESS_MODE_INHERIT
+	goleiro.raio_patrulha = 0.0
+	goleiro.direcao = -1
+	var menor := INF
+	for _i in range(120):
+		await physics_frame
+		menor = minf(menor, goleiro.global_position.x)
+	checar(menor < 1800.0, "plataformas não atrapalham quem anda no chão (goleiro passou dos caixotes)")
+	goleiro.process_mode = Node.PROCESS_MODE_DISABLED
+
+	checar(hud.vidas == 5, "nenhum dano durante o teste")
+
+	print("\n%d verificações, %d falhas" % [verificacoes, falhas])
+	quit(falhas)
