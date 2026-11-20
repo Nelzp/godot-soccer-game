@@ -36,9 +36,3 @@ res://
 
 `default_bus_layout.tres` (buses Master, Musica e Efeitos) fica na raiz porque é onde a
 Godot procura o layout de áudio.
-
-## Testes
-
-```powershell
-powershell -ExecutionPolicy Bypass -File testes\rodar_testes.ps1
-```
